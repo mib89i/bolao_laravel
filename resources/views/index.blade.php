@@ -20,7 +20,7 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default no-padding">
-            <a href="/seasons" style="text-decoration: none">
+            <a href="/temporadas" style="text-decoration: none">
                 <div class="panel-body vertical-align">
                     <i class="fa fa-search" aria-hidden="true" style="margin-right: 15px"></i>
                     <h5><b>ENCONTRAR UMA TEMPORADA</b></h5>
@@ -32,7 +32,7 @@
 
 <h3><b>MEUS JOGOS</b></h3>
 
-@if (!$season_users->isEmpty())
+@if (!$temporada_usuarios->isEmpty())
 
 <div class="row">
     <div class="col-lg-12">
@@ -41,23 +41,23 @@
 </div>
 
 <div class="row">
-    @foreach($season_users as $season_user)
+    @foreach($temporada_usuarios as $temporada_usuario)
 
     <div class="col-lg-12">
         <div class="panel panel-default no-padding">
             <div class="row">
                 <div class="col-xs-9 col-md-11">
-                    <a href="/seasons/{{ $season_user->temporada->id }}" style="text-decoration: none">
+                    <a href="/temporadas/{{ $temporada_usuario->temporada->id }}" style="text-decoration: none">
                         <div class="panel-body vertical-align">
                             <i class="fa fa-list" aria-hidden="true" style="margin-right: 15px"></i>
-                            <h5><b>{{ $season_user->temporada->nome }}</b></h5>
+                            <h5><b>{{ $temporada_usuario->temporada->nome }}</b></h5>
                         </div>
                     </a>
                 </div>
 
                 <div class="col-xs-3 col-md-1">
-                    @if (Auth::user()->id === $season_user->temporada->usuario_id)
-                    <a href="/seasons/{{ $season_user->temporada->id }}/edit" style="text-decoration: none">
+                    @if (Auth::user()->id === $temporada_usuario->temporada->usuario_id)
+                    <a href="/temporadas/{{ $temporada_usuario->temporada->id }}/editar" style="text-decoration: none">
                         <div class="panel-body text-center  vertical-align">
                             <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
                         </div>
@@ -82,7 +82,7 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
-            <a href="/seasons/create" style="text-decoration: none">
+            <a href="/temporadas/criar" style="text-decoration: none">
                 <div class="panel-body vertical-align">
                     <span class="fa fa-plus-square-o fa-4x fa-fw" aria-hidden="true"></span>
                     <h5><b>CRIAR TEMPORADA</b></h5>
@@ -96,7 +96,7 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
-            <a href="/seasons/create" style="text-decoration: none">
+            <a href="/temporadas/criar" style="text-decoration: none">
                 <div class="panel-body vertical-align">
                     <span class="fa fa-plus-square-o fa-4x fa-fw" aria-hidden="true"></span>
                     <h5><b>CRIAR COPA</b></h5>

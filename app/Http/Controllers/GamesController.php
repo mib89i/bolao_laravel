@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Season;
+use App\Temporada;
 use App\Game;
 use App\Team;
 
@@ -14,10 +14,10 @@ class GamesController extends Controller {
         $this->middleware('auth')->except([]);
     }
 
-    public function create_sgame(Season $season) {
-        $round_game = Game::where('season_id', '=', $season->id)->count() + 1;
+    public function create_sgame(Temporada $temporada) {
+        $round_game = Game::where('temporada_id', '=', $temporada->id)->count() + 1;
 
-        return view('games.create', compact(['season', 'round_game']));
+        return view('games.create', compact(['temporada', 'round_game']));
     }
     
     public function put_session_team1(Team $team) {
@@ -26,8 +26,8 @@ class GamesController extends Controller {
         }
     }
 
-    public function store_sgame(Season $season) {
-        return view('games.create', compact('season'));
+    public function store_sgame(Temporada $temporada) {
+        return view('games.create', compact('temporada'));
     }
 
     public function search_team() {

@@ -15,7 +15,7 @@
                         @if( Auth::user()->id !== $temporada->usuario_id )
 
                         @if ($temporada_usuario === NULL)
-                        <a href="/seasons/{{$temporada->id}}/request" class="btn btn-danger btn-block btn-lg"><b>PARTICIPAR</b></a>
+                        <a href="/temporadas/{{$temporada->id}}/request" class="btn btn-danger btn-block btn-lg"><b>PARTICIPAR</b></a>
                         @elseif ($temporada_usuario->aceito)
                         <a class="btn btn-default btn-block btn-lg" data-toggle="modal" data-target="#modal_sair"><b>SAIR</b></a>
 
@@ -31,7 +31,7 @@
                                         <h4><b>Tem certeza que deseja deixar essa temporada?</b></h4>
                                     </div>
                                     <div class="modal-footer">
-                                        <a href="/seasons/{{ $temporada_usuario->id }}/denied"  type="button" class="btn btn-danger">Sair dessa temporada</a>
+                                        <a href="/temporadas/{{ $temporada_usuario->id }}/denied"  type="button" class="btn btn-danger">Sair dessa temporada</a>
                                         <button class="btn btn-default" data-dismiss="modal">Fechar</button>
                                     </div>
                                 </div>

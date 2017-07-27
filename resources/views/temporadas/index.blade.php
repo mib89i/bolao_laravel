@@ -14,7 +14,7 @@
         <div class="panel panel-default">
             <div class="panel-body">
 
-                <form method="POST" action="/seasons">
+                <form method="POST" action="/temporadas">
 
                     {{ csrf_field() }}
                     
@@ -31,26 +31,26 @@
     </div>
 </div>
 
-@if(isset($seasons))
+@if(isset($temporada))
 
 <div class="row">
-    @foreach($seasons as $season)
+    @foreach($temporadas as $temporada)
 
     <div class="col-lg-12">
         <div class="panel panel-default no-padding">
             <div class="row">
                 <div class="col-xs-10 col-md-11">
-                    <a href="/seasons/{{ $season->id }}" style="text-decoration: none">
+                    <a href="/temporadas/{{ $temporada->id }}" style="text-decoration: none">
                         <div class="panel-body vertical-align">
                             <i class="fa fa-list" aria-hidden="true" style="margin-right: 15px"></i>
-                            <h5><b>{{ $season->name }}</b></h5>
+                            <h5><b>{{ $temporada->nome }}</b></h5>
                         </div>
                     </a>
                 </div>
 
                 <div class="col-xs-2 col-md-1">
-                    @if (Auth::user()->id === $season->user_id)
-                    <a href="/seasons/{{ $season->id }}/edit" style="text-decoration: none">
+                    @if (Auth::user()->id === $temporada->usuario_id)
+                    <a href="/temporadas/{{ $temporada->id }}/editar" style="text-decoration: none">
                         <div class="panel-body text-center  vertical-align">
                             <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
                         </div>

@@ -12,7 +12,7 @@
     <div class="panel-body">
         <div class="row">
             <div class="col-lg-12 vertical-align">
-                <h3><a href="/seasons/{{ $season->id }}" style="color: black">{{ $season->name }}</a><i class="fa fa-pencil-square-o" aria-hidden="true" style="margin-left: 10px"></i></h3>
+                <h3><a href="/temporadas/{{ $temporada->id }}" style="color: black">{{ $temporada->nome }}</a><i class="fa fa-pencil-square-o" aria-hidden="true" style="margin-left: 10px"></i></h3>
             </div>
             <div class="col-lg-12">
                 <h4 style="color: red"><b>Rodada {{ $round_game }}</b></h4>
@@ -23,7 +23,7 @@
 
 <div class="panel panel-default">
     <div class="panel-body">
-        <form method="POST" action="/games/s/{{ $season->id }}/create">
+        <form method="POST" action="/games/s/{{ $temporada->id }}/criar">
 
             {{ csrf_field() }}                    
 

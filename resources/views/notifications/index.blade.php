@@ -37,10 +37,10 @@
                     </div>
 
                     <div class="col-xs-12 col-md-3 no-padding">
-                        @if ($notification->season_user != NULL and $notification->season_user->accepted == FALSE)
+                        @if ($notification->temporada_usuario != NULL and $notification->temporada_usuario->aceito == FALSE)
                         <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                            <a href="/seasons/{{ $notification->season_user->id }}/request_accepted" class="btn btn-default">Aceitar</a>
-                            <a href="/seasons/{{ $notification->season_user->id }}/request_denied" class="btn btn-danger">Rejeitar</a>
+                            <a href="/temporadas/{{ $notification->temporada_usuario->id }}/request_accepted" class="btn btn-default">Aceitar</a>
+                            <a href="/temporadas/{{ $notification->temporada_usuario->id }}/request_denied" class="btn btn-danger">Rejeitar</a>
                         </div>
                         @endif
                     </div>

@@ -6,7 +6,7 @@ use App\Temporada;
 use App\TemporadaUsuario;
 use App\Notification;
 
-class SeasonsController extends Controller {
+class TemporadasController extends Controller {
 
     public function __construct() {
 
@@ -17,55 +17,47 @@ class SeasonsController extends Controller {
 
         if (request()->isMethod('post')) {
 
-            $seasons = Temporada::where('nome', 'like', '%' . request('search') . '%')->get();
-            //$seasons = Season::where('id', '=', '1')->get();
-            //return dd($seasons);
-
-            return view('seasons.index', compact('seasons'));
+            $temporadas = Temporada::where('nome', 'like', '%' . request('search') . '%')->get();
+            
+            return view('temporadas.index', compact('temporadas'));
         }
-        return view('seasons.index');
+        return view('temporadas.index');
     }
 
-    public function create() {
+    public function criar() {
 
-        return view('seasons.create');
+        return view('temporadas.criar');
     }
 
-    public function store() {
+    public function gravar() {
 
         $this->validate(request(), [
             'nome' => 'required',
             'rodadas' => 'required'
         ]);
 
-        $sea = new Temporada;
+        $temp = new Temporada;
 
-        $sea->nome = request('nome');
-        $sea->rodadas = request('rodadas');
-        $sea->usuario_id = auth()->user()->id;
+        $temp->nome = request('nome');
+        $temp->rodadas = request('rodadas');
+        $temp->usuario_id = auth()->user()->id;
 
-        $sea->save();
+        $temp->save();
 
-        $sea_use = new TemporadaUsuario;
+        $temp_usu= new TemporadaUsuario;
 
-        $sea_use->usuario_id = auth()->user()->id;
-        $sea_use->temporada_id = $sea->id;
-        $sea_use->aceito = TRUE;
+        $temp_usu->usuario_id = auth()->user()->id;
+        $temp_usu->temporada_id = $sea->id;
+        $temp_usu->aceito = TRUE;
 
-        $sea_use->save();
-
-//        Season::create([
-//            'name' => request('name'),
-//            'rounds' => request('rounds'),
-//            'user_id' => auth()->user()->id
-//        ]);
+        $temp_usu->save();
 
         session()->flash('message', 'Temporada Criada.');
 
         return redirect('/');
     }
 
-    public function edit(Temporada $temporada) {
+    public function editar(Temporada $temporada) {
 
         if (auth()->user()->id !== $temporada->usuario_id) {
 
@@ -74,10 +66,10 @@ class SeasonsController extends Controller {
             return redirect('/');
         }
 
-        return view('seasons.edit', compact('temporada'));
+        return view('temporadas.editar', compact('temporada'));
     }
 
-    public function update(Temporada $temporada) {
+    public function atualizar(Temporada $temporada) {
 
         $this->validate(request(), [
             'nome' => 'required',
@@ -91,7 +83,7 @@ class SeasonsController extends Controller {
         return redirect('/');
     }
 
-    public function show(Temporada $temporada) {
+    public function mostrar(Temporada $temporada) {
 
         $temporada_usuario = TemporadaUsuario::where('temporada_id', '=', $temporada->id)
                 ->where('usuario_id', '=', auth()->user()->id)
@@ -114,18 +106,18 @@ class SeasonsController extends Controller {
             }
         }
         
-        return view('seasons.show', compact(['temporada', 'temporada_usuario', 'ranking', 'my_rank']));
+        return view('temporadas.mostrar', compact(['temporada', 'temporada_usuario', 'ranking', 'my_rank']));
     }
 
-    public function request(Season $season) {
+    public function request(Temporada $temporada) {
 
-        $season_user = SeasonUser::where('season_id', '=', $season->id)
-                ->where('user_id', '=', auth()->user()->id)
+        $temporada_usuario = TemporadaUsuario::where('temporada_id', '=', $temporada->id)
+                ->where('usuario_id', '=', auth()->user()->id)
                 ->get();
 
-        if (!$season_user->isEmpty()) {
+        if (!$temporada_usuario->isEmpty()) {
 
-            if ($season_user->accepted) {
+            if ($temporada_usuario->aceito) {
                 session()->flash('message', 'VOCÊ JÁ PARTICIPA DESSA TEMPORADA!');
                 return back();
             } else {
@@ -134,20 +126,20 @@ class SeasonsController extends Controller {
             }
         }
 
-        $season_user = new SeasonUser;
-        $season_user->season_id = $season->id;
-        $season_user->user_id = auth()->user()->id;
-        $season_user->accepted = FALSE;
+        $temporada_usuario = new TemporadaUsuario;
+        $temporada_usuario->temporada_id = $temporada->id;
+        $temporada_usuario->usuario_id = auth()->user()->id;
+        $temporada_usuario->aceito = FALSE;
 
-        $season_user->save();
+        $temporada_usuario->save();
 
 
         $notif = new Notification;
-        $notif->from_user_id = auth()->user()->id;
-        $notif->to_user_id = $season->user_id;
-        $notif->season_user_id = $season_user->id;
-        $notif->description = 'quer participar da temporada ' . $season->name;
-        $notif->readed = FALSE;
+        $notif->do_usuario_id = auth()->user()->id;
+        $notif->para_usuario_id = $temporada->user_id;
+        $notif->temporada_usuario_id = $temporada->id;
+        $notif->descricao = 'quer participar da temporada ' . $temporada->nome;
+        $notif->lido = FALSE;
 
         $notif->save();
 
@@ -156,46 +148,45 @@ class SeasonsController extends Controller {
         return back();
     }
 
-    public function request_accepted(SeasonUser $season_user) {
-        if (!$season_user->exists()) {
+    public function request_accepted(TemporadaUsuario $temporada_usuario) {
+        if (!$temporada_usuario->exists()) {
             session()->flash('message', 'SOLICITAÇÃO NÃO EXISTE.');
             return redirect('/notifications');
         }
 
-        $season_user->accepted = TRUE;
+        $temporada_usuario->aceito = TRUE;
 
-        $season_user->update();
+        $temporada_usuario->update();
 
         session()->flash('message', 'JOGADOR ADICIONADO.');
 
-        //return redirect('/seasons/' . $season_user->season_id);
-        return redirect('/notifications');
+        return redirect('/notificacoes');
     }
 
-    public function request_denied(SeasonUser $season_user) {
-        if (!$season_user->exists()) {
+    public function request_denied(TemporadaUsuario $temporada_usuario) {
+        if (!$temporada_usuario->exists()) {
             session()->flash('message', 'SOLICITAÇÃO NÃO EXISTE.');
             return redirect('/notifications');
         }
 
-        $season_user->delete();
+        $temporada_usuario->delete();
 
         session()->flash('message', 'JOGADOR NEGADO.');
 
         return redirect('/notifications');
     }
 
-    public function denied(SeasonUser $season_user) {
-        if (!$season_user->exists()) {
+    public function denied(TemporadaUsuario $temporada_usuario) {
+        if (!$temporada_usuario->exists()) {
             session()->flash('message', 'SOLICITAÇÃO NÃO EXISTE.');
             return redirect('/notifications');
         }
 
-        $season_user->delete();
+        $temporada_usuario->delete();
 
         session()->flash('message', 'VOCÊ SAIU DESTA TEMPORADA.');
 
-        return redirect('/seasons/' . $season_user->season_id);
+        return redirect('/temporadas/' . $temporada_usuario->temporada_id);
     }
 
 }
