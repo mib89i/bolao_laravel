@@ -17,8 +17,11 @@ class TemporadasController extends Controller {
 
         if (request()->isMethod('post')) {
 
-            $temporadas = Temporada::where('nome', 'like', '%' . request('search') . '%')->get();
-            
+            //$pesquisa = mb_strtolower(request('search'));
+
+            $temporadas = Temporada::whereRaw('translate(nome) like translate(' . '\'%' . request('search') . '%\'' . ')')->get();
+
+            //dd(Temporada::whereRaw('translate(nome) like translate(' . '\'%'. request('search') . '%\''.')')->toSql());
             return view('temporadas.index', compact('temporadas'));
         }
         return view('temporadas.index');
@@ -32,33 +35,38 @@ class TemporadasController extends Controller {
     public function gravar() {
 
         $this->validate(request(), [
-            'nome' => 'required',
-            'rodadas' => 'required'
+            'nome' => 'required'
         ]);
 
-        $temp = new Temporada;
+        \DB::transaction(function() {
+            try {
+                $temp = new Temporada;
+                $temp->nome = request('nome');
+                $temp->publica = request('opcoes_publica') === 'publica' ? TRUE : FALSE;
+                $temp->usuario_id = auth()->user()->id;
 
-        $temp->nome = request('nome');
-        $temp->rodadas = request('rodadas');
-        $temp->usuario_id = auth()->user()->id;
+                $temp->save();
 
-        $temp->save();
+                $temp_usu = new TemporadaUsuario;
 
-        $temp_usu= new TemporadaUsuario;
+                $temp_usu->usuario_id = auth()->user()->id;
+                $temp_usu->temporada_id = $temp->id;
 
-        $temp_usu->usuario_id = auth()->user()->id;
-        $temp_usu->temporada_id = $sea->id;
-        $temp_usu->aceito = TRUE;
+                $temp_usu->save();
 
-        $temp_usu->save();
+                session()->flash('message', 'Temporada Criada.');
 
-        session()->flash('message', 'Temporada Criada.');
-
+                \DB::commit();
+            } catch (\Exception $e) {
+                \DB::rollback();
+                session()->flash('message', 'Erro ao salvar temporada.' . $e);
+            }
+        });
         return redirect('/');
     }
 
     public function editar(Temporada $temporada) {
-
+        
         if (auth()->user()->id !== $temporada->usuario_id) {
 
             session()->flash('message', 'Sem permissão para editar esta temporada.');
@@ -72,14 +80,32 @@ class TemporadasController extends Controller {
     public function atualizar(Temporada $temporada) {
 
         $this->validate(request(), [
-            'nome' => 'required',
-            'rodadas' => 'required'
+            'nome' => 'required'
         ]);
 
-        $temporada->update(request()->all());
+        $temporada->nome = request('nome');
+        $temporada->publica = request('opcoes_publica') === 'publica' ? TRUE : FALSE;
+
+        $temporada->update();
 
         session()->flash('message', 'Temporada Atualizada.');
 
+        return redirect('/');
+    }
+
+    public function excluir(Temporada $temporada) {
+        \DB::beginTransaction();
+        try {
+            $temporada->temporada_usuario()->delete();
+
+            $temporada->delete();
+
+            session()->flash('message', 'Temporada Excluida.');
+            \DB::commit();
+        } catch (\Exception $e) {
+            \DB::rollback();
+            session()->flash('message', 'Erro ao excluir temporada.' . $e);
+        }
         return redirect('/');
     }
 
@@ -90,22 +116,23 @@ class TemporadasController extends Controller {
                 ->first();
 
         $ranking = \DB::select(
-        \DB::raw('SELECT u.id,
-                        u.nome,
-                        u.avatar,
-                        rank() over(ORDER BY u.id DESC)
-                   FROM usuarios u
-                  INNER JOIN temporada_usuario tu ON tu.usuario_id = u.id AND tu.aceito = TRUE AND tu.temporada_id = ' . $temporada->id
-                )
+                        \DB::raw(
+                                'SELECT u.id,
+                                        u.nome,
+                                        u.avatar,
+                                        rank() over(ORDER BY u.id DESC)
+                                   FROM usuarios u
+                                  INNER JOIN temporada_usuario tu ON tu.usuario_id = u.id AND tu.temporada_id = ' . $temporada->id
+                        )
         );
-        
-        foreach ($ranking as $rank){
-            if ($rank->id === auth()->user()->id){
+
+        foreach ($ranking as $rank) {
+            if ($rank->id === auth()->user()->id) {
                 $my_rank = $rank;
                 break;
             }
         }
-        
+
         return view('temporadas.mostrar', compact(['temporada', 'temporada_usuario', 'ranking', 'my_rank']));
     }
 

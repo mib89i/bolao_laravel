@@ -15,17 +15,20 @@ class CreateNotificacoesTable extends Migration
     {
         Schema::create('notificacoes', function (Blueprint $table) {
             $table->increments('id');
+            
             $table->integer('do_usuario_id');
             $table->foreign('do_usuario_id')->references('id')->on('usuarios');
             
             $table->integer('para_usuario_id');
             $table->foreign('para_usuario_id')->references('id')->on('usuarios');
             
-            $table->integer('temporada_usuario_id');
-            $table->foreign('temporada_usuario_id')->references('id')->on('temporada_usuario');
+            $table->integer('convite_id');
+            $table->foreign('convite_id')->references('id')->on('convites');
             
             $table->text('descricao');
+            
             $table->boolean('lido');
+            
             $table->timestamps();
         });
     }

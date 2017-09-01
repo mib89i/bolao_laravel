@@ -20,7 +20,7 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default no-padding">
-            <a href="/temporadas" style="text-decoration: none">
+            <a href="/temporadas" style="text-decoration: none; color: black">
                 <div class="panel-body vertical-align">
                     <i class="fa fa-search" aria-hidden="true" style="margin-right: 15px"></i>
                     <h5><b>ENCONTRAR UMA TEMPORADA</b></h5>
@@ -35,8 +35,12 @@
 @if (!$temporada_usuarios->isEmpty())
 
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-xs-9 col-sm-10 col-md-11">
         <h6>TEMPORADAS EM ANDAMENTO</h6>
+    </div>
+    
+    <div class="col-xs-3 col-sm-2 col-md-1">
+        <h6>EDITAR</h6>
     </div>
 </div>
 
@@ -46,7 +50,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default no-padding">
             <div class="row">
-                <div class="col-xs-9 col-md-11">
+                <div class="col-xs-8 col-md-10">
                     <a href="/temporadas/{{ $temporada_usuario->temporada->id }}" style="text-decoration: none">
                         <div class="panel-body vertical-align">
                             <i class="fa fa-list" aria-hidden="true" style="margin-right: 15px"></i>
@@ -55,6 +59,16 @@
                     </a>
                 </div>
 
+                <div class="col-xs-1 col-md-1">
+                    <div class="panel-body text-center vertical-align">
+                        @if($temporada_usuario->temporada->publica === TRUE)
+                        <i class="fa fa-unlock fa-2x" aria-hidden="true"></i>
+                        @else
+                        <i class="fa fa-lock fa-2x" aria-hidden="true" style="color: red"></i>
+                        @endif
+                    </div>
+                </div>
+                
                 <div class="col-xs-3 col-md-1">
                     @if (Auth::user()->id === $temporada_usuario->temporada->usuario_id)
                     <a href="/temporadas/{{ $temporada_usuario->temporada->id }}/editar" style="text-decoration: none">
@@ -64,6 +78,7 @@
                     </a>
                     @endif
                 </div>
+                
             </div>
 
         </div>
@@ -82,7 +97,7 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
-            <a href="/temporadas/criar" style="text-decoration: none">
+            <a href="/temporadas/criar" style="text-decoration: none; color: black">
                 <div class="panel-body vertical-align">
                     <span class="fa fa-plus-square-o fa-4x fa-fw" aria-hidden="true"></span>
                     <h5><b>CRIAR TEMPORADA</b></h5>
@@ -96,7 +111,7 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
-            <a href="/temporadas/criar" style="text-decoration: none">
+            <a href="/temporadas/criar" style="text-decoration: none; color: black">
                 <div class="panel-body vertical-align">
                     <span class="fa fa-plus-square-o fa-4x fa-fw" aria-hidden="true"></span>
                     <h5><b>CRIAR COPA</b></h5>

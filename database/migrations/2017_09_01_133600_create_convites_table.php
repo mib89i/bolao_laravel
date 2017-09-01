@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTemporadasTable extends Migration
+class CreateConvitesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,16 @@ class CreateTemporadasTable extends Migration
      */
     public function up()
     {
-        Schema::create('temporadas', function (Blueprint $table) {
+        Schema::create('convites', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nome');
             
-            $table->integer('usuario_id')->unsigned();
-            $table->foreign('usuario_id')->references('id')->on('usuarios');
+            $table->integer('temporada_id');
+            $table->foreign('temporada_id')->references('id')->on('temporadas');
             
-            $table->boolean('publica');
+            $table->integer('liga_id');
+            $table->foreign('liga_id')->references('id')->on('ligas');
+            
+            $table->boolean('aceito');
             
             $table->timestamps();
         });
@@ -33,6 +35,6 @@ class CreateTemporadasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('temporadas');
+        Schema::dropIfExists('convites');
     }
 }

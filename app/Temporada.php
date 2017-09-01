@@ -12,6 +12,12 @@ class Temporada extends Model
         
     }
     
+    public function temporada_usuario(){
+        
+        return $this->hasMany(TemporadaUsuario::class);
+        
+    }
+    
     public static function return_rank($usuario_id){
         
     }

@@ -31,7 +31,7 @@
     </div>
 </div>
 
-@if(isset($temporada))
+@if(isset($temporadas))
 
 <div class="row">
     @foreach($temporadas as $temporada)

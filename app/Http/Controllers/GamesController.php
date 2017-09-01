@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Temporada;
 use App\Game;
-use App\Team;
+use App\Time;
 
 class GamesController extends Controller {
 
@@ -20,9 +20,9 @@ class GamesController extends Controller {
         return view('games.create', compact(['temporada', 'round_game']));
     }
     
-    public function put_session_team1(Team $team) {
+    public function put_session_time1(Time $time) {
         if (request()->ajax()) {
-            session()->put('team1', $team);
+            session()->put('time1', $time);
         }
     }
 
@@ -30,11 +30,9 @@ class GamesController extends Controller {
         return view('games.create', compact('temporada'));
     }
 
-    public function search_team() {
+    public function search_time() {
 
         if (request()->ajax()) {
-
-
 
             return \Response::json(array(
                         'success' => true,
@@ -48,32 +46,32 @@ class GamesController extends Controller {
         ));
     }
 
-    public function get_list_teams() {
+    public function get_list_times() {
         if (!empty(request()->search_params)) {
-            $teams = Team::where('name', 'ilike', '%' . request()->search_params . '%')->limit('5')->get();
+            $times = Time::where('nome', 'ilike', '%' . request()->search_params . '%')->limit('5')->get();
         } else {
-            $teams = array();
+            $times = array();
         }
         
-        $type_team = request()->team_params;
+        $type_time = request()->time_params;
 
-        return view('games.ajax.teams', compact(['teams', 'type_team']));
+        return view('games.ajax.times', compact(['times', 'type_time']));
     }
     
-    public function get_select_teams() {
-        $team1 = session('team1');
-        if (!empty(request()->team1_id)){
-            $team1 = Team::where('id', '=', request()->team1_id)->first();
-            session()->put('team1', $team1);
+    public function get_select_times() {
+        $time1 = session('time1');
+        if (!empty(request()->time1_id)){
+            $time1 = Time::where('id', '=', request()->time1_id)->first();
+            session()->put('time1', $time1);
         }
         
-        $team2 = session('team2');
-        if (!empty(request()->team2_id)){
-            $team2 = Team::where('id', '=', request()->team2_id)->first();
-            session()->put('team2', $team2);
+        $time2 = session('time2');
+        if (!empty(request()->time2_id)){
+            $time2 = Time::where('id', '=', request()->time2_id)->first();
+            session()->put('time2', $time2);
         }
         
-        return view('games.ajax.select_teams', compact(['team1', 'team2']));
+        return view('games.ajax.select_times', compact(['time1', 'time2']));
     }
 
 }
