@@ -2,9 +2,9 @@
 
 namespace App;
 
-class Notificacao extends Model
+class Mensagem extends Model
 {
-    protected $table = 'notificacoes';
+    protected $table = 'mensagens';
     
     public function do_usuario(){
         
@@ -19,13 +19,19 @@ class Notificacao extends Model
         
     }
     
-    public function temporada_usuario(){
+    public function convite(){
         
-        return $this->belongsTo(TemporadaUsuario::class);
+        return $this->belongsTo(Convite::class);
         
     }
     
-    public static function messages(){
+    public function liga(){
+        
+        //return $this->belongsTo(Liga::class);
+        
+    }
+    
+    public static function mensagens(){
         if (auth()->check()){
             return static::where('para_usuario_id', '=', auth()->user()->id)->latest()->get();
         }
@@ -33,7 +39,7 @@ class Notificacao extends Model
         return null;
     }
     
-    public static function messages_count(){
+    public static function quantidade_mensagens(){
         if (auth()->check()){
             return static::where('para_usuario_id', '=', auth()->user()->id)
                     ->where('lido', '=', FALSE)
@@ -43,9 +49,9 @@ class Notificacao extends Model
         return 0;
     }
     
-    public static function messages_to_read(){
+    public static function mensagem_ler(){
         if (auth()->check()){
-            return static::where('para_user_id', '=', auth()->usuario()->id)
+            return static::where('para_usuario_id', '=', auth()->user()->id)
                     ->where('lido', '=', FALSE)->get();
         }
         

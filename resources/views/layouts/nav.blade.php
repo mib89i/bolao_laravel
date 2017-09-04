@@ -30,9 +30,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/notifications">Mensagens 
-                        @if($notification_count > 0)
-                        <span class="badge">{{ $notification_count }}</span>
+                    <a href="/mensagens">Mensagens 
+                        @if($quantidade_mensagem > 0)
+                        <span class="badge">{{ $quantidade_mensagem }}</span>
                         @endif
                     </a>
                 </li>

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateNotificacoesTable extends Migration
+class CreateMensagensTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateNotificacoesTable extends Migration
      */
     public function up()
     {
-        Schema::create('notificacoes', function (Blueprint $table) {
+        Schema::create('mensagens', function (Blueprint $table) {
             $table->increments('id');
             
             $table->integer('do_usuario_id');
@@ -40,6 +40,6 @@ class CreateNotificacoesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notificacoes');
+        Schema::dropIfExists('mensagens');
     }
 }

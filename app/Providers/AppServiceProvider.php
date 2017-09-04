@@ -17,11 +17,11 @@ class AppServiceProvider extends ServiceProvider {
         
         view()->composer('layouts.nav', function($view) {
 
-            $notification = \App\Notificacao::messages();
+            $mensagem = \App\Mensagem::mensagens();
             
-            $notification_count = \App\Notificacao::messages_count();
+            $quantidade_mensagem = \App\Mensagem::quantidade_mensagens();
 
-            $view->with(compact('notification', 'notification_count'));
+            $view->with(compact('mensagem', 'quantidade_mensagem'));
         });
     }
 

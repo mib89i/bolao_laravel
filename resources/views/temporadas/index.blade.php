@@ -19,11 +19,11 @@
                     {{ csrf_field() }}
                     
                     <div class="form-group">
-                        <label for="title">Pesquisar Temporadas</label>
+                        <label for="title">Digite o nome de uma temporada</label>
                         <input type="text" class="form-control input-lg" id="search" name="search" autofocus/>
                     </div>
                     
-                    <button class="btn btn-default btn-lg"><b>PESQUISAR<br /></button>
+                    <button class="btn btn-primary btn-lg"><b>PESQUISAR<br /></button>
                 </form>
                 
             </div>
@@ -39,7 +39,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default no-padding">
             <div class="row">
-                <div class="col-xs-10 col-md-11">
+                <div class="col-xs-8 col-md-10">
                     <a href="/temporadas/{{ $temporada->id }}" style="text-decoration: none">
                         <div class="panel-body vertical-align">
                             <i class="fa fa-list" aria-hidden="true" style="margin-right: 15px"></i>
@@ -47,8 +47,18 @@
                         </div>
                     </a>
                 </div>
-
-                <div class="col-xs-2 col-md-1">
+                
+                <div class="col-xs-1 col-md-1">
+                    <div class="panel-body text-center vertical-align">
+                        @if($temporada->publica === TRUE)
+                        <i class="fa fa-unlock fa-2x" aria-hidden="true"></i>
+                        @else
+                        <i class="fa fa-lock fa-2x" aria-hidden="true" style="color: red"></i>
+                        @endif
+                    </div>
+                </div>
+                
+                <div class="col-xs-3 col-md-1">
                     @if (Auth::user()->id === $temporada->usuario_id)
                     <a href="/temporadas/{{ $temporada->id }}/editar" style="text-decoration: none">
                         <div class="panel-body text-center  vertical-align">

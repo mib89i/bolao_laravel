@@ -18,6 +18,12 @@ class Temporada extends Model
         
     }
     
+    public function temporada_divisao(){
+        
+        return $this->hasMany(TemporadaDivisao::class);
+        
+    }
+    
     public static function return_rank($usuario_id){
         
     }

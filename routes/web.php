@@ -36,7 +36,13 @@ Route::patch('/temporadas/{temporada}/editar', 'TemporadasController@atualizar')
 Route::delete('/temporadas/{temporada}/excluir', 'TemporadasController@excluir');
 
 Route::get('/temporadas/{temporada}', 'TemporadasController@mostrar');
-Route::get('/temporadas/{temporada}/request', 'TemporadasController@request');
+Route::get('/temporadas/{temporada}/{nome}/divisao/{nivel}', 'TemporadasController@temporadaDivisao');
+Route::get('/temporadas/ajax/get_lista_usuario', 'TemporadasController@getListaUsuario');
+Route::get('/temporadas/{temporada}/{convidado}', 'TemporadasController@enviarConviteTemporada');
+Route::post('/temporadas/{temporada}/adicionar_divisao', 'TemporadasController@adicionarDivisao');
+
+Route::get('/temporadas/{temporada}/status_convite/{mensagem}/{status}', 'TemporadasController@statusConvite');
+Route::get('/temporadas/add_para_divisao/{temporada_divisao}/usuario/{usuario}', 'TemporadasController@adicionarUsuarioParaDivisao');
 
 Route::get('/temporadas/{temporada_usuario}/request_accepted', 'TemporadasController@request_accepted');
 Route::get('/temporadas/{temporada_usuario}/request_denied', 'TemporadasController@request_denied');
@@ -60,4 +66,4 @@ Route::get('/games/ajax/get_select_times', 'GamesController@get_select_times');
 
 
 // NOTIFICATIONS
-Route::get('/notifications', 'NotificationsController@index');
+Route::get('/mensagens', 'MensagensController@index');
