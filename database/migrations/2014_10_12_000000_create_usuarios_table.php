@@ -27,6 +27,21 @@ class CreateUsuariosTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+        
+        DB::unprepared("CREATE OR REPLACE FUNCTION translate(character varying)
+                        RETURNS character varying AS
+                      ".'$BODY$'."
+
+                      SELECT * from TRANSLATE($1, 
+                      'áéíóúàèìòùãõâêîôôäëïöüçÁÉÍÓÚÀÈÌÒÙÃÕÂÊÎÔÛÄËÏÖÜÇ','aeiouaeiouaoaeiooaeioucAEIOUAEIOUAOAEIOOAEIOUC'); 
+
+
+                      ".'$BODY$'."
+                        LANGUAGE sql VOLATILE
+                        COST 100;
+                      ALTER FUNCTION translate(character varying)
+                        OWNER TO postgres;"
+        );
     }
 
     /**
@@ -37,5 +52,7 @@ class CreateUsuariosTable extends Migration
     public function down()
     {
         Schema::dropIfExists('usuarios');
+        
+        DB::unprepared("DROP FUNCTION translate(character varying)");
     }
 }

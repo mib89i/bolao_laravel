@@ -6,13 +6,23 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-body">
-                <div class="row vertical-align">
-                    <div class="col-xs-8 col-md-10">
+                <div class="row">
+                    <div class="col-xs-9 col-md-11 text-center">
                         <h3>{{ $temporada->nome }}</h3>
+                        
+                        <h6 style="color: black">Presidente: <b>{{ $temporada->usuario->nome }}</b></h6>
                     </div>
-
+                    
+                    <div class="col-xs-3 col-md-1">
+                        @if (Auth::user()->id === $temporada->usuario_id)
+                        <a href="/temporadas/{{ $temporada->id }}/editar" style="text-decoration: none">
+                            <div class="panel-body text-center vertical-align">
+                                <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
+                            </div>
+                        </a>
+                        @endif
+                    </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -21,29 +31,103 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-body">
-                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modal_pesquisa_usuario">Enviar Convite</a>
-            </div>
-        </div>
-    </div>
-    @elseif ($temporada->publica)
-    <div class="col-lg-12">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <a href="#" class="btn btn-primary">Participar</a>
+                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modal_pesquisa_usuario">ENVIAR CONVITE</a>
             </div>
         </div>
     </div>
     @else
-    <div class="col-lg-12">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <a href="#" class="btn btn-primary">Enviar Solicitação</a>
+
+        @if ($tem_temporada_usuario === NULL)
+            @if ($temporada->publica)
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modal_entrar_temporada">PARTICIPAR</a>
+                    </div>
+                </div>
+            </div>
+            @else
+                @if ($tem_convite_pendente === NULL)
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modal_entrar_temporada">ENVIAR SOLICITAÇÃO</a>
+                        </div>
+                    </div>
+                </div>
+                @else
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <a href="#" class="btn btn-warning">AGUARDANDO RESPOSTA ...</a>
+                        </div>
+                    </div>
+                </div>
+                @endif
+            @endif
+        @else
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal_sair_temporada">SAIR DESTA TEMPORADA</a>
+                </div>
             </div>
         </div>
-    </div>
+        @endif
+
     @endif
 
 </div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modal_entrar_temporada">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Entrar nessa temporada</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h3>Quero participar da temporada <b>{{ $temporada->nome }}</b></h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">FECHAR</button>
+                <a href="/temporadas/{{ $temporada->id }}/entrar/temporada" class="btn btn-primary">ENTRAR</a>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modal_sair_temporada">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Sair dessa temporada</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h3>Quero sair da temporada <b>{{ $temporada->nome }}</b></h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">FECHAR</button>
+                <a href="/temporadas/{{ $temporada->id }}/sair/temporada" class="btn btn-danger">SAIR</a>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <div class="modal fade" tabindex="-1" role="dialog" id="modal_pesquisa_usuario">
     <div class="modal-dialog" role="document">
@@ -97,13 +181,22 @@
 
 <br />
 @if (Auth::user()->id === $temporada->usuario_id)
+
 <div class="row">
     <div class="col-lg-12">
-        Lista de Jogadores Disponíveis
+        Lista de Jogadores sem Divisão
     </div>
-</div>
-<br />
-<div class="row">
+
+    @if ($lista_temporada_usuario->isEmpty())
+    <div class="col-lg-12">
+        <div class="panel panel-default no-padding">
+            <div class="panel-body">
+                <h5>NENHUM JOGADOR</h5>
+            </div>
+        </div>
+    </div>
+    @else
+
     @foreach($lista_temporada_usuario as $temporada_usuario)
     <div class="col-lg-12">
         <div class="panel panel-default no-padding">
@@ -116,9 +209,9 @@
                     <div class="col-xs-7 col-md-10">
                         <h4>{{ $temporada_usuario->usuario->nome }}</h4>
                     </div>
-                    
+
                     <div class="col-xs-3 col-md-1">
-                        
+
                         <div class="btn-group">
                             <button class="btn btn-default btn-md dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-cog" aria-hidden="true"></i>
@@ -132,13 +225,13 @@
 
                                 <li><a href="#" data-toggle="modal" data-target="#modal_adicionar_divisao{{ $temporada_divisao->nivel }}_u{{ $temporada_usuario->usuario->id }}">{{ $temporada_divisao->nome }}</a></li>
                                 <li role="separator" class="divider"></li>
-                                
+
                                 @endforeach
 
                                 @endif
                             </ul>
                         </div>
-                        
+
                         @if (!$temporada->temporada_divisao()->get()->isEmpty())
 
                         @foreach($temporada->temporada_divisao()->get() AS $temporada_divisao)
@@ -174,29 +267,30 @@
         </div>
     </div>
     @endforeach
+    @endif
 </div>
 @endif
 
 @section('script-add')
 <script type="text/javascript">
     function pesquisa_usuario() {
-        $.ajax({
-            type: "GET",
-                    url: '{{URL::to("temporadas/ajax/get_lista_usuario")}}',
-                    data: {nome_usuario: $('#input_pesquisa_usuario').val(), temporada_id: {{ $temporada-> id }} }
-        }).done(function (data) {
-        }).fail(function (data) {
-            alert('FAIL');
-        }).always(function (data) {
-            $('#ajax_load_usuario').html(data);
-        });
+    $.ajax({
+    type: "GET",
+            url: '{{URL::to("temporadas/ajax/get_lista_usuario")}}',
+            data: {nome_usuario: $('#input_pesquisa_usuario').val(), temporada_id: {{ $temporada-> id }} }
+    }).done(function (data) {
+    }).fail(function (data) {
+    alert('FAIL');
+    }).always(function (data) {
+    $('#ajax_load_usuario').html(data);
+    });
     }
 
     $(document).ready(function () {
-        $('#input_pesquisa_usuario').keyup(function (e) {
-            e.preventDefault();
-            pesquisa_usuario();
-        });
+    $('#input_pesquisa_usuario').keyup(function (e) {
+    e.preventDefault();
+    pesquisa_usuario();
+    });
     });
 
 </script>

@@ -8,28 +8,28 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-lg-12">
-        
-        <div class="panel panel-default">
-            <div class="panel-body">
-
-                <form method="POST" action="/temporadas">
-
-                    {{ csrf_field() }}
-                    
+<form method="POST" action="/temporadas">
+    {{ csrf_field() }}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
                     <div class="form-group">
-                        <label for="title">Digite o nome de uma temporada</label>
-                        <input type="text" class="form-control input-lg" id="search" name="search" autofocus/>
+                        <div class="row">
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control input-lg" id="search" placeholder="DIGITE O NOME DA TEMPORADA" name="search" autocomplete="off" autofocus/>
+                            </div>
+                            
+                            <div class="col-lg-2">
+                                <button class="btn btn-primary btn-lg"><b>PESQUISAR<br /></button>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <button class="btn btn-primary btn-lg"><b>PESQUISAR<br /></button>
-                </form>
-                
+                </div>
             </div>
         </div>
     </div>
-</div>
+</form>
 
 @if(isset($temporadas))
 
@@ -39,25 +39,26 @@
     <div class="col-lg-12">
         <div class="panel panel-default no-padding">
             <div class="row">
-                <div class="col-xs-8 col-md-10">
+                <div class="col-xs-9 col-md-11">
                     <a href="/temporadas/{{ $temporada->id }}" style="text-decoration: none">
-                        <div class="panel-body vertical-align">
-                            <i class="fa fa-list" aria-hidden="true" style="margin-right: 15px"></i>
-                            <h5><b>{{ $temporada->nome }}</b></h5>
+                        <div class="panel-body">
+                            <div class="vertical-align">
+                                @if($temporada->publica === TRUE)
+                                <i class="fa fa-unlock fa-2x" aria-hidden="true" style="color: black; margin-right: 10px"></i>
+                                @else
+                                <i class="fa fa-lock fa-2x" aria-hidden="true" style="color: red; margin-right: 10px"></i>
+                                @endif
+                                <i class="fa fa-list" aria-hidden="true" style="margin-right: 15px"></i>
+                                <h4><b>{{ $temporada->nome }}</b></h4>
+                            </div>
+                            
+                            <div class="vertical-align">
+                                <h6 style="color: black">Presidente: <b>{{ $temporada->usuario->nome }}</b></h6>
+                            </div>
                         </div>
                     </a>
                 </div>
-                
-                <div class="col-xs-1 col-md-1">
-                    <div class="panel-body text-center vertical-align">
-                        @if($temporada->publica === TRUE)
-                        <i class="fa fa-unlock fa-2x" aria-hidden="true"></i>
-                        @else
-                        <i class="fa fa-lock fa-2x" aria-hidden="true" style="color: red"></i>
-                        @endif
-                    </div>
-                </div>
-                
+
                 <div class="col-xs-3 col-md-1">
                     @if (Auth::user()->id === $temporada->usuario_id)
                     <a href="/temporadas/{{ $temporada->id }}/editar" style="text-decoration: none">

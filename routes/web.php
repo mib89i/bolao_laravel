@@ -42,6 +42,8 @@ Route::get('/temporadas/{temporada}/{convidado}', 'TemporadasController@enviarCo
 Route::post('/temporadas/{temporada}/adicionar_divisao', 'TemporadasController@adicionarDivisao');
 
 Route::get('/temporadas/{temporada}/status_convite/{mensagem}/{status}', 'TemporadasController@statusConvite');
+Route::get('/temporadas/{temporada}/entrar/temporada', 'TemporadasController@entrarTemporada');
+Route::get('/temporadas/{temporada}/sair/temporada', 'TemporadasController@sairTemporada');
 Route::get('/temporadas/add_para_divisao/{temporada_divisao}/usuario/{usuario}', 'TemporadasController@adicionarUsuarioParaDivisao');
 
 Route::get('/temporadas/{temporada_usuario}/request_accepted', 'TemporadasController@request_accepted');

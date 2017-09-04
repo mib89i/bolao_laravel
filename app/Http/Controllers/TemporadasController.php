@@ -98,12 +98,19 @@ class TemporadasController extends Controller {
 
         $ranking = \DB::select(
                         \DB::raw(
-                                'SELECT u.id,
-                                        u.nome,
-                                        u.avatar,
-                                        rank() over(ORDER BY u.id DESC)
+                                'SELECT u.id AS id,
+                                        u.nome AS nome,
+                                        u.avatar AS avatar,
+                                        rank() over(ORDER BY u.nome ASC) AS rank,
+                                        COALESCE(rt.pontos, 0) AS pontos,
+                                        COALESCE(rt.posicao, 0) AS posicao
                                    FROM usuarios u
-                                  INNER JOIN temporada_usuario tu ON tu.usuario_id = u.id AND tu.temporada_id = ' . $temporada->id
+                                  INNER JOIN temporada_usuario tu ON tu.usuario_id = u.id
+                                  INNER JOIN temporada_divisao td ON td.temporada_id = tu.temporada_id
+                                  INNER JOIN divisao_usuario du ON du.temporada_divisao_id = td.id AND du.usuario_id = u.id
+                                   LEFT JOIN ranking_temporada rt ON rt.divisao_usuario_id = du.id
+                                  WHERE tu.temporada_id = ' . $temporada->id . '
+                                    AND td.id = ' . $temporada_divisao->id
                         )
         );
 
@@ -151,11 +158,25 @@ class TemporadasController extends Controller {
 
     public function mostrar(Temporada $temporada) {
 
-        $lista_temporada_usuario = TemporadaUsuario::where('temporada_id', '=', $temporada->id)
-                //->whereRaw('usuario_id not in (select du.usuario_id from divisao_usuario du where du.temporada_id = ' . $temporada->id . ')')
-                ->get();
+        $lista_temporada_usuario = TemporadaUsuario::whereRaw('temporada_id = ' . $temporada->id)
+                        ->whereRaw('usuario_id NOT IN (
+                                    SELECT du.usuario_id FROM divisao_usuario du 
+                                     INNER JOIN temporada_divisao td ON td.id = du.temporada_divisao_id
+                                     WHERE td.temporada_id = ' . $temporada->id . '
+                                    )'
+                        )->get();
 
-        return view('temporadas.mostrar', compact('temporada', 'lista_temporada_usuario'));
+        $tem_temporada_usuario = TemporadaUsuario::where('temporada_id', '=', $temporada->id)
+                ->where('usuario_id', '=', auth()->user()->id)
+                ->first();
+
+        $tem_convite_pendente = Convite::where('temporada_id', '=', $temporada->id)
+                ->where('do_usuario_id', '=', auth()->user()->id)
+                ->where('para_usuario_id', '=', $temporada->usuario_id)
+                ->where('aceito', '=', NULL)
+                ->first();
+
+        return view('temporadas.mostrar', compact('temporada', 'lista_temporada_usuario', 'tem_temporada_usuario', 'tem_convite_pendente'));
     }
 
     public function adicionarDivisao(Temporada $temporada) {
@@ -214,9 +235,77 @@ class TemporadasController extends Controller {
         return view('temporadas.ajax.lista_pesquisa_usuario', compact('lista_usuario', 'temporada'));
     }
 
+    public function entrarTemporada(Temporada $temporada) {
+        if ($temporada->publica === FALSE) {
+
+            $convite = Convite::where('temporada_id', '=', $temporada->id)
+                    ->where('do_usuario_id', '=', auth()->user()->id)
+                    ->where('para_usuario_id', '=', $temporada->usuario_id)
+                    ->where('aceito', '=', null)
+                    ->get();
+
+            if (!$convite->isEmpty()) {
+                session()->flash('message', 'CONVITE JÁ ENVIADO, AGUARDANDO CONFIRMAÇÃO!');
+                return redirect('/');
+            }
+
+            \DB::beginTransaction();
+            try {
+                $convite = new Convite;
+                $convite->temporada_id = $temporada->id;
+                $convite->liga_id = null;
+
+                $convite->do_usuario_id = auth()->user()->id;
+                $convite->para_usuario_id = $temporada->usuario_id;
+
+                $convite->aceito = NULL;
+
+                $convite->save();
+
+                $mensagem = new Mensagem;
+
+                $mensagem->do_usuario_id = auth()->user()->id;
+                $mensagem->para_usuario_id = $temporada->usuario_id;
+                $mensagem->convite_id = $convite->id;
+
+                $mensagem->descricao = 'quer participar da temporada ' . $temporada->nome;
+                $mensagem->lido = FALSE;
+
+                $mensagem->save();
+
+                session()->flash('message', 'Uma solicitação foi enviada ao administrador do Bolão, aguarde.');
+                \DB::commit();
+            } catch (\Exception $e) {
+                session()->flash('message', 'Erro Enviar Solicitação.' . $e);
+                \DB::rollback();
+            }
+        } else {
+            $temporada_usuario = new TemporadaUsuario;
+            $temporada_usuario->temporada_id = $temporada->id;
+            $temporada_usuario->usuario_id = auth()->user()->id;
+
+            $temporada_usuario->save();
+        }
+
+        return back();
+    }
+
+    public function sairTemporada(Temporada $temporada) {
+        $temporada_usuario = TemporadaUsuario::where('temporada_id', '=', $temporada->id)
+                ->where('usuario_id', '=', auth()->user()->id)
+                ->first();
+
+        $temporada_usuario->delete();
+
+        session()->flash('message', 'VOCÊ SAIU');
+
+        return back();
+    }
+
     public function enviarConviteTemporada(Temporada $temporada, $convidado) {
 
         $convite = Convite::where('temporada_id', '=', $temporada->id)
+                ->where('do_usuario_id', '=', auth()->user()->id)
                 ->where('para_usuario_id', '=', $convidado)
                 ->where('aceito', '=', null)
                 ->get();
@@ -262,13 +351,19 @@ class TemporadasController extends Controller {
     public function statusConvite(Temporada $temporada, Mensagem $mensagem, $status) {
         \DB::beginTransaction();
         try {
+            if ($mensagem->convite->para_usuario_id === auth()->user()->id) {
+                $usu_id = $mensagem->convite->para_usuario_id;
+            } else {
+                $usu_id = $mensagem->convite->do_usuario_id;
+            }
+
             if ($status === 'aceito') {
                 $mensagem->convite->aceito = TRUE;
                 $mensagem->convite->update();
 
                 $temporada_usuario = new TemporadaUsuario;
                 $temporada_usuario->temporada_id = $temporada->id;
-                $temporada_usuario->usuario_id = $mensagem->para_usuario->id;
+                $temporada_usuario->usuario_id = $usu_id;
 
                 $temporada_usuario->save();
             } else {
@@ -285,28 +380,28 @@ class TemporadasController extends Controller {
         return back();
     }
 
-    public function adicionarUsuarioParaDivisao(TemporadaDivisao $temporada_divisao, Usuario $usuario){
+    public function adicionarUsuarioParaDivisao(TemporadaDivisao $temporada_divisao, Usuario $usuario) {
         $divisao_usuario = DivisaoUsuario::where('temporada_divisao_id', '=', $temporada_divisao->id)
                 ->where('usuario_id', '=', $usuario->id)
                 ->get();
-        
-        if (!$divisao_usuario->isEmpty()){
+
+        if (!$divisao_usuario->isEmpty()) {
             session()->flash('message', 'Jogador já esta participando.');
             return back();
         }
-        
+
         $divisao_usuario = new DivisaoUsuario;
-        
+
         $divisao_usuario->temporada_divisao_id = $temporada_divisao->id;
         $divisao_usuario->usuario_id = $usuario->id;
-        
+
         $divisao_usuario->save();
-        
+
         session()->flash('message', 'Jogador Adicionado para divisão ' . $temporada_divisao->nome);
-        
+
         return back();
     }
-    
+
     public function request(Temporada $temporada) {
 
         $temporada_usuario = TemporadaUsuario::where('temporada_id', '=', $temporada->id)
