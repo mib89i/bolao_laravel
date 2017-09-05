@@ -21,13 +21,15 @@ class CreateRodadasTable extends Migration
             $table->integer('usuario_id');
             $table->foreign('usuario_id')->references('id')->on('usuarios');
             
-            $table->integer('temporada_id');
+            $table->integer('temporada_id')->nullable();
             $table->foreign('temporada_id')->references('id')->on('temporadas');
             
-            $table->integer('liga_id');
+            $table->integer('liga_id')->nullable();
             $table->foreign('liga_id')->references('id')->on('ligas');
 
             $table->boolean('concluida');
+            
+            $table->integer('numero');
             
             $table->timestamps();
         });

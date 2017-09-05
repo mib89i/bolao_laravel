@@ -11,7 +11,7 @@
             </div>
             
             <div class="col-xs-3 col-md-2">
-                <a href="/temporadas/{{ $temporada->id }}/{{ $usuario->id }}" class="btn btn-success btn-xs btn-block">Convidar</a>
+                <a href="/convites/t/{{ $temporada->id }}/tipo/convidando/{{ $usuario->id }}" class="btn btn-success btn-xs btn-block">Convidar</a>
             </div>
         </div>
         <hr />

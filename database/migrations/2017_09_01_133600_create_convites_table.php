@@ -30,6 +30,8 @@ class CreateConvitesTable extends Migration
             
             $table->boolean('aceito')->nullable();
             
+            $table->string('tipo');
+            
             $table->timestamps();
         });
     }

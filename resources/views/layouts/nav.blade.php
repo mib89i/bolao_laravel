@@ -15,7 +15,7 @@
 
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <!-- <li class="active"><a href="#">Home</a></li> -->
+                <li><a href="/rodada/criar"><i class="fa fa-plus-circle" aria-hidden="true" style="margin-right: 10px"></i>CRIAR RODADA</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
@@ -30,7 +30,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/mensagens">Mensagens 
+                    <a href="/mensagens">MENSAGENS 
                         @if($quantidade_mensagem > 0)
                         <span class="badge">{{ $quantidade_mensagem }}</span>
                         @endif
@@ -38,7 +38,7 @@
                 </li>
                 <li>
                     <a href="/logout">
-                        Sair
+                        SAIR
                     </a>
                 </li>
                 @endif

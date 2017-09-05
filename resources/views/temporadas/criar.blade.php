@@ -22,7 +22,7 @@
 
                     <div class="form-group">
                         <label for="title">Nome da Temporada</label>
-                        <input type="text" class="form-control" id="name" name="nome">
+                        <input type="text" class="form-control" id="name" name="nome" autocomplete="off">
                     </div>
                     
                     <label>Tipo de Temporada</label>

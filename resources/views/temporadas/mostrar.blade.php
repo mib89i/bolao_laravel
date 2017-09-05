@@ -97,7 +97,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">FECHAR</button>
-                <a href="/temporadas/{{ $temporada->id }}/entrar/temporada" class="btn btn-primary">ENTRAR</a>
+                <a href="/convites/t/{{ $temporada->id }}/tipo/convidado" class="btn btn-primary">ENTRAR</a>
             </div>
 
         </div><!-- /.modal-content -->

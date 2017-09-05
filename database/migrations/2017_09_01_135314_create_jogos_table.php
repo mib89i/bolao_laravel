@@ -20,13 +20,13 @@ class CreateJogosTable extends Migration
             
             $table->string('hora_jogo');
             
-            $table->string('hora_jogo_final');
+            $table->string('hora_jogo_final')->nullable();
             
             $table->string('local');
             
-            $table->integer('placar_time1');
+            $table->integer('placar_time1')->nullable();
             
-            $table->integer('placar_time2');
+            $table->integer('placar_time2')->nullable();
             
             $table->integer('time1_id');
             $table->foreign('time1_id')->references('id')->on('times');
@@ -34,7 +34,7 @@ class CreateJogosTable extends Migration
             $table->integer('time2_id');
             $table->foreign('time2_id')->references('id')->on('times');
             
-            $table->integer('importancia');
+            $table->integer('importancia')->nullable();
             
             $table->integer('rodada_id');
             $table->foreign('rodada_id')->references('id')->on('rodadas');

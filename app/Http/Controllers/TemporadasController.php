@@ -150,8 +150,8 @@ class TemporadasController extends Controller {
             session()->flash('message', 'Temporada Excluida.');
             \DB::commit();
         } catch (\Exception $e) {
-            \DB::rollback();
             session()->flash('message', 'Erro ao excluir temporada.' . $e);
+            \DB::rollback();
         }
         return redirect('/');
     }
@@ -235,13 +235,14 @@ class TemporadasController extends Controller {
         return view('temporadas.ajax.lista_pesquisa_usuario', compact('lista_usuario', 'temporada'));
     }
 
-    public function entrarTemporada(Temporada $temporada) {
+    public function entrarTemporada(Temporada $temporada, $tipo_convite) {
         if ($temporada->publica === FALSE) {
 
             $convite = Convite::where('temporada_id', '=', $temporada->id)
                     ->where('do_usuario_id', '=', auth()->user()->id)
                     ->where('para_usuario_id', '=', $temporada->usuario_id)
                     ->where('aceito', '=', null)
+                    ->where('tipo', '=', $tipo_convite)
                     ->get();
 
             if (!$convite->isEmpty()) {
@@ -258,6 +259,8 @@ class TemporadasController extends Controller {
                 $convite->do_usuario_id = auth()->user()->id;
                 $convite->para_usuario_id = $temporada->usuario_id;
 
+                $convite->tipo = $tipo_convite;
+                
                 $convite->aceito = NULL;
 
                 $convite->save();
@@ -302,12 +305,13 @@ class TemporadasController extends Controller {
         return back();
     }
 
-    public function enviarConviteTemporada(Temporada $temporada, $convidado) {
+    public function enviarConviteTemporada(Temporada $temporada, $tipo_convite, Usuario $usuario) {
 
         $convite = Convite::where('temporada_id', '=', $temporada->id)
                 ->where('do_usuario_id', '=', auth()->user()->id)
-                ->where('para_usuario_id', '=', $convidado)
+                ->where('para_usuario_id', '=', $usuario->id)
                 ->where('aceito', '=', null)
+                ->where('tipo', '=', $tipo_convite)
                 ->get();
 
         if (!$convite->isEmpty()) {
@@ -322,7 +326,9 @@ class TemporadasController extends Controller {
             $convite->liga_id = null;
 
             $convite->do_usuario_id = auth()->user()->id;
-            $convite->para_usuario_id = $convidado;
+            $convite->para_usuario_id = $usuario->id;
+
+            $convite->tipo = $tipo_convite;
 
             $convite->aceito = NULL;
 
@@ -331,7 +337,7 @@ class TemporadasController extends Controller {
             $mensagem = new Mensagem;
 
             $mensagem->do_usuario_id = auth()->user()->id;
-            $mensagem->para_usuario_id = $convidado;
+            $mensagem->para_usuario_id = $usuario->id;
             $mensagem->convite_id = $convite->id;
 
             $mensagem->descricao = 'convida você para participar da temporada ' . $temporada->nome;
@@ -351,7 +357,7 @@ class TemporadasController extends Controller {
     public function statusConvite(Temporada $temporada, Mensagem $mensagem, $status) {
         \DB::beginTransaction();
         try {
-            if ($mensagem->convite->para_usuario_id === auth()->user()->id) {
+            if ($mensagem->convite->tipo === 'convidando') {
                 $usu_id = $mensagem->convite->para_usuario_id;
             } else {
                 $usu_id = $mensagem->convite->do_usuario_id;
