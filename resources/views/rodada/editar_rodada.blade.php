@@ -40,6 +40,8 @@
 
             {{ csrf_field() }}
 
+            {{ method_field('PATCH') }}
+
             <div class="form-group">
                 <label>Nome</label>
                 <input type="text" class="form-control" name="nome" autocomplete="off" value="{{ $rodada->nome }}">
@@ -52,12 +54,6 @@
                 <button class="btn btn-primary">ALTERAR</button>
             </div>
         </form>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-lg-12">
-        <h5><b>LISTA DE JOGOS</b></h5>
     </div>
 </div>
 
@@ -107,54 +103,16 @@
 
                 <div id="panel_time" class="col-xs-12">
                     <hr />
-                    <div class="row vertical-align">
-                        <div class="col-xs-5">
-                            <div class="form-group">
-                                <label for="input_time1">Time 1</label><br />
-                                @if(!Session::has('time1_selecionado'))
-                                <a href="#" class="btn btn-success btn-block" data-toggle="modal" data-target="#modal_pesquisa_time">CASA</a>
-                                @else
-                                <div class="row">
-                                    <div class="col-xs-2 col-md-2">
-                                        <img src='http://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default-team-logo-500.png&h=42&w=42' class="img-rounded"/>
-                                    </div>
-                                    
-                                    <div class="col-xs-10 col-md-10">
-                                        <h4><label data-toggle="modal" data-target="#modal_pesquisa_time">{{ Session::get('time1_selecionado')->nome }}</label></h4>
-                                    </div>
-                                </div>
-                                @endif
-                            </div>
-                        </div>
 
-                        <div class="col-xs-2 text-center">
-                            <label style="font-weight: bold">X</label>
-                        </div>
-
-                        <div class="col-xs-5">
-                            <div class="form-group">
-                                <label for="input_time2">Time 2</label>
-                                @if(!Session::has('time2_selecionado'))
-                                <a href="#" class="btn btn-success btn-block" data-toggle="modal" data-target="#modal_pesquisa_time2">VISITANTE</a>
-                                @else
-                                <div class="row">
-                                    <div class="col-lg-10 text-right">
-                                        <h4><label data-toggle="modal" data-target="#modal_pesquisa_time2">{{ Session::get('time2_selecionado')->nome }}</label></h4>
-                                    </div>
-                                    
-                                    <div class="col-lg-2">
-                                        <img src='http://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default-team-logo-500.png&h=42&w=42' class="img-rounded"/>
-                                    </div>
-                                </div>
-                                @endif                                
-                            </div>
-                        </div>
+                    <div id="ajax_time_selecionado_rodada">
+                        @include('times.ajax.time_selecionado_rodada')
                     </div>
 
                     <hr />
 
                     <div class="form-group">
                         <button class="btn btn-primary">ADICIONAR ESTE JOGO</button>
+                        <a href="/rodada/{{ $rodada->id }}/limpar_sessao" class="btn btn-default">LIMPAR</a>
                     </div>
                 </div>
             </div>
@@ -162,13 +120,192 @@
     </div>
 </form>
 
+@if(!$lista_jogos->isEmpty())
+
+<div class="row">
+    <div class="col-lg-12">
+        <h5><b>LISTA DE JOGOS</b></h5>
+    </div>
+</div>
+
+@foreach($lista_jogos AS $jogo)
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-9 col-md-11">
+                        <h4><b>{{ $jogo->local }}</b> - {{ $jogo->data_jogo }} - {{ $jogo->hora_jogo }} {{ ($jogo->importancia != NULL ? 'x'.$jogo->importancia : '') }}</h4>
+
+                        <div class="row vertical-align">
+                            <div class="col-xs-5">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-5 col-sm-2">
+                                            <img src='http://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default-team-logo-500.png&h=42&w=42' class="img-rounded"/>
+                                        </div>
+
+                                        <div class="col-xs-7 col-sm-10">
+                                            <div class="hidden-xs">
+                                                <h4><label>{{ $jogo->time1->nome }}</label></h4>
+                                            </div>
+                                            <div class="hidden-sm hidden-md hidden-lg">
+                                                <h4><label>{{ $jogo->time1->sigla }}</label></h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-2 text-center">
+                                <label style="font-weight: bold">X</label>
+                            </div>
+
+                            <div class="col-xs-5">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-7 col-sm-10 text-right">
+                                            <div class="hidden-xs">
+                                                <h4><label>{{ $jogo->time2->nome }}</label></h4>
+                                            </div>
+                                            <div class="hidden-sm hidden-md hidden-lg">
+                                                <h4><label>{{ $jogo->time2->sigla }}</label></h4>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-5 col-sm-2">
+                                            <img src='http://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default-team-logo-500.png&h=42&w=42' class="img-rounded"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <form method="POST" action="/rodada/{{ $jogo->rodada_id }}/editar/jogo/{{ $jogo->id }}" id="editar_jogo_form{{ $jogo->id }}">
+
+                            {{ csrf_field() }}
+
+                            {{ method_field('PATCH') }}
+
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <input class="form-control text-center" name="placar_time1" value="{{ $jogo->placar_time1 }}"/>
+                                </div>
+                                <div class="col-xs-6">
+                                    <input class="form-control text-center" name="placar_time2" value="{{ $jogo->placar_time2 }}"/>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="row">
+                            <div class="col-lg-12 text-center">
+                                <label style="font-size: 7pt">PLACAR</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-3 col-md-1">
+                        @if (Auth::user()->id === $rodada->usuario_id)
+                        <a href="#" data-toggle="modal" data-target="#modal_excluir_jogo{{ $jogo->id }}" style="text-decoration: none">
+                            <div class="panel-body text-center vertical-align">
+                                <i class="fa fa-trash fa-2x" aria-hidden="true" style="color: red"></i>
+                            </div>
+                        </a>
+
+                        <div class="modal fade" tabindex="-1" role="dialog" id="modal_excluir_jogo{{ $jogo->id }}">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">EXCLUIR JOGO</h4>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <p><b><h4 style="color: red">Deseja realmente excluir este jogo?</h4></b></p>
+
+                                        <div class="row vertical-align">
+                                            <div class="col-xs-5">
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-xs-5 col-sm-3">
+                                                            <img src='http://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default-team-logo-500.png&h=42&w=42' class="img-rounded"/>
+                                                        </div>
+
+                                                        <div class="col-xs-7 col-sm-9">
+                                                            <div class="hidden-xs">
+                                                                <h4><label>{{ $jogo->time1->nome }}</label></h4>
+                                                            </div>
+                                                            <div class="hidden-sm hidden-md hidden-lg">
+                                                                <h4><label>{{ $jogo->time1->sigla }}</label></h4>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-2 text-center">
+                                                <label style="font-weight: bold">X</label>
+                                            </div>
+
+                                            <div class="col-xs-5">
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-xs-7 col-sm-9 text-right">
+                                                            <div class="hidden-xs">
+                                                                <h4><label>{{ $jogo->time2->nome }}</label></h4>
+                                                            </div>
+                                                            <div class="hidden-sm hidden-md hidden-lg">
+                                                                <h4><label>{{ $jogo->time2->sigla }}</label></h4>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-xs-5 col-sm-3">
+                                                            <img src='http://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default-team-logo-500.png&h=42&w=42' class="img-rounded"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="modal                          -footer">
+
+                                        <form method="POST" action="/rodada/{{ $jogo->rodada_id }}/excluir/jogo/{{ $jogo->id }}" class="hidden" id="excluir_jogo_form{{ $jogo->id }}">
+
+                                            {{ csrf_field() }}
+
+                                            {{ method_field('DELETE') }}
+
+                                        </form>
+
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">CANCELAR</button>
+                                        <button type="submit" class="btn btn-danger" form="excluir_jogo_form{{ $jogo->id }}">EXCLUIR JOGO</button>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+
+                        <button type="submit" form="editar_jogo_form{{ $jogo->id }}" class="btn btn-link" style="text-decoration: none">
+                            <i class="fa fa-check-square fa-2x" aria-hidden="true" style="color: green"></i>
+                        </button>
+
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
+
+@endif
 
 <div class="modal fade" tabindex="-1" role="dialog" id="modal_pesquisa_time">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">PESQUISAR UM TIME</h4>
+                <h4 class="modal-title">PESQUISAR TIME DA CASA</h4>
             </div>
 
             <div class="modal-body">
@@ -205,7 +342,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">PESQUISAR UM TIME</h4>
+                <h4 class="modal-title">PESQUISAR TIME VISITANTE</h4>
             </div>
 
             <div class="modal-body">
@@ -246,19 +383,12 @@
             data: {nome_time: $('#input_pesquisa_time').val()}
         }).done(function (data) {
         }).fail(function (data) {
-            
+
         }).always(function (data) {
             $('#ajax_load_time').html(data);
         });
     }
-    
-    $(document).ready(function () {
-        $('#input_pesquisa_time').keyup(function (e) {
-            e.preventDefault();
-            pesquisa_time();
-        });
-    });
-    
+
     function pesquisa_time2() {
         $.ajax({
             type: "GET",
@@ -266,20 +396,31 @@
             data: {nome_time: $('#input_pesquisa_time2').val()}
         }).done(function (data) {
         }).fail(function (data) {
-            
+
         }).always(function (data) {
             $('#ajax_load_time2').html(data);
         });
     }
 
-
-
     $(document).ready(function () {
+        $('#input_pesquisa_time').keyup(function (e) {
+            e.preventDefault();
+            pesquisa_time();
+        });
+
         $('#input_pesquisa_time2').keyup(function (e) {
             e.preventDefault();
             pesquisa_time2();
         });
+
     });
+    
+    function atualiza_time_selecionado(){
+        $('#ajax_time_selecionado_rodada').load(url, function () {
+            $('#ajax_time_selecionado_rodada').fadeIn();
+        });
+    }
+
 </script>
 @endsection
 

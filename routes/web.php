@@ -58,8 +58,14 @@ Route::get('/rodada/criar/t/{temporada}', 'RodadaController@criarRodada');
 Route::post('/rodada/criar/t/{temporada}', 'RodadaController@gravarRodada');
 
 Route::get('/rodada/{rodada}/editar/t/{temporada}', 'RodadaController@editarRodada');
+Route::patch('/rodada/{rodada}/editar/t/{temporada}', 'RodadaController@atualizarRodada');
 
 Route::post('/rodada/{rodada}/editar/t/{temporada}/adicionar_jogo', 'RodadaController@adicionarJogoRodada');
+Route::get('/rodada/{rodada}/limpar_sessao', 'RodadaController@limparSessao');
+
+//Route::get('/rodada/{rodada}/editar/jogo/{jogo}', 'RodadaController@editarJogoRodada');
+Route::patch('/rodada/{rodada}/editar/jogo/{jogo}', 'RodadaController@atualizarJogoRodada');
+Route::delete('/rodada/{rodada}/excluir/jogo/{jogo}', 'RodadaController@excluirJogoRodada');
 
 
 // TIMES

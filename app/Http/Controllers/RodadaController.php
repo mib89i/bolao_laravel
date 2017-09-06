@@ -69,6 +69,38 @@ class RodadaController extends Controller {
     
     public function editarRodada(Rodada $rodada, Temporada $temporada) {
         
+        $this->limpar();
+        
+        $lista_jogos = Jogo::where(['rodada_id' => $rodada->id])
+                ->orderBy('data_jogo', 'asc')
+                ->orderBy('hora_jogo', 'asc')
+                ->get();
+        
+        return view('rodada.editar_rodada', compact('temporada', 'rodada', 'lista_jogos'));
+        
+    }
+    
+    public function atualizarRodada(Rodada $rodada, Temporada $temporada) {
+        $this->validate(request(), [
+            'nome' => 'required'
+        ]);
+
+        \DB::beginTransaction();
+
+        try {
+            $rodada->nome = request('nome');
+            
+            $rodada->update();
+
+            session()->flash('message', 'RODADA ATUALIZADA');
+
+            \DB::commit();
+
+        } catch (\Exception $e) {
+            \DB::rollback();
+            session()->flash('message', 'Erro ao ATUALIZAR RODADA.' . $e);
+        }
+        
         return view('rodada.editar_rodada', compact('temporada', 'rodada'));
         
     }
@@ -85,6 +117,11 @@ class RodadaController extends Controller {
             $local = request('local');
         }
         
+        if (!session()->has('time1_selecionado') || !session()->has('time2_selecionado')){
+            session()->flash('message', 'SELECIONE OS TIMES DESSE JOGO');
+            return redirect('/rodada/'.$rodada->id.'/editar/t/'.$temporada->id);
+        }
+        
         \DB::beginTransaction();
 
         try {
@@ -93,21 +130,55 @@ class RodadaController extends Controller {
             $jogo->data_jogo = request('data_jogo');
             $jogo->hora_jogo = request('hora_jogo');
             $jogo->importancia = request('importancia');
-            $jogo->time1 = NULL;
-            $jogo->time2 = NULL;
+            $jogo->time1_id = session()->get('time1_selecionado')->id;
+            $jogo->time2_id = session()->get('time2_selecionado')->id;
+            $jogo->rodada_id = $rodada->id;
             
             $jogo->save();
 
             session()->flash('message', 'JOGO ADICIONADO');
 
             \DB::commit();
-
-            return redirect('/rodada/'.$rodada->id.'/editar/t/'.$temporada->id);
         } catch (\Exception $e) {
             \DB::rollback();
             session()->flash('message', 'Erro ao ADICIONAR JOGO.' . $e);
         }
+        
+        $this->limpar();
+        
         return redirect('/rodada/'.$rodada->id.'/editar/t/'.$temporada->id);
+    }
+    
+    public function limparSessao(Rodada $rodada){
+        $this->limpar();
+        return redirect('/rodada/'.$rodada->id.'/editar/t/'.$rodada->temporada->id);
+    }
+    
+    public function limpar(){
+        session()->forget('time1_selecionado');
+        session()->forget('time2_selecionado');
+    }
+    
+    public function atualizarJogoRodada(Rodada $rodada, Jogo $jogo) {
+        
+        $jogo->placar_time1 = request('placar_time1');
+        $jogo->placar_time2 = request('placar_time2');
+        
+        $jogo->update();
+        
+        session()->flash('message', 'JOGO ATUALIZADO COM SUCESSO');
+        
+        return redirect('/rodada/'.$rodada->id.'/editar/t/'.$rodada->temporada->id);
+        
+    }
+    
+    public function excluirJogoRodada(Rodada $rodada, Jogo $jogo) {
+
+        $jogo->delete();
+        
+        session()->flash('message', 'JOGO  EXCLUIDO');
+        
+        return back();
         
     }
 
