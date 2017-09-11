@@ -49,7 +49,7 @@ class TimesController extends Controller {
             session()->put('time2_selecionado', $time);
         }
         
-        return back();
+        return view('times.ajax.time_selecionado_rodada');
     }
 
     public function tirarTime1(Time $time) {

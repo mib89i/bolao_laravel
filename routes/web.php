@@ -53,6 +53,8 @@ Route::get('/mensagens', 'MensagensController@index');
 
 // RODADAS
 Route::get('/rodada', 'RodadaController@index');
+Route::get('/rodada/{rodada}', 'RodadaController@mostrar');
+
 Route::get('/rodada/criar', 'RodadaController@criar');
 Route::get('/rodada/criar/t/{temporada}', 'RodadaController@criarRodada');
 Route::post('/rodada/criar/t/{temporada}', 'RodadaController@gravarRodada');
@@ -63,10 +65,9 @@ Route::patch('/rodada/{rodada}/editar/t/{temporada}', 'RodadaController@atualiza
 Route::post('/rodada/{rodada}/editar/t/{temporada}/adicionar_jogo', 'RodadaController@adicionarJogoRodada');
 Route::get('/rodada/{rodada}/limpar_sessao', 'RodadaController@limparSessao');
 
-//Route::get('/rodada/{rodada}/editar/jogo/{jogo}', 'RodadaController@editarJogoRodada');
 Route::patch('/rodada/{rodada}/editar/jogo/{jogo}', 'RodadaController@atualizarJogoRodada');
 Route::delete('/rodada/{rodada}/excluir/jogo/{jogo}', 'RodadaController@excluirJogoRodada');
-
+Route::delete('/rodada/{rodada}/excluir', 'RodadaController@excluir');
 
 // TIMES
 Route::get('/times/ajax/get_lista_time', 'TimesController@getListaTime');

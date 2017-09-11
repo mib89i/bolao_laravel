@@ -15,7 +15,7 @@ $tipo_time = $time_selecionado;
             </div>
             
             <div class="col-xs-3 col-md-2">
-                <a href="/times/{{ $time->id }}/selecionar/{{ $tipo_time }}" onclick="atualiza_time_selecionado()" class="btn btn-success btn-sm btn-block"><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></a>
+                <a onclick="atualiza_time_selecionado('{{URL::to('times/'.$time->id.'/selecionar/'.$tipo_time)}}')" class="btn btn-success btn-sm btn-block"><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></a>
             </div>
         </div>
         <hr />

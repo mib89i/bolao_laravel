@@ -18,5 +18,11 @@ class Rodada extends Model
         
     }
     
+    public function jogo(){
+        
+        return $this->hasMany(Jogo::class);
+        
+    }
+    
     
 }

@@ -19,6 +19,11 @@ class RodadaController extends Controller {
         return view('rodada.index', compact('lista_rodada'));
     }
     
+    public function mostrar(Rodada $rodada) {
+        
+        return view('rodada.mostrar', compact('rodada'));
+    }
+    
     public function criar() {
 
         $lista_temporada = Temporada::where('usuario_id', '=', auth()->user()->id)->get();
@@ -29,8 +34,8 @@ class RodadaController extends Controller {
     
     public function criarRodada(Temporada $temporada) {
 
-        //$ultima_rodada = Rodada::where('temporada_id', '=', $temporada->id)->orderByRaw('min(created_at) desc')->get();
-        $ultima_rodada = Rodada::latest('temporada_id', '=', $temporada->id)->first();
+        $ultima_rodada = Rodada::where('temporada_id', '=', $temporada->id)->orderBy('created_at', 'desc')->first();
+        //$ultima_rodada = Rodada::latest('temporada_id', '=', $temporada->id)->first();
         
         return view('rodada.criar_rodada', compact('temporada', 'ultima_rodada'));
         
@@ -104,6 +109,30 @@ class RodadaController extends Controller {
         return view('rodada.editar_rodada', compact('temporada', 'rodada'));
         
     }
+    
+    
+    public function excluir(Rodada $rodada) {
+
+        \DB::beginTransaction();
+
+        try {
+            $rodada->jogo()->delete();
+            
+            $rodada->delete();
+
+            session()->flash('message', 'RODADA EXCLUÍDA');
+
+            \DB::commit();
+
+        } catch (\Exception $e) {
+            \DB::rollback();
+            session()->flash('message', 'Erro ao EXCLUIR RODADA.' . $e);
+        }
+        
+        return redirect('/');
+        
+    }
+    
     
     public function adicionarJogoRodada(Rodada $rodada, Temporada $temporada) {
         $this->validate(request(), [

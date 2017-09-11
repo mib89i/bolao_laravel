@@ -18,9 +18,10 @@ class HomeController extends Controller
 //            }
 
             //$lista_rodada = Rodada::where(['temporada_id' => auth()->user()->id])->get();
-            $lista_rodada = Rodada::whereRaw('temporada_id IN (SELECT tu.temporada_id FROM temporada_usuario tu WHERE tu.usuario_id = ' . auth()->user()->id . ')')->get();
+            //mostra rodadas daquele usuario
+            //$lista_rodada = Rodada::whereRaw('temporada_id IN (SELECT tu.temporada_id FROM temporada_usuario tu WHERE tu.usuario_id = ' . auth()->user()->id . ')')->get();
         }
-        return view('index', compact('temporada_usuarios', 'lista_rodada'));
+        return view('index', compact('temporada_usuarios'));
         
     }
     

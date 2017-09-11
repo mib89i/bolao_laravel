@@ -36,10 +36,10 @@
             <div class="row">
                 <div class="col-xs-7 col-sm-10 text-right">
                     <div class="hidden-xs">
-                        <h4><label data-toggle="modal" data-target="#modal_pesquisa_time">{{ Session::get('time2_selecionado')->nome }}</label></h4>
+                        <h4><label data-toggle="modal" data-target="#modal_pesquisa_time2">{{ Session::get('time2_selecionado')->nome }}</label></h4>
                     </div>
                     <div class="hidden-sm hidden-md hidden-lg">
-                        <h4><label data-toggle="modal" data-target="#modal_pesquisa_time">{{ Session::get('time2_selecionado')->sigla }}</label></h4>
+                        <h4><label data-toggle="modal" data-target="#modal_pesquisa_time2">{{ Session::get('time2_selecionado')->sigla }}</label></h4>
                     </div>
                 </div>
 

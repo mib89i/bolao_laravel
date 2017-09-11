@@ -26,56 +26,36 @@
             </div>
         </div>
     </div>
+</div>
 
-    @if (Auth::user()->id === $temporada->usuario_id)
+<div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-body">
+            @if (Auth::user()->id === $temporada->usuario_id)
                 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modal_pesquisa_usuario">ENVIAR CONVITE</a>
-            </div>
-        </div>
-    </div>
-    @else
-
-        @if ($tem_temporada_usuario === NULL)
-            @if ($temporada->publica)
-            <div class="col-lg-12">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modal_entrar_temporada">PARTICIPAR</a>
-                    </div>
-                </div>
-            </div>
             @else
-                @if ($tem_convite_pendente === NULL)
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
+
+                @if ($tem_temporada_usuario === NULL)
+                    @if ($temporada->publica)
+                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modal_entrar_temporada">PARTICIPAR</a>
+                    @else
+                        @if ($tem_convite_pendente === NULL)
                             <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modal_entrar_temporada">ENVIAR SOLICITAÇÃO</a>
-                        </div>
-                    </div>
-                </div>
-                @else
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
+                        @else
                             <a href="#" class="btn btn-warning">AGUARDANDO RESPOSTA ...</a>
-                        </div>
-                    </div>
-                </div>
+                        @endif
+                    @endif
+                @else
+                    <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal_sair_temporada">SAIR DESTA TEMPORADA</a>
                 @endif
             @endif
-        @else
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal_sair_temporada">SAIR DESTA TEMPORADA</a>
-                </div>
+            
+                <a href="/rodada/criar/t/{{ $temporada->id }}" class="btn btn-default">CRIAR RODADA</a>
             </div>
+            
         </div>
-        @endif
-
-    @endif
+    </div>
 
 </div>
 

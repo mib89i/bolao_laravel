@@ -52,11 +52,42 @@
 
             <div class="form-group">
                 <button class="btn btn-primary">ALTERAR</button>
+                <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal_excluir_rodada">EXCLUIR</a>
             </div>
         </form>
     </div>
 </div>
 
+<div class="modal fade" tabindex="-1" role="dialog" id="modal_excluir_rodada">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">EXCLUIR RODADA</h4>
+            </div>
+
+            <div class="modal-body">
+                <p><b><h4 style="color: red">Deseja realmente excluir esta rodada?</h4></b></p>
+                <p><h3>{{ $rodada->nome }}</h3></p>
+            </div>
+
+            <div class="modal-footer">
+
+                <form method="POST" action="/rodada/{{ $rodada->id }}/excluir" class="hidden" id="excluir_rodada_form">
+
+                    {{ csrf_field() }}
+
+                    {{ method_field('DELETE') }}
+
+                </form>
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">CANCELAR</button>
+                <button type="submit" class="btn btn-danger" form="excluir_rodada_form">EXCLUIR RODADA</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+                        
 <form action="/rodada/{{ $rodada->id }}/editar/t/{{ $temporada->id }}/adicionar_jogo" method="POST">
 
     {{ csrf_field() }}
@@ -93,11 +124,12 @@
                                 <input id="input_importancia" name="importancia" class="form-control text-center" placeholder="IMPORTÂNCIA"/>
                             </div>
                         </div>
-
+                        <!--
                         <div id="panel_dia_semana" class="col-xs-12">
                             <label>Dia</label><br />
                             <h4>Segunda-Feira</h4>
                         </div>
+                        -->
                     </div>
                 </div>
 
@@ -135,17 +167,17 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-xs-9 col-md-11">
-                        <h4><b>{{ $jogo->local }}</b> - {{ $jogo->data_jogo }} - {{ $jogo->hora_jogo }} {{ ($jogo->importancia != NULL ? 'x'.$jogo->importancia : '') }}</h4>
+                        <h4><b>{{ $jogo->local }}</b> - {{ date('d/m/Y', strtotime($jogo->data_jogo)) }} - {{ $jogo->hora_jogo }} {{ ($jogo->importancia != NULL ? 'x'.$jogo->importancia : '') }}</h4>
 
                         <div class="row vertical-align">
                             <div class="col-xs-5">
                                 <div class="form-group">
                                     <div class="row">
-                                        <div class="col-xs-5 col-sm-2">
+                                        <div class="col-xs-6 col-sm-2">
                                             <img src='http://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default-team-logo-500.png&h=42&w=42' class="img-rounded"/>
                                         </div>
 
-                                        <div class="col-xs-7 col-sm-10">
+                                        <div class="col-xs-6 col-sm-10">
                                             <div class="hidden-xs">
                                                 <h4><label>{{ $jogo->time1->nome }}</label></h4>
                                             </div>
@@ -164,7 +196,7 @@
                             <div class="col-xs-5">
                                 <div class="form-group">
                                     <div class="row">
-                                        <div class="col-xs-7 col-sm-10 text-right">
+                                        <div class="col-xs-6 col-sm-10 text-right">
                                             <div class="hidden-xs">
                                                 <h4><label>{{ $jogo->time2->nome }}</label></h4>
                                             </div>
@@ -173,15 +205,15 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-xs-5 col-sm-2">
+                                        <div class="col-xs-6 col-sm-2">
                                             <img src='http://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default-team-logo-500.png&h=42&w=42' class="img-rounded"/>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <form method="POST" action="/rodada/{{ $jogo->rodada_id }}/editar/jogo/{{ $jogo->id }}" id="editar_jogo_form{{ $jogo->id }}">
 
+                        <form method="POST" action="/rodada/{{ $jogo->rodada_id }}/editar/jogo/{{ $jogo->id }}" id="editar_jogo_form{{ $jogo->id }}">
                             {{ csrf_field() }}
 
                             {{ method_field('PATCH') }}
@@ -226,11 +258,11 @@
                                             <div class="col-xs-5">
                                                 <div class="form-group">
                                                     <div class="row">
-                                                        <div class="col-xs-5 col-sm-3">
+                                                        <div class="col-xs-6 col-sm-3">
                                                             <img src='http://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default-team-logo-500.png&h=42&w=42' class="img-rounded"/>
                                                         </div>
 
-                                                        <div class="col-xs-7 col-sm-9">
+                                                        <div class="col-xs-6 col-sm-9">
                                                             <div class="hidden-xs">
                                                                 <h4><label>{{ $jogo->time1->nome }}</label></h4>
                                                             </div>
@@ -249,7 +281,7 @@
                                             <div class="col-xs-5">
                                                 <div class="form-group">
                                                     <div class="row">
-                                                        <div class="col-xs-7 col-sm-9 text-right">
+                                                        <div class="col-xs-6 col-sm-9 text-right">
                                                             <div class="hidden-xs">
                                                                 <h4><label>{{ $jogo->time2->nome }}</label></h4>
                                                             </div>
@@ -258,7 +290,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xs-5 col-sm-3">
+                                                        <div class="col-xs-6 col-sm-3">
                                                             <img src='http://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default-team-logo-500.png&h=42&w=42' class="img-rounded"/>
                                                         </div>
                                                     </div>
@@ -268,7 +300,7 @@
 
                                     </div>
 
-                                    <div class="modal                          -footer">
+                                    <div class="modal-footer">
 
                                         <form method="POST" action="/rodada/{{ $jogo->rodada_id }}/excluir/jogo/{{ $jogo->id }}" class="hidden" id="excluir_jogo_form{{ $jogo->id }}">
 
@@ -415,9 +447,10 @@
 
     });
     
-    function atualiza_time_selecionado(){
+    function atualiza_time_selecionado(url){
         $('#ajax_time_selecionado_rodada').load(url, function () {
             $('#ajax_time_selecionado_rodada').fadeIn();
+            $('.modal').modal('hide');
         });
     }
 

@@ -38,14 +38,14 @@
     <div class="col-xs-9 col-sm-10 col-md-11">
         <h6>TEMPORADAS EM ANDAMENTO</h6>
     </div>
-    
+
     <div class="col-xs-3 col-sm-2 col-md-1">
         <h6>EDITAR</h6>
     </div>
 </div>
 
+@foreach($temporada_usuarios as $temporada_usuario)
 <div class="row">
-    @foreach($temporada_usuarios as $temporada_usuario)
 
     <div class="col-lg-12">
         <div class="panel panel-default no-padding">
@@ -54,13 +54,7 @@
                     <a href="/temporadas/{{ $temporada_usuario->temporada->id }}" style="text-decoration: none">
                         <div class="panel-body">
                             <div class="vertical-align">
-                                @if($temporada_usuario->temporada->publica === TRUE)
-                                <i class="fa fa-unlock fa-2x" aria-hidden="true" style="color: black; margin-right: 10px"></i>
-                                @else
-                                <i class="fa fa-lock fa-2x" aria-hidden="true" style="color: red; margin-right: 10px"></i>
-                                @endif
-                                <i class="fa fa-list" aria-hidden="true" style="margin-right: 15px"></i>
-                                <h4><b>{{ $temporada_usuario->temporada->nome }}</b></h4>
+                                <h3><b>{{ $temporada_usuario->temporada->nome }}</b></h3>
                             </div>
 
                             <div class="vertical-align">
@@ -70,7 +64,7 @@
                     </a>
                 </div>
 
-                
+
                 <div class="col-xs-3 col-md-1">
                     @if (Auth::user()->id === $temporada_usuario->temporada->usuario_id)
                     <a href="/temporadas/{{ $temporada_usuario->temporada->id }}/editar" style="text-decoration: none">
@@ -80,43 +74,29 @@
                     </a>
                     @endif
                 </div>
-                
+
             </div>
 
         </div>
     </div>
 
-    @endforeach
-</div>
-
-@endif
-
-
-@if (!$lista_rodada->isEmpty())
-<h3><b>RODADA EM ANDAMENTO</b></h3>
-
-<div class="row">
-    @foreach($lista_rodada as $rodada)
+    @foreach($temporada_usuario->temporada->rodada as $rodada)
 
     <div class="col-lg-12">
         <div class="panel panel-default no-padding">
             <div class="row">
                 <div class="col-xs-9 col-md-11">
-                    <a href="/rodada/{{ $rodada->id }}/palpites" style="text-decoration: none">
+                    <a href="/rodada/{{ $rodada->id }}" style="text-decoration: none">
                         <div class="panel-body">
-                            <div class="vertical-align">
+                            <div class="vertical-align" style="color: green">
                                 <i class="fa fa-futbol-o" aria-hidden="true" style="margin-right: 15px"></i>
                                 <h4><b>{{ $rodada->nome }}</b></h4>
-                            </div>
-
-                            <div class="vertical-align">
-                                <h5 style="color: black">Temporada: <b>{{ $rodada->temporada->nome }}</b></h5>
                             </div>
                         </div>
                     </a>
                 </div>
 
-                
+
                 <div class="col-xs-3 col-md-1">
                     @if (Auth::user()->id === $rodada->usuario->id)
                     <a href="/rodada/{{ $rodada->id }}/editar/t/{{ $rodada->temporada->id }}" style="text-decoration: none">
@@ -126,14 +106,16 @@
                     </a>
                     @endif
                 </div>
-                
+
             </div>
 
         </div>
     </div>
-
     @endforeach
 </div>
+    <hr />
+@endforeach
+
 @endif
 
 <div class="row">

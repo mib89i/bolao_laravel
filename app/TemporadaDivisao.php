@@ -12,4 +12,10 @@ class TemporadaDivisao extends Model
         
     }
     
+    public function divisao_usuario(){
+        
+        return $this->hasMany(DivisaoUsuario::class);
+        
+    }
+    
 }

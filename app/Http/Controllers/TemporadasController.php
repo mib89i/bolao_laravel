@@ -145,6 +145,10 @@ class TemporadasController extends Controller {
         try {
             $temporada->temporada_usuario()->delete();
 
+            $temporada->temporada_divisao()->delete();
+            
+            $temporada->temporada_divisao()->divisao_usuario()->delete();
+
             $temporada->delete();
 
             session()->flash('message', 'Temporada Excluida.');
