@@ -28,9 +28,24 @@ class Temporada extends Model {
         return $this->hasMany(Rodada::class);
         
     }
+    
+    public static function minhas_temporadas() {
+        
+        if (auth()->check()){
+            return static::where('usuario_id', '=', auth()->user()->id)
+                    ->count();
+        }
+        
+        return 0;
+        
+    }
 
     public static function return_rank($usuario_id) {
         
+    }
+    
+    public function scopeAtiva($query){
+        return $query->where('ativa', '=', TRUE);
     }
 
 }

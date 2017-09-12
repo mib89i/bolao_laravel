@@ -34,6 +34,7 @@
             <div class="panel-body">
             @if (Auth::user()->id === $temporada->usuario_id)
                 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modal_pesquisa_usuario">ENVIAR CONVITE</a>
+                <a href="/rodada/criar/t/{{ $temporada->id }}" class="btn btn-default">CRIAR RODADA</a>
             @else
 
                 @if ($tem_temporada_usuario === NULL)
@@ -51,7 +52,6 @@
                 @endif
             @endif
             
-                <a href="/rodada/criar/t/{{ $temporada->id }}" class="btn btn-default">CRIAR RODADA</a>
             </div>
             
         </div>

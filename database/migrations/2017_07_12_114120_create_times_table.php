@@ -14,15 +14,43 @@ class CreateTimesTable extends Migration {
     public function up() {
         Schema::create('times', function (Blueprint $table) {
             $table->increments('id');
-            
+
             $table->string('nome');
-            
+
             $table->string('sigla');
-            
+
             $table->string('logo');
-            
+
             $table->timestamps();
         });
+        
+        DB::table('times')->insert(
+                array(
+                    'nome' => 'Corinthians',
+                    'sigla' => 'COR',
+                    'logo' => 'corinthians.png',
+                    'created_at' => new \DateTime(),
+                    'updated_at' => new \DateTime()
+                )
+        );
+        DB::table('times')->insert(
+                array(
+                    'nome' => 'São Paulo',
+                    'sigla' => 'SAO',
+                    'logo' => 'sao-paulo.png',
+                    'created_at' => new \DateTime(),
+                    'updated_at' => new \DateTime()
+                )
+        );
+        DB::table('times')->insert(
+                array(
+                    'nome' => 'Palmeiras',
+                    'sigla' => 'PAL',
+                    'logo' => 'palmeiras.png',
+                    'created_at' => new \DateTime(),
+                    'updated_at' => new \DateTime()
+                )
+        );
     }
 
     /**

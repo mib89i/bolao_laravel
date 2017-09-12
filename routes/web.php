@@ -33,7 +33,7 @@ Route::post('/temporadas/criar', 'TemporadasController@gravar');
 
 Route::get('/temporadas/{temporada}/editar', 'TemporadasController@editar');
 Route::patch('/temporadas/{temporada}/editar', 'TemporadasController@atualizar');
-Route::delete('/temporadas/{temporada}/excluir', 'TemporadasController@excluir');
+Route::patch('/temporadas/{temporada}/excluir', 'TemporadasController@excluir');
 
 Route::get('/temporadas/{temporada}', 'TemporadasController@mostrar');
 Route::get('/temporadas/{temporada}/{nome}/divisao/{nivel}', 'TemporadasController@temporadaDivisao');
@@ -52,10 +52,10 @@ Route::get('/convites/t/{temporada}/tipo/{tipo_convite}', 'TemporadasController@
 Route::get('/mensagens', 'MensagensController@index');
 
 // RODADAS
-Route::get('/rodada', 'RodadaController@index');
+//Route::get('/rodada', 'RodadaController@index');
 Route::get('/rodada/{rodada}', 'RodadaController@mostrar');
 
-Route::get('/rodada/criar', 'RodadaController@criar');
+Route::get('/rodada', 'RodadaController@criar');
 Route::get('/rodada/criar/t/{temporada}', 'RodadaController@criarRodada');
 Route::post('/rodada/criar/t/{temporada}', 'RodadaController@gravarRodada');
 
@@ -68,6 +68,7 @@ Route::get('/rodada/{rodada}/limpar_sessao', 'RodadaController@limparSessao');
 Route::patch('/rodada/{rodada}/editar/jogo/{jogo}', 'RodadaController@atualizarJogoRodada');
 Route::delete('/rodada/{rodada}/excluir/jogo/{jogo}', 'RodadaController@excluirJogoRodada');
 Route::delete('/rodada/{rodada}/excluir', 'RodadaController@excluir');
+Route::post('/rodada/{rodada}/palpite', 'RodadaController@gravarPalpite');
 
 // TIMES
 Route::get('/times/ajax/get_lista_time', 'TimesController@getListaTime');
@@ -77,11 +78,6 @@ Route::get('/times/{time}/tirar', 'TimesController@tirarTime');
 
 
 
-
-
-Route::get('/temporadas/{temporada_usuario}/request_accepted', 'TemporadasController@request_accepted');
-Route::get('/temporadas/{temporada_usuario}/request_denied', 'TemporadasController@request_denied');
-Route::get('/temporadas/{temporada_usuario}/denied', 'TemporadasController@denied');
 
 // s para criar uma temporada
 Route::get('/games/s/{season}/create', 'GamesController@create_sgame');

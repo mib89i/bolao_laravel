@@ -16,9 +16,9 @@ class CreatePalpitesTable extends Migration
         Schema::create('palpites', function (Blueprint $table) {
             $table->increments('id');
             
-            $table->integer('placar_time1');
+            $table->integer('placar_time1')->nullable();
             
-            $table->integer('placar_time2');
+            $table->integer('placar_time2')->nullable();
             
             $table->integer('usuario_id');
             $table->foreign('usuario_id')->references('id')->on('usuarios');

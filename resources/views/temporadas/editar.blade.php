@@ -69,7 +69,7 @@
 
                                     {{ csrf_field() }}
 
-                                    {{ method_field('DELETE') }}
+                                    {{ method_field('PATCH') }}
 
                                 </form>
 

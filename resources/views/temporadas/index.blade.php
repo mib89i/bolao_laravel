@@ -10,20 +10,16 @@
 
 <form method="POST" action="/temporadas">
     {{ csrf_field() }}
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-lg-10">
-                                <input type="text" class="form-control input-lg" id="search" placeholder="DIGITE O NOME DA TEMPORADA" name="search" autocomplete="off" autofocus/>
-                            </div>
-                            
-                            <div class="col-lg-2">
-                                <button class="btn btn-primary btn-lg"><b>PESQUISAR<br /></button>
-                            </div>
-                        </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" id="search" placeholder="DIGITE O NOME DA TEMPORADA" name="search" autocomplete="off" autofocus/>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary">PESQUISAR</button>
                     </div>
                 </div>
             </div>
@@ -51,7 +47,7 @@
                                 <i class="fa fa-list" aria-hidden="true" style="margin-right: 15px"></i>
                                 <h4><b>{{ $temporada->nome }}</b></h4>
                             </div>
-                            
+
                             <div class="vertical-align">
                                 <h6 style="color: black">Presidente: <b>{{ $temporada->usuario->nome }}</b></h6>
                             </div>

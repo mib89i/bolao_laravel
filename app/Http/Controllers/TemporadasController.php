@@ -23,7 +23,9 @@ class TemporadasController extends Controller {
 
             //$pesquisa = mb_strtolower(request('search'));
 
-            $temporadas = Temporada::whereRaw('lower(translate(nome)) like lower(translate(' . '\'%' . request('search') . '%\'' . '))')->get();
+            $temporadas = Temporada::whereRaw('lower(translate(nome)) like lower(translate(' . '\'%' . request('search') . '%\'' . '))')
+                    ->whereRaw('ativa = TRUE')
+                    ->get();
 
             //dd(Temporada::whereRaw('translate(nome) like translate(' . '\'%'. request('search') . '%\''.')')->toSql());
             return view('temporadas.index', compact('temporadas'));
@@ -34,6 +36,7 @@ class TemporadasController extends Controller {
     public function criar() {
 
         return view('temporadas.criar');
+        
     }
 
     public function gravar() {
@@ -89,7 +92,9 @@ class TemporadasController extends Controller {
 
     public function temporadaDivisao(Temporada $temporada, $nome, $nivel) {
 
-        $temporada_divisao = TemporadaDivisao::where('nivel', '=', $nivel)->first();
+        $temporada_divisao = TemporadaDivisao::where('nivel', '=', $nivel)
+                ->where('temporada_id', '=', $temporada->id)
+                ->first();
 
 
         $temporada_usuario = TemporadaUsuario::where('temporada_id', '=', $temporada->id)
@@ -141,17 +146,15 @@ class TemporadasController extends Controller {
     }
 
     public function excluir(Temporada $temporada) {
+        
         \DB::beginTransaction();
         try {
-            $temporada->temporada_usuario()->delete();
-
-            $temporada->temporada_divisao()->delete();
+            $temporada->ativa = FALSE;
             
-            $temporada->temporada_divisao()->divisao_usuario()->delete();
-
-            $temporada->delete();
+            $temporada->update();
 
             session()->flash('message', 'Temporada Excluida.');
+            
             \DB::commit();
         } catch (\Exception $e) {
             session()->flash('message', 'Erro ao excluir temporada.' . $e);
@@ -450,46 +453,4 @@ class TemporadasController extends Controller {
 
         return back();
     }
-
-    public function request_accepted(TemporadaUsuario $temporada_usuario) {
-        if (!$temporada_usuario->exists()) {
-            session()->flash('message', 'SOLICITAÇÃO NÃO EXISTE.');
-            return redirect('/notificacao');
-        }
-
-        $temporada_usuario->aceito = TRUE;
-
-        $temporada_usuario->update();
-
-        session()->flash('message', 'JOGADOR ADICIONADO.');
-
-        return redirect('/notificacoes');
-    }
-
-    public function request_denied(TemporadaUsuario $temporada_usuario) {
-        if (!$temporada_usuario->exists()) {
-            session()->flash('message', 'SOLICITAÇÃO NÃO EXISTE.');
-            return redirect('/mensagens');
-        }
-
-        $temporada_usuario->delete();
-
-        session()->flash('message', 'JOGADOR NEGADO.');
-
-        return redirect('/mensagens');
-    }
-
-    public function denied(TemporadaUsuario $temporada_usuario) {
-        if (!$temporada_usuario->exists()) {
-            session()->flash('message', 'SOLICITAÇÃO NÃO EXISTE.');
-            return redirect('/mensagens');
-        }
-
-        $temporada_usuario->delete();
-
-        session()->flash('message', 'VOCÊ SAIU DESTA TEMPORADA.');
-
-        return redirect('/temporadas/' . $temporada_usuario->temporada_id);
-    }
-
 }

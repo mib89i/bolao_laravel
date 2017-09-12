@@ -22,6 +22,8 @@ class CreateTemporadasTable extends Migration
             
             $table->boolean('publica');
             
+            $table->boolean('ativa')->default(TRUE);
+            
             $table->timestamps();
         });
     }
