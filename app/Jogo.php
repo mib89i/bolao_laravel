@@ -26,6 +26,12 @@ class Jogo extends Model {
         
     }
     
+    public function palpites() {
+
+        return $this->hasMany(Palpite::class);
+        
+    }
+    
 //    public function data_jogo_string(){
 //        //$data = \Carbon\Carbon::createFromFormat('d/m/Y', $this->attributes['data_jogo']);
 //        $data = \Carbon\Carbon::createFromFormat('d-m-Y', '2016-01-23');

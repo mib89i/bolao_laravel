@@ -182,9 +182,13 @@ class RodadaController extends Controller {
     }
 
     public function atualizarJogoRodada(Rodada $rodada, Jogo $jogo) {
-
-        $jogo->placar_time1 = request('placar_time1');
-        $jogo->placar_time2 = request('placar_time2');
+        
+        if (request('placar_time1') != null && request('placar_time2')){
+            $jogo->placar_time1 = request('placar_time1');
+            $jogo->placar_time2 = request('placar_time2');
+        }else if (request('hora_jogo_final') != null){
+            $jogo->hora_jogo_final = request('hora_jogo_final');
+        }
 
         $jogo->update();
 
@@ -195,10 +199,20 @@ class RodadaController extends Controller {
 
     public function excluirJogoRodada(Rodada $rodada, Jogo $jogo) {
 
-        $jogo->delete();
+        \DB::beginTransaction();
 
-        session()->flash('message', 'JOGO  EXCLUIDO');
+        try {
+            $jogo->palpites()->delete();
 
+            $jogo->delete();
+
+            session()->flash('message', 'JOGO EXCLUIDO');
+            \DB::commit();
+        } catch (\Exception $e) {
+            \DB::rollback();
+            session()->flash('message', 'Erro ao EXCLUIR JOGO.' . $e);
+        }
+        
         return back();
     }
 
@@ -211,6 +225,26 @@ class RodadaController extends Controller {
                 $palpite = Palpite::where('jogo_id', '=', $jogo['id'])
                         ->where('usuario_id', '=', auth()->user()->id)
                         ->first();
+
+                $data = date('Y-m-d'); // DATA DE HOJE
+                $hora = date('H:i'); // HORA DE HOJE
+
+                $data_jogo = $jogo['data_jogo']; // DATA DO JOGO
+                $hora_jogo = $jogo['hora_jogo']; // HORA DO JOGO
+
+                if (strtotime($data) > strtotime($data_jogo)) {
+                    // JOGO JÁ PASSOU
+                    continue;
+                } else if (strtotime($data) == strtotime($data_jogo)) {
+                    // VERIFICAR O HORÁRIO
+
+                    if (strtotime($hora) > strtotime($jogo['hora_jogo'])) {
+                        // HORA DO JOGO PASSOU
+                        continue;
+                    }
+                }
+                // CONTINUAR EDITANDO NORMAL
+
 
                 if ($palpite == NULL) {
                     $palpite = new Palpite;
@@ -229,7 +263,7 @@ class RodadaController extends Controller {
 
                 session()->flash('message', 'PALPITE GRAVADO');
             }
-            
+
             \DB::commit();
         } catch (\Exception $e) {
             \DB::rollback();

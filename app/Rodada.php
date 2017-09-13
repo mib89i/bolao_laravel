@@ -20,7 +20,9 @@ class Rodada extends Model
     
     public function jogo(){
         
-        return $this->hasMany(Jogo::class);
+        return $this->hasMany(Jogo::class)
+                ->orderBy('data_jogo', 'asc')
+                ->orderBy('hora_jogo', 'asc');
         
     }
     

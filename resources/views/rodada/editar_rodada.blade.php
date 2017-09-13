@@ -87,7 +87,7 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-                        
+
 <form action="/rodada/{{ $rodada->id }}/editar/t/{{ $temporada->id }}/adicionar_jogo" method="POST">
 
     {{ csrf_field() }}
@@ -161,6 +161,11 @@
 </div>
 
 @foreach($lista_jogos AS $jogo)
+
+<?php
+$editavel = $jogo->hora_jogo_final == NULL ? TRUE : FALSE;
+?>
+
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
@@ -218,6 +223,7 @@
 
                             {{ method_field('PATCH') }}
 
+                            @if($editavel)
                             <div class="row">
                                 <div class="col-xs-6">
                                     <input class="form-control text-center" name="placar_time1" value="{{ $jogo->placar_time1 }}"/>
@@ -226,6 +232,25 @@
                                     <input class="form-control text-center" name="placar_time2" value="{{ $jogo->placar_time2 }}"/>
                                 </div>
                             </div>
+                            @else
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <input class="form-control text-center" name="placar_time1" value="{{ $jogo->placar_time1 }}" disabled="disabled"/>
+                                </div>
+                                <div class="col-xs-6">
+                                    <input class="form-control text-center" name="placar_time2" value="{{ $jogo->placar_time2 }}" disabled="disabled"/>
+                                </div>
+                            </div>
+                            @endif
+                        </form>
+
+                        <form method="POST" action="/rodada/{{ $jogo->rodada_id }}/editar/jogo/{{ $jogo->id }}" id="finalizar_jogo_form{{ $jogo->id }}">
+                            {{ csrf_field() }}
+
+                            {{ method_field('PATCH') }}
+
+                            <input class="hidden" name="hora_jogo_final" value="{{ date('H:i') }}"/>
+
                         </form>
 
                         <div class="row">
@@ -237,11 +262,25 @@
 
                     <div class="col-xs-3 col-md-1">
                         @if (Auth::user()->id === $rodada->usuario_id)
-                        <a href="#" data-toggle="modal" data-target="#modal_excluir_jogo{{ $jogo->id }}" style="text-decoration: none">
-                            <div class="panel-body text-center vertical-align">
-                                <i class="fa fa-trash fa-2x" aria-hidden="true" style="color: red"></i>
-                            </div>
-                        </a>
+
+                        <div class="btn-group">
+                            <button class="btn btn-default btn-md dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-cog" aria-hidden="true"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                @if ($editavel)
+                                <a href="#" data-toggle="modal" data-target="#modal_excluir_jogo{{ $jogo->id }}" class="btn btn-link" style="font-weight: bold; color: red"><i class="fa fa-trash fa-2x" aria-hidden="true" style="color: red"></i> EXCLUIR JOGO</a>
+
+                                <button type="submit" form="editar_jogo_form{{ $jogo->id }}" class="btn btn-link" style="font-weight: bold"><i class="fa fa-check-square fa-2x" aria-hidden="true"></i> GRAVAR ALTERAÇÃO</button>
+
+                                <li role="separator" class="divider"></li>
+
+                                <button type="submit" form="finalizar_jogo_form{{ $jogo->id }}" class="btn btn-link" style="font-weight: bold"><i class="fa fa-arrow-right fa-2x" aria-hidden="true"></i> FINALIZAR JOGO</button>
+                                @else
+                                <a href="#" data-toggle="modal" data-target="#modal_excluir_jogo{{ $jogo->id }}" class="btn btn-link" style="font-weight: bold; color: red"><i class="fa fa-trash fa-2x" aria-hidden="true" style="color: red"></i> EXCLUIR JOGO</a>
+                                @endif
+                            </ul>
+                        </div>
 
                         <div class="modal fade" tabindex="-1" role="dialog" id="modal_excluir_jogo{{ $jogo->id }}">
                             <div class="modal-dialog" role="document">
@@ -317,14 +356,20 @@
                             </div><!-- /.modal-dialog -->
                         </div><!-- /.modal -->
 
-                        <button type="submit" form="editar_jogo_form{{ $jogo->id }}" class="btn btn-link" style="text-decoration: none">
-                            <i class="fa fa-check-square fa-2x" aria-hidden="true" style="color: green"></i>
-                        </button>
 
                         @endif
                     </div>
                 </div>
             </div>
+            @if ($editavel == FALSE)
+            <div class="panel-body" style="background: #ff9e9e">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h6><b>JOGO FINALIZADO</b></h6>
+                    </div>
+                </div>
+            </div>
+            @endif
         </div>
     </div>
 </div>
@@ -446,8 +491,8 @@
         });
 
     });
-    
-    function atualiza_time_selecionado(url){
+
+    function atualiza_time_selecionado(url) {
         $('#ajax_time_selecionado_rodada').load(url, function () {
             $('#ajax_time_selecionado_rodada').fadeIn();
             $('.modal').modal('hide');
