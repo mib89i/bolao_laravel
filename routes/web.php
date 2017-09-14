@@ -36,7 +36,7 @@ Route::patch('/temporadas/{temporada}/editar', 'TemporadasController@atualizar')
 Route::patch('/temporadas/{temporada}/excluir', 'TemporadasController@excluir');
 
 Route::get('/temporadas/{temporada}', 'TemporadasController@mostrar');
-Route::get('/temporadas/{temporada}/{nome}/divisao/{nivel}', 'TemporadasController@temporadaDivisao');
+Route::get('/temporadas/{temporada}/{nome}/divisao/{divisao}', 'TemporadasController@temporadaDivisao');
 Route::get('/temporadas/ajax/get_lista_usuario', 'TemporadasController@getListaUsuario');
 Route::post('/temporadas/{temporada}/adicionar_divisao', 'TemporadasController@adicionarDivisao');
 

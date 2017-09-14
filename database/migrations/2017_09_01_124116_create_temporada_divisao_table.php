@@ -19,11 +19,10 @@ class CreateTemporadaDivisaoTable extends Migration
             $table->integer('temporada_id')->unsigned();
             $table->foreign('temporada_id')->references('id')->on('temporadas');
             
-            $table->string('nome');
+            $table->integer('divisao_id')->unsigned();
+            $table->foreign('divisao_id')->references('id')->on('divisao');
             
             $table->integer('rodadas');
-            
-            $table->integer('nivel');
             
             $table->timestamps();
         });

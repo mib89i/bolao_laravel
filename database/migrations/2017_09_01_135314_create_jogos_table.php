@@ -34,7 +34,7 @@ class CreateJogosTable extends Migration
             $table->integer('time2_id');
             $table->foreign('time2_id')->references('id')->on('times');
             
-            $table->integer('importancia')->nullable();
+            $table->integer('importancia')->default(1);
             
             $table->integer('rodada_id');
             $table->foreign('rodada_id')->references('id')->on('rodadas');

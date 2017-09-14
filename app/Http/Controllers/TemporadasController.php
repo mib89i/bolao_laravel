@@ -9,6 +9,7 @@ use App\TemporadaDivisao;
 use App\Convite;
 use App\Mensagem;
 use App\DivisaoUsuario;
+use App\Divisao;
 
 class TemporadasController extends Controller {
 
@@ -87,12 +88,14 @@ class TemporadasController extends Controller {
 
         $lista_temporada_divisao = TemporadaDivisao::where('temporada_id', '=', $temporada->id)->get();
 
-        return view('temporadas.editar', compact('temporada', 'lista_temporada_divisao'));
+        $lista_divisao = Divisao::select('id', 'nome')->get();
+        
+        return view('temporadas.editar', compact('temporada', 'lista_temporada_divisao', 'lista_divisao'));
     }
 
-    public function temporadaDivisao(Temporada $temporada, $nome, $nivel) {
+    public function temporadaDivisao(Temporada $temporada, $nome, Divisao $divisao) {
 
-        $temporada_divisao = TemporadaDivisao::where('nivel', '=', $nivel)
+        $temporada_divisao = TemporadaDivisao::where('divisao_id', '=', $divisao->id)
                 ->where('temporada_id', '=', $temporada->id)
                 ->first();
 
@@ -106,14 +109,16 @@ class TemporadasController extends Controller {
                                 'SELECT u.id AS id,
                                         u.nome AS nome,
                                         u.avatar AS avatar,
-                                        rank() over(ORDER BY u.nome ASC) AS rank,
+                                        rank() over(ORDER BY COALESCE(rt.pontos, 0) ASC, u.nome ASC) AS rank,
                                         COALESCE(rt.pontos, 0) AS pontos,
-                                        COALESCE(rt.posicao, 0) AS posicao
+                                        COALESCE(rt.posicao, 0) AS posicao,
+                                        COALESCE(rt.posicao_anterior - rt.posicao, 0) AS variacao
                                    FROM usuarios u
                                   INNER JOIN temporada_usuario tu ON tu.usuario_id = u.id
                                   INNER JOIN temporada_divisao td ON td.temporada_id = tu.temporada_id
                                   INNER JOIN divisao_usuario du ON du.temporada_divisao_id = td.id AND du.usuario_id = u.id
-                                   LEFT JOIN ranking_temporada rt ON rt.divisao_usuario_id = du.id
+                                   --LEFT JOIN ranking_temporada rt ON rt.divisao_usuario_id = du.id AND rt.id = (SELECT max(rx.id) FROM ranking_temporada rx WHERE rx.divisao_usuario_id = du.id)
+                                   LEFT JOIN ranking_temporada rt ON rt.divisao_usuario_id = du.id AND rt.rodada_id = (SELECT MAX(rod.id) FROM rodadas rod WHERE rod.temporada_id = ' . $temporada->id . ')
                                   WHERE tu.temporada_id = ' . $temporada->id . '
                                     AND td.id = ' . $temporada_divisao->id
                         )
@@ -193,29 +198,11 @@ class TemporadasController extends Controller {
 
         $temp_div = new TemporadaDivisao;
 
-        $temp_div->nome = request('nivel_divisao');
-
-        switch ($temp_div->nome) {
-            case '1° Divisão':
-                $temp_div->nivel = 1;
-                break;
-            case '2° Divisão':
-                $temp_div->nivel = 2;
-                break;
-            case '3° Divisão':
-                $temp_div->nivel = 3;
-                break;
-            case '4° Divisão':
-                $temp_div->nivel = 4;
-                break;
-            default:
-                $temp_div->nivel = 4;
-                break;
-        }
+        $temp_div->temporada_id = $temporada->id;
+        
+        $temp_div->divisao_id = request('divisao');
 
         $temp_div->rodadas = request('rodadas');
-
-        $temp_div->temporada_id = $temporada->id;
 
         $temp_div->save();
 

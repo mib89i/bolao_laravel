@@ -17,10 +17,15 @@ class CreateRankingTemporadaTable extends Migration {
 
             $table->integer('divisao_usuario_id');
             $table->foreign('divisao_usuario_id')->references('id')->on('divisao_usuario');
+            
+            $table->integer('rodada_id');
+            $table->foreign('rodada_id')->references('id')->on('rodadas');
 
             $table->integer('pontos');
             
             $table->integer('posicao');
+            
+            $table->integer('posicao_anterior');
             
             $table->timestamps();
         });

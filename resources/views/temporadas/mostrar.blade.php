@@ -147,9 +147,9 @@
 
 <div class="panel panel-default no-padding">
     <div class="panel-body">
-        <a href="/temporadas/{{ $temporada->id }}/{{ str_slug($temporada->nome, '-') }}/divisao/{{ $temporada_divisao->nivel }}" style="text-decoration: none">
+        <a href="/temporadas/{{ $temporada->id }}/{{ str_slug($temporada->nome, '-') }}/divisao/{{ $temporada_divisao->divisao->id }}" style="text-decoration: none">
             <div class="panel-body text-center  vertical-align">
-                <i class="fa fa-list fa-2x" aria-hidden="true" style="margin-right: 15px"></i> <h4>{{ $temporada_divisao->nome }}</h4>
+                <i class="fa fa-list fa-2x" aria-hidden="true" style="margin-right: 15px"></i> <h4>{{ $temporada_divisao->divisao->nome }}</h4>
             </div>
         </a>
     </div>
@@ -203,7 +203,7 @@
 
                                 @foreach($temporada->temporada_divisao()->get() AS $temporada_divisao)
 
-                                <li><a href="#" data-toggle="modal" data-target="#modal_adicionar_divisao{{ $temporada_divisao->nivel }}_u{{ $temporada_usuario->usuario->id }}">{{ $temporada_divisao->nome }}</a></li>
+                                <li><a href="#" data-toggle="modal" data-target="#modal_adicionar_divisao{{ $temporada_divisao->divisao->id }}_u{{ $temporada_usuario->usuario->id }}">{{ $temporada_divisao->divisao->nome }}</a></li>
                                 <li role="separator" class="divider"></li>
 
                                 @endforeach
@@ -216,7 +216,7 @@
 
                         @foreach($temporada->temporada_divisao()->get() AS $temporada_divisao)
 
-                        <div class="modal fade" role="dialog" id="modal_adicionar_divisao{{ $temporada_divisao->nivel }}_u{{ $temporada_usuario->usuario->id }}">
+                        <div class="modal fade" role="dialog" id="modal_adicionar_divisao{{ $temporada_divisao->divisao->id }}_u{{ $temporada_usuario->usuario->id }}">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -226,7 +226,7 @@
 
                                     <div class="modal-body">
                                         <h3>{{ $temporada->nome }}</h3>
-                                        <h4>Adicionar <b>{{ $temporada_usuario->usuario->nome }}</b> para <b>{{ $temporada_divisao->nome }}</b></h4>
+                                        <h4>Adicionar <b>{{ $temporada_usuario->usuario->nome }}</b> para <b>{{ $temporada_divisao->divisao->nome }}</b></h4>
                                     </div>
 
                                     <div class="modal-footer">

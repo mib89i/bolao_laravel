@@ -6,6 +6,7 @@ use App\Temporada;
 use App\Rodada;
 use App\Jogo;
 use App\Palpite;
+use App\RankingTemporada;
 
 class RodadaController extends Controller {
 
@@ -37,6 +38,7 @@ class RodadaController extends Controller {
     public function criarRodada(Temporada $temporada) {
 
         $ultima_rodada = Rodada::where('temporada_id', '=', $temporada->id)->orderBy('created_at', 'desc')->first();
+        
         //$ultima_rodada = Rodada::latest('temporada_id', '=', $temporada->id)->first();
 
         return view('rodada.criar_rodada', compact('temporada', 'ultima_rodada'));
@@ -58,7 +60,7 @@ class RodadaController extends Controller {
             $rodada->temporada_id = $temporada->id;
 
             $rodada->save();
-
+            
             session()->flash('message', 'Rodada Criada.');
 
             \DB::commit();
@@ -151,7 +153,7 @@ class RodadaController extends Controller {
             $jogo->local = $local;
             $jogo->data_jogo = request('data_jogo');
             $jogo->hora_jogo = request('hora_jogo');
-            $jogo->importancia = request('importancia');
+            $jogo->importancia = (request('importancia') == NULL) ? 1 : request('importancia');
             $jogo->time1_id = session()->get('time1_selecionado')->id;
             $jogo->time2_id = session()->get('time2_selecionado')->id;
             $jogo->rodada_id = $rodada->id;
@@ -182,14 +184,22 @@ class RodadaController extends Controller {
     }
 
     public function atualizarJogoRodada(Rodada $rodada, Jogo $jogo) {
-        
-        if (request('placar_time1') != null && request('placar_time2')){
-            $jogo->placar_time1 = request('placar_time1');
-            $jogo->placar_time2 = request('placar_time2');
-        }else if (request('hora_jogo_final') != null){
-            $jogo->hora_jogo_final = request('hora_jogo_final');
-        }
 
+//        if (request('placar_time1') != null && request('placar_time2') && request('hora_jogo_final') == null){
+//            $jogo->placar_time1 = request('placar_time1');
+//            $jogo->placar_time2 = request('placar_time2');
+//        }else if (request('hora_jogo_final') != null){
+//            $jogo->hora_jogo_final = request('hora_jogo_final');
+//            $jogo->placar_time1 = request('placar_time1');
+//            $jogo->placar_time2 = request('placar_time2');            
+//        }
+        if (request('finalizar_jogo')){
+            $jogo->hora_jogo_final = date('H:i');
+        }
+        
+        $jogo->placar_time1 = request('placar_time1');
+        $jogo->placar_time2 = request('placar_time2');
+        
         $jogo->update();
 
         session()->flash('message', 'JOGO ATUALIZADO COM SUCESSO');
@@ -212,7 +222,7 @@ class RodadaController extends Controller {
             \DB::rollback();
             session()->flash('message', 'Erro ao EXCLUIR JOGO.' . $e);
         }
-        
+
         return back();
     }
 

@@ -172,7 +172,7 @@ $editavel = $jogo->hora_jogo_final == NULL ? TRUE : FALSE;
             <div class="panel-body">
                 <div class="row">
                     <div class="col-xs-9 col-md-11">
-                        <h4><b>{{ $jogo->local }}</b> - {{ date('d/m/Y', strtotime($jogo->data_jogo)) }} - {{ $jogo->hora_jogo }} {{ ($jogo->importancia != NULL ? 'x'.$jogo->importancia : '') }}</h4>
+                        <h4><b>{{ $jogo->local }}</b> - {{ date('d/m/Y', strtotime($jogo->data_jogo)) }} - {{ $jogo->hora_jogo }} {{ ($jogo->importancia != 1 ? 'x'.$jogo->importancia : '') }}</h4>
 
                         <div class="row vertical-align">
                             <div class="col-xs-5">
@@ -232,6 +232,11 @@ $editavel = $jogo->hora_jogo_final == NULL ? TRUE : FALSE;
                                     <input class="form-control text-center" name="placar_time2" value="{{ $jogo->placar_time2 }}"/>
                                 </div>
                             </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="finalizar_jogo"> FINALIZAR ESTE JOGO
+                                </label>
+                            </div>
                             @else
                             <div class="row">
                                 <div class="col-xs-6">
@@ -242,15 +247,6 @@ $editavel = $jogo->hora_jogo_final == NULL ? TRUE : FALSE;
                                 </div>
                             </div>
                             @endif
-                        </form>
-
-                        <form method="POST" action="/rodada/{{ $jogo->rodada_id }}/editar/jogo/{{ $jogo->id }}" id="finalizar_jogo_form{{ $jogo->id }}">
-                            {{ csrf_field() }}
-
-                            {{ method_field('PATCH') }}
-
-                            <input class="hidden" name="hora_jogo_final" value="{{ date('H:i') }}"/>
-
                         </form>
 
                         <div class="row">
@@ -273,9 +269,6 @@ $editavel = $jogo->hora_jogo_final == NULL ? TRUE : FALSE;
 
                                 <button type="submit" form="editar_jogo_form{{ $jogo->id }}" class="btn btn-link" style="font-weight: bold"><i class="fa fa-check-square fa-2x" aria-hidden="true"></i> GRAVAR ALTERAÇÃO</button>
 
-                                <li role="separator" class="divider"></li>
-
-                                <button type="submit" form="finalizar_jogo_form{{ $jogo->id }}" class="btn btn-link" style="font-weight: bold"><i class="fa fa-arrow-right fa-2x" aria-hidden="true"></i> FINALIZAR JOGO</button>
                                 @else
                                 <a href="#" data-toggle="modal" data-target="#modal_excluir_jogo{{ $jogo->id }}" class="btn btn-link" style="font-weight: bold; color: red"><i class="fa fa-trash fa-2x" aria-hidden="true" style="color: red"></i> EXCLUIR JOGO</a>
                                 @endif

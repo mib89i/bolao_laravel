@@ -96,7 +96,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Adicionar uma Divisão a Temporada <b>{{ $temporada->nome }}</b></h4>
                 </div>
-
+                              
                 <form method="POST" action="/temporadas/{{ $temporada->id }}/adicionar_divisao">
 
                     {{ csrf_field() }}
@@ -106,11 +106,10 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="rodadas">Nível</label>
-                            <select class="form-control" name="nivel_divisao">
-                                <option>1° Divisão</option>
-                                <option>2° Divisão</option>
-                                <option>3° Divisão</option>
-                                <option>4° Divisão</option>
+                            <select class="form-control" name="divisao">
+                                @foreach($lista_divisao AS $divisao)
+                                <option value="{{ $divisao->id }}">{{ $divisao->nome }}</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -139,9 +138,9 @@
 
 <div class="panel panel-default">
     <div class="panel-body">
-        <a href="/temporadas/{{ $temporada->id }}/{{ str_slug($temporada->nome, '-') }}/divisao/{{ $temporada_divisao->nivel }}" style="text-decoration: none">
+        <a href="/temporadas/{{ $temporada->id }}/{{ str_slug($temporada->nome, '-') }}/divisao/{{ $temporada_divisao->divisao->id }}" style="text-decoration: none">
             <div class="panel-body text-center  vertical-align">
-                <i class="fa fa-list fa-2x" aria-hidden="true" style="margin-right: 15px"></i> <h4>{{ $temporada_divisao->nome }}</h4>
+                <i class="fa fa-list fa-2x" aria-hidden="true" style="margin-right: 15px"></i> <h4>{{ $temporada_divisao->divisao->nome }}</h4>
             </div>
         </a>
     </div>

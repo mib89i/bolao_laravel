@@ -55,7 +55,7 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-lg-12">
-                    <h4><b>{{ $jogo->local }}</b> - {{ date('d/m/Y', strtotime($jogo->data_jogo)) }} - {{ $jogo->hora_jogo }} hrs <b>{{ ($jogo->importancia != NULL ? 'x'.$jogo->importancia : '') }}</b></h4>
+                    <h4><b>{{ $jogo->local }}</b> - {{ date('d/m/Y', strtotime($jogo->data_jogo)) }} - {{ $jogo->hora_jogo }} hrs <b>{{ ($jogo->importancia != 1 ? 'x'.$jogo->importancia : '') }}</b></h4>
 
                     <div class="row vertical-align">
                         <div class="col-xs-5">
