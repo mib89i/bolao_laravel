@@ -27,6 +27,8 @@ class CreateRodadasTable extends Migration
             $table->integer('liga_id')->nullable();
             $table->foreign('liga_id')->references('id')->on('ligas');
 
+            $table->boolean('publicada');
+            
             $table->boolean('concluida');
             
             $table->integer('numero');

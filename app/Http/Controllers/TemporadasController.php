@@ -104,25 +104,7 @@ class TemporadasController extends Controller {
                 ->where('usuario_id', '=', auth()->user()->id)
                 ->first();
 
-        $ranking = \DB::select(
-                        \DB::raw(
-                                'SELECT u.id AS id,
-                                        u.nome AS nome,
-                                        u.avatar AS avatar,
-                                        rank() over(ORDER BY COALESCE(rt.pontos, 0) ASC, u.nome ASC) AS rank,
-                                        COALESCE(rt.pontos, 0) AS pontos,
-                                        COALESCE(rt.posicao, 0) AS posicao,
-                                        COALESCE(rt.posicao_anterior - rt.posicao, 0) AS variacao
-                                   FROM usuarios u
-                                  INNER JOIN temporada_usuario tu ON tu.usuario_id = u.id
-                                  INNER JOIN temporada_divisao td ON td.temporada_id = tu.temporada_id
-                                  INNER JOIN divisao_usuario du ON du.temporada_divisao_id = td.id AND du.usuario_id = u.id
-                                   --LEFT JOIN ranking_temporada rt ON rt.divisao_usuario_id = du.id AND rt.id = (SELECT max(rx.id) FROM ranking_temporada rx WHERE rx.divisao_usuario_id = du.id)
-                                   LEFT JOIN ranking_temporada rt ON rt.divisao_usuario_id = du.id AND rt.rodada_id = (SELECT MAX(rod.id) FROM rodadas rod WHERE rod.temporada_id = ' . $temporada->id . ')
-                                  WHERE tu.temporada_id = ' . $temporada->id . '
-                                    AND td.id = ' . $temporada_divisao->id
-                        )
-        );
+        $ranking = $temporada->ranking($temporada_divisao);
 
         foreach ($ranking as $rank) {
             if ($rank->id === auth()->user()->id) {
@@ -402,6 +384,11 @@ class TemporadasController extends Controller {
         return back();
     }
 
+    public function listaRodadas(Temporada $temporada) {
+        
+        return view('temporadas.lista_rodadas', compact('temporada'));
+    }
+    
     public function request(Temporada $temporada) {
 
         $temporada_usuario = TemporadaUsuario::where('temporada_id', '=', $temporada->id)

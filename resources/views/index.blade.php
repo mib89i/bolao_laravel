@@ -30,8 +30,6 @@
     </div>
 </div>
 
-<h3><b>MEUS JOGOS</b></h3>
-
 @if (!$temporada_usuarios->isEmpty())
 
 <div class="row">
@@ -80,7 +78,19 @@
         </div>
     </div>
 
-    @foreach($temporada_usuario->temporada->rodada as $rodada)
+    @if (count($temporada_usuario->temporada->rodada) > 1)
+    
+    <div class="col-lg-12">
+        <div class="panel panel-default no-padding">
+            <div class="panel-body">
+                <a href="/temporadas/{{ $temporada_usuario->temporada->id }}/lista_rodadas">VER OUTRAS RODADAS</a>
+            </div>
+        </div>
+    </div>
+    
+    @endif
+    
+    @foreach($temporada_usuario->temporada->rodada_aberta as $rodada)
 
     <div class="col-lg-12">
         <div class="panel panel-default no-padding">

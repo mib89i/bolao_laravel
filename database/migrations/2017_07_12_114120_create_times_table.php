@@ -51,6 +51,15 @@ class CreateTimesTable extends Migration {
                     'updated_at' => new \DateTime()
                 )
         );
+        DB::table('times')->insert(
+                array(
+                    'nome' => 'Santos',
+                    'sigla' => 'SAN',
+                    'logo' => 'santos.png',
+                    'created_at' => new \DateTime(),
+                    'updated_at' => new \DateTime()
+                )
+        );
     }
 
     /**

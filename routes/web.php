@@ -43,6 +43,7 @@ Route::post('/temporadas/{temporada}/adicionar_divisao', 'TemporadasController@a
 Route::get('/temporadas/{temporada}/status_convite/{mensagem}/{status}', 'TemporadasController@statusConvite');
 Route::get('/temporadas/{temporada}/sair/temporada', 'TemporadasController@sairTemporada');
 Route::get('/temporadas/add_para_divisao/{temporada_divisao}/usuario/{usuario}', 'TemporadasController@adicionarUsuarioParaDivisao');
+Route::get('/temporadas/{temporada}/lista_rodadas', 'TemporadasController@listaRodadas');
 
 // CONVITES
 Route::get('/convites/t/{temporada}/tipo/{tipo_convite}/{usuario}', 'TemporadasController@enviarConviteTemporada');
@@ -69,6 +70,7 @@ Route::patch('/rodada/{rodada}/editar/jogo/{jogo}', 'RodadaController@atualizarJ
 Route::delete('/rodada/{rodada}/excluir/jogo/{jogo}', 'RodadaController@excluirJogoRodada');
 Route::delete('/rodada/{rodada}/excluir', 'RodadaController@excluir');
 Route::post('/rodada/{rodada}/palpite', 'RodadaController@gravarPalpite');
+Route::get('/rodada/{rodada}/terminar', 'RodadaController@terminarRodada');
 
 // TIMES
 Route::get('/times/ajax/get_lista_time', 'TimesController@getListaTime');

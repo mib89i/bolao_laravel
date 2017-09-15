@@ -25,7 +25,7 @@
                 <div class="row">
                     @if (Auth::user()->id === $rodada->usuario_id)
                     <div class="col-xs-9 col-md-11 text-center">
-                        <h4><b>{{ $rodada->nome }}</b></h4>
+                        <h3><b>{{ $rodada->nome }}</b></h3>
                     </div>
 
                     <div class="col-xs-3 col-md-1">
@@ -37,17 +37,31 @@
                     </div>
                     @else
                     <div class="col-lg-12 text-center">
-                        <h4><b>{{ $rodada->nome }}</b></h4>
+                        <h3><b>{{ $rodada->nome }}</b></h3>
                     </div>
                     @endif
+                </div>
+            </div>
+            <div class="panel-body" style="background: #d34615; color: white">
+                <div class="row vertical-align">
+                    <div class="col-xs-8">
+                        @if(!$rodada->concluida)
+                        <h4>PONTUAÇÃO PARCIAL</h4>
+                        @else
+                        <h4>PONTUAÇÃO FINAL</h4>
+                        @endif
+                    </div>
+                    <div class="col-xs-4 text-right">
+                        <h2><b>{{ $pontuacao_parcial->pontos_rodada }} pts</b></h2>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 @if(!$rodada->jogo->isEmpty())
 <form method="POST" action="/rodada/{{ $rodada->id }}/palpite">
-
     {{ csrf_field() }}
 
     @foreach($rodada->jogo AS $jogo)
@@ -110,7 +124,7 @@
                     $hora_hoje = date('H:i'); // HORA DE HOJE
                     $editavel = TRUE;
 
-                    if (strtotime($data_hoje) > strtotime($jogo->data_jogo)) {
+                    if (strtotime($data_hoje) > strtotime($jogo->data_jogo) || $rodada->concluida) {
                         // JOGO JÁ PASSOU
                         $editavel = FALSE;
                     } else if (strtotime($data_hoje) == strtotime($jogo->data_jogo)) {
@@ -123,45 +137,45 @@
                     ?>
 
                     @if($editavel)
-                        @if($jogo->palpite == NULL)
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <input class="form-control text-center" name="lista_jogos[{{ $jogo->id }}][placar_time1]" value="{{ $jogo->placar_time1 }}"/>
-                            </div>
-                            <div class="col-xs-6">
-                                <input class="form-control text-center" name="lista_jogos[{{ $jogo->id }}][placar_time2]" value="{{ $jogo->placar_time2 }}"/>
-                            </div>
+                    @if($jogo->palpite == NULL)
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <input class="form-control text-center" name="lista_jogos[{{ $jogo->id }}][placar_time1]" value="{{ $jogo->placar_time1 }}"/>
                         </div>
-                        @else
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <input class="form-control text-center" name="lista_jogos[{{ $jogo->id }}][placar_time1]" value="{{ $jogo->palpite->placar_time1 }}" />
-                            </div>
-                            <div class="col-xs-6">
-                                <input class="form-control text-center" name="lista_jogos[{{ $jogo->id }}][placar_time2]" value="{{ $jogo->palpite->placar_time2 }}" />
-                            </div>
+                        <div class="col-xs-6">
+                            <input class="form-control text-center" name="lista_jogos[{{ $jogo->id }}][placar_time2]" value="{{ $jogo->placar_time2 }}"/>
                         </div>
-                        @endif
+                    </div>
                     @else
-                        @if($jogo->palpite == NULL)
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <input class="form-control text-center" name="lista_jogos[{{ $jogo->id }}][placar_time1]" disabled="disabled"/>
-                            </div>
-                            <div class="col-xs-6">
-                                <input class="form-control text-center" name="lista_jogos[{{ $jogo->id }}][placar_time2]" disabled="disabled"/>
-                            </div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <input class="form-control text-center" name="lista_jogos[{{ $jogo->id }}][placar_time1]" value="{{ $jogo->palpite->placar_time1 }}" />
                         </div>
-                        @else
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <input class="form-control text-center" name="lista_jogos[{{ $jogo->id }}][placar_time1]" value="{{ $jogo->palpite->placar_time1 }}" disabled="disabled"/>
-                            </div>
-                            <div class="col-xs-6">
-                                <input class="form-control text-center" name="lista_jogos[{{ $jogo->id }}][placar_time2]" value="{{ $jogo->palpite->placar_time2 }}" disabled="disabled"/>
-                            </div>
+                        <div class="col-xs-6">
+                            <input class="form-control text-center" name="lista_jogos[{{ $jogo->id }}][placar_time2]" value="{{ $jogo->palpite->placar_time2 }}" />
                         </div>
-                        @endif
+                    </div>
+                    @endif
+                    @else
+                    @if($jogo->palpite == NULL)
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <input class="form-control text-center" name="lista_jogos[{{ $jogo->id }}][placar_time1]" disabled="disabled"/>
+                        </div>
+                        <div class="col-xs-6">
+                            <input class="form-control text-center" name="lista_jogos[{{ $jogo->id }}][placar_time2]" disabled="disabled"/>
+                        </div>
+                    </div>
+                    @else
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <input class="form-control text-center" name="lista_jogos[{{ $jogo->id }}][placar_time1]" value="{{ $jogo->palpite->placar_time1 }}" disabled="disabled"/>
+                        </div>
+                        <div class="col-xs-6">
+                            <input class="form-control text-center" name="lista_jogos[{{ $jogo->id }}][placar_time2]" value="{{ $jogo->palpite->placar_time2 }}" disabled="disabled"/>
+                        </div>
+                    </div>
+                    @endif
                     @endif
                     <div class="row">
                         <div class="col-lg-12 text-center">
@@ -171,7 +185,7 @@
                 </div>
             </div>
         </div>
-        
+
         @if($editavel == FALSE && $jogo->hora_jogo_final == NULL)
         <div class="panel-body" style="background: #0fefb7">
             <div class="row">
@@ -180,14 +194,22 @@
                 </div>
             </div>
         </div>
-        <div class="panel-body no-padding text-center">
+        <div class="panel-body text-center" style="padding-top: 0px; padding-bottom: 0px">
             <div class="row">
-                <div class="col-lg-12">
-                    <?php 
-                        $plac_1 = ($jogo->placar_time1) != null ?  $jogo->placar_time1 : 0;
-                        $plac_2 = ($jogo->placar_time2) != null ?  $jogo->placar_time2 : 0;
+                <div class="col-xs-9 col-sm-11">
+                    <?php
+                    $plac_1 = ($jogo->placar_time1) != null ? $jogo->placar_time1 : 0;
+                    $plac_2 = ($jogo->placar_time2) != null ? $jogo->placar_time2 : 0;
                     ?>
-                    <h6>{{ $jogo->time1->nome }} {{ $plac_1 }} x {{ $plac_2 }} {{ $jogo->time2->nome }}</h6>
+                    <h5>{{ $jogo->time1->nome }} {{ $plac_1 }} x {{ $plac_2 }} {{ $jogo->time2->nome }}</h5>
+                </div>
+                
+                <div class="col-xs-3 col-sm-1" style="background: #d34615; color: white">
+                    @if($jogo->palpite == NULL)
+                    <h5>0 pts</h5>
+                    @else
+                    <h5>{{ $jogo->palpite->pontos_palpite()->pontos }} pts</h5>
+                    @endif
                 </div>
             </div>
         </div>
@@ -199,26 +221,36 @@
                 </div>
             </div>
         </div>
-        <div class="panel-body no-padding text-center">
+        <div class="panel-body text-center" style="padding-top: 0px; padding-bottom: 0px">
             <div class="row">
-                <div class="col-lg-12">
-                    <?php 
-                        $plac_1 = ($jogo->placar_time1) != null ?  $jogo->placar_time1 : 0;
-                        $plac_2 = ($jogo->placar_time2) != null ?  $jogo->placar_time2 : 0;
+                <div class="col-xs-9 col-sm-11">
+                    <?php
+                    $plac_1 = ($jogo->placar_time1) != null ? $jogo->placar_time1 : 0;
+                    $plac_2 = ($jogo->placar_time2) != null ? $jogo->placar_time2 : 0;
                     ?>
                     <h6>{{ $jogo->time1->nome }} {{ $plac_1 }} x {{ $plac_2 }} {{ $jogo->time2->nome }}</h6>
+                </div>
+                
+                <div class="col-xs-3 col-sm-1" style="background: #d34615; color: white">
+                    @if($jogo->palpite == NULL)
+                    <h5>0 pts</h5>
+                    @else
+                    <h5>{{ $jogo->palpite->pontos_palpite()->pontos }} pts</h5>
+                    @endif
                 </div>
             </div>
         </div>
         @endif
     </div>
-    
+
     @endforeach
 
     <div class="row">
         <div class="col-lg-12">
-            <button type="submit" class="btn btn-success hidden-xs">GRAVAR PALPITES</button>    
-            <button type="submit" class="btn btn-success hidden-sm hidden-md hidden-lg btn-block">GRAVAR PALPITES</button>    
+            @if(!$rodada->concluida)
+                <button type="submit" class="btn btn-success hidden-xs">GRAVAR PALPITES</button>    
+                <button type="submit" class="btn btn-success hidden-sm hidden-md hidden-lg btn-block">GRAVAR PALPITES</button>    
+            @endif
         </div>
     </div>
 

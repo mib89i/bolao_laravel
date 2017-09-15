@@ -34,6 +34,14 @@
     </div>
 </div>
 
+@if(!$rodada->publicada)
+<div class="panel panel-primary no-padding" style="background: #e95420; color: white">
+    <div class="panel-body">
+        <h5><b>RODADA NÃO ESTÁ VISÍVEL PARA OS JOGADORES</b></h5>
+    </div>
+</div>
+@endif
+
 <div class="panel panel-default">
     <div class="panel-body">
         <form method="POST" action="/rodada/{{ $rodada->id }}/editar/t/{{ $temporada->id }}">
@@ -48,12 +56,21 @@
                 <input type="hidden" name="numero" value="{{ $rodada->numero }}">
             </div>
 
-            <hr />
-
-            <div class="form-group">
-                <button class="btn btn-primary">ALTERAR</button>
-                <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal_excluir_rodada">EXCLUIR</a>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="publicada" {{ $rodada->publicada ? 'checked' : ''}}> PUBLICAR ESTA RODADA
+                </label>
             </div>
+            
+            @if(!$rodada->concluida)
+                <hr />
+                
+                
+                <div class="form-group">
+                    <button class="btn btn-primary">ALTERAR</button>
+                    <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal_excluir_rodada">EXCLUIR</a>
+                </div>
+            @endif
         </form>
     </div>
 </div>
@@ -80,7 +97,7 @@
                     {{ method_field('DELETE') }}
 
                 </form>
-
+                
                 <button type="button" class="btn btn-default" data-dismiss="modal">CANCELAR</button>
                 <button type="submit" class="btn btn-danger" form="excluir_rodada_form">EXCLUIR RODADA</button>
             </div>
@@ -88,6 +105,15 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+@if($rodada->concluida)
+<div class="panel panel-default">
+    <div class="panel-body" style="background: #009966; color: white">
+        <h4><b>RODADA CONCLUÍDA</b></h4>
+    </div>
+</div>
+@endif
+
+@if(!$rodada->concluida)
 <form action="/rodada/{{ $rodada->id }}/editar/t/{{ $temporada->id }}/adicionar_jogo" method="POST">
 
     {{ csrf_field() }}
@@ -151,14 +177,9 @@
         </div>
     </div>
 </form>
+@endif
 
 @if(!$lista_jogos->isEmpty())
-
-<div class="row">
-    <div class="col-lg-12">
-        <h5><b>LISTA DE JOGOS</b></h5>
-    </div>
-</div>
 
 @foreach($lista_jogos AS $jogo)
 
@@ -367,6 +388,15 @@ $editavel = $jogo->hora_jogo_final == NULL ? TRUE : FALSE;
     </div>
 </div>
 @endforeach
+
+<div class="row">
+    <div class="col-lg-12">
+        @if(!$rodada->concluida)
+        <a href="/rodada/{{ $rodada->id }}/terminar" class="btn btn-success hidden-xs">TERMINAR RODADA</a>    
+        <a href="/rodada/{{ $rodada->id }}/terminar" class="btn btn-success hidden-sm hidden-md hidden-lg btn-block">TERMINAR RODADA</a>
+        @endif
+    </div>
+</div>
 
 @endif
 
