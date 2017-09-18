@@ -20,7 +20,8 @@ class Rodada extends Model {
 
         return $this->hasMany(Jogo::class)
                         ->orderBy('data_jogo', 'asc')
-                        ->orderBy('hora_jogo', 'asc');
+                        ->orderBy('hora_jogo', 'asc')
+                        ->orderBy('id', 'asc');
         
     }
 

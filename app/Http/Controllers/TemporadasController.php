@@ -16,10 +16,11 @@ class TemporadasController extends Controller {
     public function __construct() {
 
         $this->middleware('auth')->except([]);
+        
     }
 
     public function index() {
-
+        
         if (request()->isMethod('post')) {
 
             //$pesquisa = mb_strtolower(request('search'));

@@ -78,6 +78,8 @@ Route::get('/times/ajax/get_lista_time2', 'TimesController@getListaTime2');
 Route::get('/times/{time}/selecionar/{tipo_time}', 'TimesController@selecionarTime');
 Route::get('/times/{time}/tirar', 'TimesController@tirarTime');
 
+Route::get('/perfil/', 'PerfilController@index');
+Route::get('/perfil/{usuario}/{nome}', 'PerfilController@perfilUsuario');
 
 
 

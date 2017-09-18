@@ -35,8 +35,8 @@
 </div>
 
 @if(!$rodada->publicada)
-<div class="panel panel-primary no-padding" style="background: #e95420; color: white">
-    <div class="panel-body">
+<div class="panel panel-primary no-padding">
+    <div class="panel-body bg-primary">
         <h5><b>RODADA NÃO ESTÁ VISÍVEL PARA OS JOGADORES</b></h5>
     </div>
 </div>
@@ -56,13 +56,13 @@
                 <input type="hidden" name="numero" value="{{ $rodada->numero }}">
             </div>
 
+            @if(!$rodada->concluida)
             <div class="checkbox">
                 <label>
                     <input type="checkbox" name="publicada" {{ $rodada->publicada ? 'checked' : ''}}> PUBLICAR ESTA RODADA
                 </label>
             </div>
             
-            @if(!$rodada->concluida)
                 <hr />
                 
                 

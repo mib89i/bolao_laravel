@@ -22,7 +22,9 @@ class AppServiceProvider extends ServiceProvider {
             $quantidade_mensagem = \App\Mensagem::quantidade_mensagens();
 
             $view->with(compact('mensagem', 'quantidade_mensagem'));
+            
         });
+        
     }
 
     /**

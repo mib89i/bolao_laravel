@@ -56,27 +56,7 @@ class LoginController extends Controller {
         auth()->login($user);
 
         return redirect('/');
-
-
-        /*
-          // OAuth Two Providers
-          $token = $user->token;
-          $refreshToken = $user->refreshToken; // not always provided
-          $expiresIn = $user->expiresIn;
-
-          // OAuth One Providers
-          $token = $user->token;
-          $tokenSecret = $user->tokenSecret;
-
-          // All Providers
-          $user->getId();
-          $user->getNickname();
-          $user->getName();
-          $user->getEmail();
-          $user->getAvatar();
-
-          // $user->token;
-         * */
+        
     }
 
     public function logout() {

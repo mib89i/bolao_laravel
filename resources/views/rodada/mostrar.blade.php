@@ -42,7 +42,7 @@
                     @endif
                 </div>
             </div>
-            <div class="panel-body" style="background: #d34615; color: white">
+            <div class="panel-body bg-primary">
                 <div class="row vertical-align">
                     <div class="col-xs-8">
                         @if(!$rodada->concluida)
@@ -204,7 +204,7 @@
                     <h5>{{ $jogo->time1->nome }} {{ $plac_1 }} x {{ $plac_2 }} {{ $jogo->time2->nome }}</h5>
                 </div>
                 
-                <div class="col-xs-3 col-sm-1" style="background: #d34615; color: white">
+                <div class="col-xs-3 col-sm-1 bg-primary">
                     @if($jogo->palpite == NULL)
                     <h5>0 pts</h5>
                     @else

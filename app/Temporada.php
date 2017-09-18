@@ -75,7 +75,7 @@ class Temporada extends Model {
                                         rank() over(ORDER BY COALESCE(rt.pontos, 0) DESC, u.nome ASC) AS rank,
                                         COALESCE(rt.pontos, 0) AS pontos,
                                         COALESCE(rt.posicao, 0) AS posicao,
-                                        COALESCE(rt.posicao - rt.posicao_anterior, 0) AS variacao,
+                                        COALESCE(rt.posicao_anterior - rt.posicao, 0) AS variacao,
                                         du.id AS divisao_usuario_id
                                    FROM usuarios u
                                   INNER JOIN temporada_usuario tu ON tu.usuario_id = u.id
@@ -98,7 +98,7 @@ class Temporada extends Model {
                                         rank() over(ORDER BY COALESCE(func_pontos_temporada_divisao(td.id, u.id), 0) DESC, u.nome ASC) AS rank,
                                         COALESCE(func_pontos_temporada_divisao(td.id, u.id), 0) AS pontos,
                                         COALESCE(rt.posicao, 0) AS posicao,
-                                        COALESCE(rt.posicao - rt.posicao_anterior, 0) AS variacao,
+                                        COALESCE(rt.posicao_anterior - rt.posicao, 0) AS variacao,
                                         du.id AS divisao_usuario_id
                                    FROM usuarios u
                                   INNER JOIN temporada_usuario tu ON tu.usuario_id = u.id

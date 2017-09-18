@@ -14,9 +14,11 @@ class RodadaController extends Controller {
     public function __construct() {
 
         $this->middleware('auth')->except([]);
+        
     }
 
     public function index() {
+        
         $lista_rodada = Rodada::where('usuario_id', '=', auth()->user()->id)->orderBy('id')->get();
 
         return view('rodada.index', compact('lista_rodada'));

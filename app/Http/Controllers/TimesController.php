@@ -9,10 +9,11 @@ class TimesController extends Controller {
     public function __construct() {
 
         $this->middleware('auth')->except([]);
+        
     }
 
     public function getListaTime() {
-
+        
         if (!empty(request()->nome_time)) {
             $lista_time = Time::pesquisa_times(request()->nome_time);
         } else {

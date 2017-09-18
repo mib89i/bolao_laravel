@@ -5,11 +5,16 @@ namespace App\Http\Controllers;
 use App\TemporadaUsuario;
 use App\Rodada;
 
-
 class HomeController extends Controller
 {
+    public function __construct() {
+
+        $this->middleware('auth')->except(['index', 'login']);
+        
+    }
     
     public function index(){
+        
         if (auth()->check()){
             //$temporada_usuarios = TemporadaUsuario::where(['usuario_id' => auth()->user()->id])->get();
             $temporada_usuarios = TemporadaUsuario::whereHas('temporada', function($q) {
