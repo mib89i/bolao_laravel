@@ -3,10 +3,20 @@
 @section('content')
 
 @if (!Auth::check())
+
 <div class="row" style="text-align: center; margin: 0 auto">
     <div class="col-lg-12">
-
-        <a href="login/facebook" class="btn btn-primary btn-lg">
+        <img src='https://lh4.googleusercontent.com/0kqiEoQueZQhgYtPrTgrH4qjdt-77ZI7J013U4MRmfjrKa-UhOFM_Gb45id2LqrOhtrHzLNY=w410-h737' class="img-responsive img-rounded">
+        
+        <br />
+        
+        <a href="login/facebook" class="btn btn-primary btn-lg btn-block hidden-sm hidden-md hidden-lg">
+            <div class="vertical-align">
+                <i class="fa fa-facebook-square fa-2x" aria-hidden="true" style="margin-right: 15px"></i> Entrar com Facebook
+            </div>
+        </a>
+        
+        <a href="login/facebook" class="btn btn-primary btn-lg hidden-xs">
             <div class="vertical-align">
                 <i class="fa fa-facebook-square fa-2x" aria-hidden="true" style="margin-right: 15px"></i> Entrar com Facebook
             </div>
@@ -78,17 +88,13 @@
         </div>
     </div>
 
-    @if (count($temporada_usuario->temporada->rodada) >= 1)
-    
     <div class="col-lg-12">
         <div class="panel panel-default no-padding">
             <div class="panel-body">
-                <a href="/temporadas/{{ $temporada_usuario->temporada->id }}/lista_rodadas">VER OUTRAS RODADAS</a>
+                <a href="/temporadas/{{ $temporada_usuario->temporada->id }}/lista_rodadas">VER RODADAS</a>
             </div>
         </div>
     </div>
-    
-    @endif
     
     @foreach($temporada_usuario->temporada->rodada_aberta as $rodada)
 

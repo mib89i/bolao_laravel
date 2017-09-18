@@ -104,7 +104,7 @@ class RodadaController extends Controller {
 
         try {
             $rodada->nome = request('nome');
-            //$rodada->publicada = (request('publicada') == null) ? FALSE : TRUE;
+            
             $rodada->publicada = (request('publicada') === null) ? FALSE : TRUE;
 
             $rodada->update();

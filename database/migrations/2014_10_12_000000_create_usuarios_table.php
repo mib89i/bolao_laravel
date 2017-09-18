@@ -40,7 +40,7 @@ class CreateUsuariosTable extends Migration
                         LANGUAGE sql VOLATILE
                         COST 100;
                       ALTER FUNCTION translate(character varying)
-                        OWNER TO postgres;"
+                        OWNER TO db_bolao;"
         );
     }
 

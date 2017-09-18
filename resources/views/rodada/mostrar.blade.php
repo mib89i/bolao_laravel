@@ -258,5 +258,24 @@
 
 @endif
 
+<div class="row">
+    <div class="col-xs-12">
+        <div class="fb-comments hidden-xs" data-numposts="10" data-width="100%"></div>
+        <div class="fb-comments hidden-sm hidden-md hidden-lg" data-numposts="10" data-mobile="true"></div>
+    </div>
+</div>
+
+@section('script-add')
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v2.10&appId=1706061089697481";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+@endsection
 
 @endsection
