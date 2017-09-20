@@ -61,7 +61,7 @@
             <hr />
 
             <div class="form-group">
-                <button class="btn btn-primary">CRIAR</button>
+                <button class="btn btn-primary open_loading">CRIAR</button>
             </div>
         </form>
     </div>

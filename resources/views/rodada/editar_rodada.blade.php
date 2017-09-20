@@ -57,17 +57,17 @@
             </div>
 
             @if(!$rodada->concluida)
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" name="publicada" {{ $rodada->publicada ? 'checked' : ''}}> PUBLICAR ESTA RODADA
-                </label>
-            </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="publicada" {{ $rodada->publicada ? 'checked' : ''}}> PUBLICAR ESTA RODADA
+                    </label>
+                </div>
             
                 <hr />
                 
                 
                 <div class="form-group">
-                    <button class="btn btn-primary">ALTERAR</button>
+                    <button class="btn btn-primary open_loading">ALTERAR</button>
                     <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal_excluir_rodada">EXCLUIR</a>
                 </div>
             @endif
@@ -99,7 +99,7 @@
                 </form>
                 
                 <button type="button" class="btn btn-default" data-dismiss="modal">CANCELAR</button>
-                <button type="submit" class="btn btn-danger" form="excluir_rodada_form">EXCLUIR RODADA</button>
+                <button type="submit" class="btn btn-danger open_loading" form="excluir_rodada_form">EXCLUIR RODADA</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -169,7 +169,7 @@
                     <hr />
 
                     <div class="form-group">
-                        <button class="btn btn-primary">ADICIONAR ESTE JOGO</button>
+                        <button class="btn btn-primary open_loading">ADICIONAR ESTE JOGO</button>
                         <a href="/rodada/{{ $rodada->id }}/limpar_sessao" class="btn btn-default">LIMPAR</a>
                     </div>
                 </div>

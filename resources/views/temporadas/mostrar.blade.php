@@ -77,7 +77,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">FECHAR</button>
-                <a href="/convites/t/{{ $temporada->id }}/tipo/convidado" class="btn btn-primary">ENTRAR</a>
+                <a href="/convites/t/{{ $temporada->id }}/tipo/convidado" class="btn btn-primary open_loading">ENTRAR</a>
             </div>
 
         </div><!-- /.modal-content -->
@@ -126,7 +126,12 @@
                     </div>
 
                     <div class="col-xs-4 col-md-3">
-                        <button id="btn_pesquisa_usuario" type="button" class="btn btn-primary btn-block">Pesquisar</button>
+                        <div class="hidden-xs">
+                            <button id="btn_pesquisa_usuario" type="button" class="btn btn-primary btn-block"><i class="fa fa-search" aria-hidden="true"></i> PESQUISAR</button>
+                        </div>
+                        <div class="hidden-sm hidden-md hidden-lg">
+                            <button id="btn_pesquisa_usuario" type="button" class="btn btn-primary btn-block"><i class="fa fa-search" aria-hidden="true"></i></button>
+                        </div>
                     </div>
                 </div>
 
@@ -147,7 +152,7 @@
 
 <div class="panel panel-default no-padding">
     <div class="panel-body">
-        <a href="/temporadas/{{ $temporada->id }}/{{ str_slug($temporada->nome, '-') }}/divisao/{{ $temporada_divisao->divisao->id }}" style="text-decoration: none">
+        <a href="/temporadas/{{ $temporada->id }}/{{ str_slug($temporada->nome, '-') }}/divisao/{{ $temporada_divisao->divisao->id }}" style="text-decoration: none" class="open_loading">
             <div class="panel-body text-center  vertical-align">
                 <i class="fa fa-list fa-2x" aria-hidden="true" style="margin-right: 15px"></i> <h4>{{ $temporada_divisao->divisao->nome }}</h4>
             </div>
@@ -231,7 +236,7 @@
 
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">FECHAR</button>
-                                        <a href="/temporadas/add_para_divisao/{{ $temporada_divisao->id }}/usuario/{{ $temporada_usuario->usuario->id }}" class="btn btn-success">ADICIONAR</a>
+                                        <a href="/temporadas/add_para_divisao/{{ $temporada_divisao->id }}/usuario/{{ $temporada_usuario->usuario->id }}" class="btn btn-success open_loading">ADICIONAR</a>
                                     </div>
 
                                 </div><!-- /.modal-content -->

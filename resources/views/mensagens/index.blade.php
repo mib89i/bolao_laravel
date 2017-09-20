@@ -41,11 +41,11 @@
                         @if ($mensagem->convite->aceito === null)
                         <div class="btn-group btn-group-justified" role="group" aria-label="...">
                             @if ($mensagem->convite->temporada !== null)
-                            <a href="/temporadas/{{ $mensagem->convite->temporada->id }}/status_convite/{{ $mensagem->id }}/aceito" class="btn btn-success">Aceitar</a>
-                            <a href="/temporadas/{{ $mensagem->convite->temporada->id }}/status_convite/{{ $mensagem->id }}/rejeitado" class="btn btn-danger">Rejeitar</a>
+                            <a href="/temporadas/{{ $mensagem->convite->temporada->id }}/status_convite/{{ $mensagem->id }}/aceito" class="btn btn-success open_loading">Aceitar</a>
+                            <a href="/temporadas/{{ $mensagem->convite->temporada->id }}/status_convite/{{ $mensagem->id }}/rejeitado" class="btn btn-danger open_loading">Rejeitar</a>
                             @else
-                            <a href="/ligas/request_accepted" class="btn btn-success">Aceitar</a>
-                            <a href="/ligas/request_denied" class="btn btn-danger">Rejeitar</a>
+                            <a href="/ligas/request_accepted" class="btn btn-success open_loading">Aceitar</a>
+                            <a href="/ligas/request_denied" class="btn btn-danger open_loading">Rejeitar</a>
                             @endif
 
                         </div>

@@ -130,7 +130,7 @@ class TemporadasController extends Controller {
 
         session()->flash('message', 'Temporada Atualizada.');
 
-        return redirect('/');
+        return redirect('temporadas/' . $temporada->id . '/editar');
     }
 
     public function excluir(Temporada $temporada) {

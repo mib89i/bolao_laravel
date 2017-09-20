@@ -41,7 +41,7 @@
                     <hr />
 
                     <div class="form-group">
-                        <button class="btn btn-primary">Atualizar</button>
+                        <button class="btn btn-primary open_loading">Atualizar</button>
                         <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal_delete">Excluir</a>
                         <a href="{{ URL::previous() }}" style="margin-left: 20px">Voltar</a>
                     </div>
@@ -138,7 +138,7 @@
 
 <div class="panel panel-default">
     <div class="panel-body">
-        <a href="/temporadas/{{ $temporada->id }}/{{ str_slug($temporada->nome, '-') }}/divisao/{{ $temporada_divisao->divisao->id }}" style="text-decoration: none">
+        <a href="/temporadas/{{ $temporada->id }}/{{ str_slug($temporada->nome, '-') }}/divisao/{{ $temporada_divisao->divisao->id }}" style="text-decoration: none" class="open_loading">
             <div class="panel-body text-center  vertical-align">
                 <i class="fa fa-list fa-2x" aria-hidden="true" style="margin-right: 15px"></i> <h4>{{ $temporada_divisao->divisao->nome }}</h4>
             </div>

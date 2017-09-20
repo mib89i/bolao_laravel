@@ -21,5 +21,23 @@
 <script src="/js/jquery.mask.min.js"></script>
 
 <script src="/js/scripts.js"></script>
+    
+<script>
+    function openLoading(){
+        $("#overlay").fadeIn();    
+    }
+    
+    function closeLoading(){
+        $("#overlay").hide();    
+    }
+
+    $(".open_loading").click(function() {
+        openLoading();
+    });
+    
+    $(".close_loading").click(function() {
+        closeLoading();
+    });
+</script>
 
 @yield('script-add')

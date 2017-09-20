@@ -35,12 +35,11 @@ class CreateUsuariosTable extends Migration
                       SELECT * from TRANSLATE($1, 
                       'áéíóúàèìòùãõâêîôôäëïöüçÁÉÍÓÚÀÈÌÒÙÃÕÂÊÎÔÛÄËÏÖÜÇ','aeiouaeiouaoaeiooaeioucAEIOUAEIOUAOAEIOOAEIOUC'); 
 
-
                       ".'$BODY$'."
                         LANGUAGE sql VOLATILE
                         COST 100;
                       ALTER FUNCTION translate(character varying)
-                        OWNER TO db_bolao;"
+                        OWNER TO postgres;"
         );
     }
 

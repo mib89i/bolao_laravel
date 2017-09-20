@@ -248,8 +248,8 @@
     <div class="row">
         <div class="col-lg-12">
             @if(!$rodada->concluida)
-                <button type="submit" class="btn btn-success hidden-xs">GRAVAR PALPITES</button>    
-                <button type="submit" class="btn btn-success hidden-sm hidden-md hidden-lg btn-block">GRAVAR PALPITES</button>    
+                <button type="submit" class="btn btn-success hidden-xs open_loading">GRAVAR PALPITES</button>    
+                <button type="submit" class="btn btn-success hidden-sm hidden-md hidden-lg btn-block open_loading">GRAVAR PALPITES</button>    
             @endif
         </div>
     </div>

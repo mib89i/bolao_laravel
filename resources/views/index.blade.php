@@ -5,23 +5,33 @@
 @if (!Auth::check())
 
 <div class="row" style="text-align: center; margin: 0 auto">
-    <div class="col-lg-12">
-        <img src='https://lh4.googleusercontent.com/0kqiEoQueZQhgYtPrTgrH4qjdt-77ZI7J013U4MRmfjrKa-UhOFM_Gb45id2LqrOhtrHzLNY=w410-h737' class="img-responsive img-rounded">
-        
-        <br />
-        
-        <a href="login/facebook" class="btn btn-primary btn-lg btn-block hidden-sm hidden-md hidden-lg">
-            <div class="vertical-align">
-                <i class="fa fa-facebook-square fa-2x" aria-hidden="true" style="margin-right: 15px"></i> Entrar com Facebook
+    <div class="col-md-4 col-md-offset-4">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <img src='https://s3-sa-east-1.amazonaws.com/bolaolaravel/logobolao.png' class="img-responsive img-rounded">
+                <h2 style="font-family: 'Annie Use Your Telescope'"><b>BOLÃO BOCANEIROS</b></h2>
             </div>
-        </a>
+        </div>
+    </div>
+    <!--
+    <div class="col-lg-12">
+        <img src='https://s3-sa-east-1.amazonaws.com/bolaolaravel/logobolao.png' class="img-responsive img-rounded hidden-sm hidden-md hidden-lg">
         
-        <a href="login/facebook" class="btn btn-primary btn-lg hidden-xs">
+        <img src='https://s3-sa-east-1.amazonaws.com/bolaolaravel/logobolao.png' class="img-responsive img-rounded hidden-xs" style="margin: 0 auto; width: 250px">
+    </div>
+    -->
+    <div class="col-lg-12" style="margin-top: 10px">
+        <a href="login/facebook" class="btn btn-primary btn-lg btn-block hidden-sm hidden-md hidden-lg" onclick="openLoading()">
             <div class="vertical-align">
                 <i class="fa fa-facebook-square fa-2x" aria-hidden="true" style="margin-right: 15px"></i> Entrar com Facebook
             </div>
         </a>
 
+        <a href="login/facebook" class="btn btn-primary btn-lg hidden-xs" onclick="openLoading()">
+            <div class="vertical-align">
+                <i class="fa fa-facebook-square fa-2x" aria-hidden="true" style="margin-right: 15px"></i> Entrar com Facebook
+            </div>
+        </a>
     </div>
 </div>
 
@@ -95,14 +105,14 @@
             </div>
         </div>
     </div>
-    
+
     @foreach($temporada_usuario->temporada->rodada_aberta as $rodada)
 
     <div class="col-lg-12">
         <div class="panel panel-default no-padding">
             <div class="row">
                 <div class="col-xs-9 col-md-11">
-                    <a href="/rodada/{{ $rodada->id }}" style="text-decoration: none">
+                    <a href="/rodada/{{ $rodada->id }}" class="open_loading" style="text-decoration: none">
                         <div class="panel-body">
                             <div class="vertical-align" style="color: green">
                                 <i class="fa fa-futbol-o" aria-hidden="true" style="margin-right: 15px"></i>
@@ -129,7 +139,7 @@
     </div>
     @endforeach
 </div>
-    <hr />
+<hr />
 @endforeach
 
 @endif
