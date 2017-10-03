@@ -34,6 +34,7 @@ Route::post('/temporadas/criar', 'TemporadasController@gravar');
 Route::get('/temporadas/{temporada}/editar', 'TemporadasController@editar');
 Route::patch('/temporadas/{temporada}/editar', 'TemporadasController@atualizar');
 Route::patch('/temporadas/{temporada}/excluir', 'TemporadasController@excluir');
+Route::patch('/temporadas/{temporada}/terminar', 'TemporadasController@terminar');
 
 Route::get('/temporadas/{temporada}', 'TemporadasController@mostrar');
 Route::get('/temporadas/{temporada}/{nome}/divisao/{divisao}', 'TemporadasController@temporadaDivisao');

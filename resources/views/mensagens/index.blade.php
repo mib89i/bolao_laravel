@@ -26,7 +26,7 @@
                         <div class="row">
                             <div class="col-lg-12 no-padding ">
                                 <h5 class="no-padding">
-                                    <b><a href="/perfil">{{ $mensagem->do_usuario->nome }}</a></b>
+                                    <b><a href="/perfil/{{ $mensagem->do_usuario->id }}/{{ str_slug($mensagem->do_usuario->nome, '-') }}">{{ $mensagem->do_usuario->nome }}</a></b>
                                     {{ $mensagem->descricao }}
                                 </h5>
                             </div>

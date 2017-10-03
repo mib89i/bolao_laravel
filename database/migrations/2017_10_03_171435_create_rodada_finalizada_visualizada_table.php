@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTemporadasTable extends Migration
+class CreateRodadaFinalizadaVisualizadaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,15 @@ class CreateTemporadasTable extends Migration
      */
     public function up()
     {
-        Schema::create('temporadas', function (Blueprint $table) {
+        Schema::create('rodada_finalizada_visualizada', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nome');
+
+            $table->integer('rodada_finalizada_id');
+            $table->foreign('rodada_finalizada_id')->references('id')->on('rodada_finalizada');
             
-            $table->integer('usuario_id')->unsigned();
+            $table->integer('usuario_id');
             $table->foreign('usuario_id')->references('id')->on('usuarios');
-            
-            $table->boolean('publica');
-            
-            $table->boolean('ativa')->default(TRUE);
-            
-            $table->boolean('concluida')->default(FALSE);
-            
+
             $table->timestamps();
         });
     }
@@ -37,6 +33,6 @@ class CreateTemporadasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('temporadas');
+        Schema::dropIfExists('rodada_finalizada_visualizada');
     }
 }

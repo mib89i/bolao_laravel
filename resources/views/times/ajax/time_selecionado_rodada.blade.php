@@ -7,7 +7,7 @@
             @else
             <div class="row">
                 <div class="col-xs-5 col-sm-2">
-                    <img src='http://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default-team-logo-500.png&h=42&w=42' class="img-rounded"/>
+                    <img src='{{ Session::get('time1_selecionado')->logo }}' class="img-responsive"/>
                 </div>
 
                 <div class="col-xs-7 col-sm-10">
@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="col-xs-5 col-sm-2">
-                    <img src='http://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default-team-logo-500.png&h=42&w=42' class="img-rounded"/>
+                    <img src='{{ Session::get('time2_selecionado')->logo }}' class="img-responsive"/>
                 </div>
             </div>
             @endif                                

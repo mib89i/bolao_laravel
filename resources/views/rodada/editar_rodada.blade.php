@@ -180,223 +180,220 @@
 @endif
 
 @if(!$lista_jogos->isEmpty())
+<form method="POST" action="/rodada/{{ $rodada->id }}/editar/jogo/1">
+    
+    {{ csrf_field() }}
+    {{ method_field('PATCH') }}
+    
+    @foreach($lista_jogos AS $jogo)
 
-@foreach($lista_jogos AS $jogo)
+    <?php
+    $editavel = $jogo->hora_jogo_final == NULL ? TRUE : FALSE;
+    ?>
 
-<?php
-$editavel = $jogo->hora_jogo_final == NULL ? TRUE : FALSE;
-?>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-9 col-md-11">
+                            <h4><b>{{ $jogo->local }}</b> - {{ date('d/m/Y', strtotime($jogo->data_jogo)) }} - {{ $jogo->hora_jogo }} {{ ($jogo->importancia != 1 ? 'x'.$jogo->importancia : '') }}</h4>
 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-xs-9 col-md-11">
-                        <h4><b>{{ $jogo->local }}</b> - {{ date('d/m/Y', strtotime($jogo->data_jogo)) }} - {{ $jogo->hora_jogo }} {{ ($jogo->importancia != 1 ? 'x'.$jogo->importancia : '') }}</h4>
-
-                        <div class="row vertical-align">
-                            <div class="col-xs-5">
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-xs-6 col-sm-2">
-                                            <img src='http://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default-team-logo-500.png&h=42&w=42' class="img-rounded"/>
-                                        </div>
-
-                                        <div class="col-xs-6 col-sm-10">
-                                            <div class="hidden-xs">
-                                                <h4><label>{{ $jogo->time1->nome }}</label></h4>
+                            <div class="row vertical-align">
+                                <div class="col-xs-5">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-6 col-sm-2">
+                                                <img src='{{ $jogo->time1->logo }}' class="img-responsive"/>
                                             </div>
-                                            <div class="hidden-sm hidden-md hidden-lg">
-                                                <h4><label>{{ $jogo->time1->sigla }}</label></h4>
+
+                                            <div class="col-xs-6 col-sm-10">
+                                                <div class="hidden-xs">
+                                                    <h4><label>{{ $jogo->time1->nome }}</label></h4>
+                                                </div>
+                                                <div class="hidden-sm hidden-md hidden-lg">
+                                                    <h4><label>{{ $jogo->time1->sigla }}</label></h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-2 text-center">
+                                    <label style="font-weight: bold">X</label>
+                                </div>
+
+                                <div class="col-xs-5">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-6 col-sm-10 text-right">
+                                                <div class="hidden-xs">
+                                                    <h4><label>{{ $jogo->time2->nome }}</label></h4>
+                                                </div>
+                                                <div class="hidden-sm hidden-md hidden-lg">
+                                                    <h4><label>{{ $jogo->time2->sigla }}</label></h4>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-6 col-sm-2">
+                                                <img src='{{ $jogo->time2->logo }}' class="img-responsive"/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-xs-2 text-center">
-                                <label style="font-weight: bold">X</label>
-                            </div>
-
-                            <div class="col-xs-5">
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-xs-6 col-sm-10 text-right">
-                                            <div class="hidden-xs">
-                                                <h4><label>{{ $jogo->time2->nome }}</label></h4>
-                                            </div>
-                                            <div class="hidden-sm hidden-md hidden-lg">
-                                                <h4><label>{{ $jogo->time2->sigla }}</label></h4>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-xs-6 col-sm-2">
-                                            <img src='http://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default-team-logo-500.png&h=42&w=42' class="img-rounded"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <form method="POST" action="/rodada/{{ $jogo->rodada_id }}/editar/jogo/{{ $jogo->id }}" id="editar_jogo_form{{ $jogo->id }}">
-                            {{ csrf_field() }}
-
-                            {{ method_field('PATCH') }}
+                            <input class="hidden" name="lista_jogos[{{ $jogo->id }}][id]" value="{{ $jogo->id }}"/>
 
                             @if($editavel)
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <input class="form-control text-center" name="placar_time1" value="{{ $jogo->placar_time1 }}"/>
+                                    <input class="form-control text-center" name="lista_jogos[{{ $jogo->id }}][placar_time1]" value="{{ $jogo->placar_time1 }}"/>
                                 </div>
                                 <div class="col-xs-6">
-                                    <input class="form-control text-center" name="placar_time2" value="{{ $jogo->placar_time2 }}"/>
+                                    <input class="form-control text-center" name="lista_jogos[{{ $jogo->id }}][placar_time2]" value="{{ $jogo->placar_time2 }}"/>
                                 </div>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" name="finalizar_jogo"> FINALIZAR ESTE JOGO
+                                    <input type="checkbox" name="lista_jogos[{{ $jogo->id }}][finalizar_jogo]"> FINALIZAR ESTE JOGO
                                 </label>
                             </div>
                             @else
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <input class="form-control text-center" name="placar_time1" value="{{ $jogo->placar_time1 }}" disabled="disabled"/>
+                                    <input class="form-control text-center" name="lista_jogos[{{ $jogo->id }}][placar_time1]" value="{{ $jogo->placar_time1 }}" disabled="disabled"/>
                                 </div>
                                 <div class="col-xs-6">
-                                    <input class="form-control text-center" name="placar_time2" value="{{ $jogo->placar_time2 }}" disabled="disabled"/>
+                                    <input class="form-control text-center" name="lista_jogos[{{ $jogo->id }}][placar_time2]" value="{{ $jogo->placar_time2 }}" disabled="disabled"/>
                                 </div>
                             </div>
                             @endif
-                        </form>
 
-                        <div class="row">
-                            <div class="col-lg-12 text-center">
-                                <label style="font-size: 7pt">PLACAR</label>
+                            <div class="row">
+                                <div class="col-lg-12 text-center">
+                                    <label style="font-size: 7pt">PLACAR</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-3 col-md-1">
+                            @if (Auth::user()->id === $rodada->usuario_id)
+
+                            <div class="btn-group">
+                                <button class="btn btn-default btn-md dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-cog" aria-hidden="true"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <a href="#" data-toggle="modal" data-target="#modal_excluir_jogo{{ $jogo->id }}" class="btn btn-link" style="font-weight: bold; color: red"><i class="fa fa-trash fa-2x" aria-hidden="true" style="color: red"></i> EXCLUIR JOGO</a>
+                                </ul>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                @if ($editavel == FALSE)
+                <div class="panel-body" style="background: #ff9e9e">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h6><b>JOGO FINALIZADO</b></h6>
+                        </div>
+                    </div>
+                </div>
+                @endif
+            </div>
+        </div>
+    </div>
+    @endforeach
+    
+    <div class="row">
+        <div class="col-lg-12">
+            @if(!$rodada->concluida)
+            <button type="submit"  class="btn btn-success hidden-xs">GRAVAR ALTERAÇÕES</button>    
+            <button type="submit"  class="btn btn-success hidden-sm hidden-md hidden-lg btn-block">GRAVAR ALTERAÇÕES</button>
+
+            <a href="/rodada/{{ $rodada->id }}/terminar" class="btn btn-danger hidden-xs">TERMINAR RODADA</a>    
+            <a href="/rodada/{{ $rodada->id }}/terminar" class="btn btn-danger hidden-sm hidden-md hidden-lg btn-block">TERMINAR RODADA</a>
+            @endif
+        </div>
+    </div>
+</form>
+
+@foreach($lista_jogos AS $jogo)
+<div class="modal fade" tabindex="-1" role="dialog" id="modal_excluir_jogo{{ $jogo->id }}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">EXCLUIR JOGO</h4>
+            </div>
+
+            <div class="modal-body">
+                <p><b><h4 style="color: red">Deseja realmente excluir este jogo?</h4></b></p>
+
+                <div class="row vertical-align">
+                    <div class="col-xs-5">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-3">
+                                    <img src='{{ $jogo->time1->logo }}' class="img-responsive"/>
+                                </div>
+
+                                <div class="col-xs-6 col-sm-9">
+                                    <div class="hidden-xs">
+                                        <h4><label>{{ $jogo->time1->nome }}</label></h4>
+                                    </div>
+                                    <div class="hidden-sm hidden-md hidden-lg">
+                                        <h4><label>{{ $jogo->time1->sigla }}</label></h4>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-xs-3 col-md-1">
-                        @if (Auth::user()->id === $rodada->usuario_id)
+                    <div class="col-xs-2 text-center">
+                        <label style="font-weight: bold">X</label>
+                    </div>
 
-                        <div class="btn-group">
-                            <button class="btn btn-default btn-md dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-cog" aria-hidden="true"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-right">
-                                @if ($editavel)
-                                <a href="#" data-toggle="modal" data-target="#modal_excluir_jogo{{ $jogo->id }}" class="btn btn-link" style="font-weight: bold; color: red"><i class="fa fa-trash fa-2x" aria-hidden="true" style="color: red"></i> EXCLUIR JOGO</a>
+                    <div class="col-xs-5">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-9 text-right">
+                                    <div class="hidden-xs">
+                                        <h4><label>{{ $jogo->time2->nome }}</label></h4>
+                                    </div>
+                                    <div class="hidden-sm hidden-md hidden-lg">
+                                        <h4><label>{{ $jogo->time2->sigla }}</label></h4>
+                                    </div>
+                                </div>
 
-                                <button type="submit" form="editar_jogo_form{{ $jogo->id }}" class="btn btn-link" style="font-weight: bold"><i class="fa fa-check-square fa-2x" aria-hidden="true"></i> GRAVAR ALTERAÇÃO</button>
-
-                                @else
-                                <a href="#" data-toggle="modal" data-target="#modal_excluir_jogo{{ $jogo->id }}" class="btn btn-link" style="font-weight: bold; color: red"><i class="fa fa-trash fa-2x" aria-hidden="true" style="color: red"></i> EXCLUIR JOGO</a>
-                                @endif
-                            </ul>
+                                <div class="col-xs-6 col-sm-3">
+                                    <img src='{{ $jogo->time2->logo }}' class="img-responsive"/>
+                                </div>
+                            </div>
                         </div>
-
-                        <div class="modal fade" tabindex="-1" role="dialog" id="modal_excluir_jogo{{ $jogo->id }}">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title">EXCLUIR JOGO</h4>
-                                    </div>
-
-                                    <div class="modal-body">
-                                        <p><b><h4 style="color: red">Deseja realmente excluir este jogo?</h4></b></p>
-
-                                        <div class="row vertical-align">
-                                            <div class="col-xs-5">
-                                                <div class="form-group">
-                                                    <div class="row">
-                                                        <div class="col-xs-6 col-sm-3">
-                                                            <img src='http://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default-team-logo-500.png&h=42&w=42' class="img-rounded"/>
-                                                        </div>
-
-                                                        <div class="col-xs-6 col-sm-9">
-                                                            <div class="hidden-xs">
-                                                                <h4><label>{{ $jogo->time1->nome }}</label></h4>
-                                                            </div>
-                                                            <div class="hidden-sm hidden-md hidden-lg">
-                                                                <h4><label>{{ $jogo->time1->sigla }}</label></h4>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-xs-2 text-center">
-                                                <label style="font-weight: bold">X</label>
-                                            </div>
-
-                                            <div class="col-xs-5">
-                                                <div class="form-group">
-                                                    <div class="row">
-                                                        <div class="col-xs-6 col-sm-9 text-right">
-                                                            <div class="hidden-xs">
-                                                                <h4><label>{{ $jogo->time2->nome }}</label></h4>
-                                                            </div>
-                                                            <div class="hidden-sm hidden-md hidden-lg">
-                                                                <h4><label>{{ $jogo->time2->sigla }}</label></h4>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-xs-6 col-sm-3">
-                                                            <img src='http://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default-team-logo-500.png&h=42&w=42' class="img-rounded"/>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="modal-footer">
-
-                                        <form method="POST" action="/rodada/{{ $jogo->rodada_id }}/excluir/jogo/{{ $jogo->id }}" class="hidden" id="excluir_jogo_form{{ $jogo->id }}">
-
-                                            {{ csrf_field() }}
-
-                                            {{ method_field('DELETE') }}
-
-                                        </form>
-
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">CANCELAR</button>
-                                        <button type="submit" class="btn btn-danger" form="excluir_jogo_form{{ $jogo->id }}">EXCLUIR JOGO</button>
-                                    </div>
-                                </div><!-- /.modal-content -->
-                            </div><!-- /.modal-dialog -->
-                        </div><!-- /.modal -->
-
-
-                        @endif
                     </div>
                 </div>
+
             </div>
-            @if ($editavel == FALSE)
-            <div class="panel-body" style="background: #ff9e9e">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h6><b>JOGO FINALIZADO</b></h6>
-                    </div>
-                </div>
+
+            <div class="modal-footer">
+
+                <form method="POST" action="/rodada/{{ $jogo->rodada_id }}/excluir/jogo/{{ $jogo->id }}" class="hidden" id="excluir_jogo_form{{ $jogo->id }}">
+
+                    {{ csrf_field() }}
+
+                    {{ method_field('DELETE') }}
+
+                </form>
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">CANCELAR</button>
+                <button type="submit" class="btn btn-danger" form="excluir_jogo_form{{ $jogo->id }}">EXCLUIR JOGO</button>
             </div>
-            @endif
-        </div>
-    </div>
-</div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 @endforeach
-
-<div class="row">
-    <div class="col-lg-12">
-        @if(!$rodada->concluida)
-        <a href="/rodada/{{ $rodada->id }}/terminar" class="btn btn-success hidden-xs">TERMINAR RODADA</a>    
-        <a href="/rodada/{{ $rodada->id }}/terminar" class="btn btn-success hidden-sm hidden-md hidden-lg btn-block">TERMINAR RODADA</a>
-        @endif
-    </div>
-</div>
 
 @endif
 

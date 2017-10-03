@@ -24,6 +24,7 @@ class CreateUsuariosTable extends Migration
             $table->string('nome');
             $table->string('email')->unique();
             $table->string('senha')->nullable();
+            $table->boolean('admin')->default(FALSE);
             $table->rememberToken();
             $table->timestamps();
         });

@@ -5,7 +5,7 @@
 @if (!Auth::check())
 
 <div class="row" style="text-align: center; margin: 0 auto">
-    <div class="col-md-4 col-md-offset-4">
+    <div class="col-md-2 col-md-offset-5">
         <div class="panel panel-default">
             <div class="panel-body">
                 <img src='https://s3-sa-east-1.amazonaws.com/bolaolaravel/logobolao.png' class="img-responsive img-rounded">
@@ -150,6 +150,7 @@
     </div>
 </div>
 
+@if (Auth::user()->admin)
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
@@ -176,7 +177,7 @@
         </div>
     </div>
 </div>
-
+@endif
 
 @endif
 

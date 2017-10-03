@@ -151,6 +151,24 @@ class TemporadasController extends Controller {
         return redirect('/');
     }
 
+    public function terminar(Temporada $temporada) {
+        
+        \DB::beginTransaction();
+        try {
+            $temporada->concluida = TRUE;
+            
+            $temporada->update();
+
+            session()->flash('message', 'Temporada Concluída.');
+            
+            \DB::commit();
+        } catch (\Exception $e) {
+            session()->flash('message', 'Erro ao concluír temporada.' . $e);
+            \DB::rollback();
+        }
+        return redirect('/');
+    }
+
     public function mostrar(Temporada $temporada) {
 
         $lista_temporada_usuario = TemporadaUsuario::whereRaw('temporada_id = ' . $temporada->id)

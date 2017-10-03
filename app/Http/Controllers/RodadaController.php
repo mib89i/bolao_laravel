@@ -7,7 +7,7 @@ use App\Rodada;
 use App\Jogo;
 use App\Palpite;
 use App\RankingTemporada;
-use App\DivisaoUsuario;
+use App\RodadaFinalizada;
 
 class RodadaController extends Controller {
 
@@ -201,17 +201,43 @@ class RodadaController extends Controller {
     }
 
     public function atualizarJogoRodada(Rodada $rodada, Jogo $jogo) {
+        \DB::beginTransaction();
 
-        if (request('finalizar_jogo')) {
-            $jogo->hora_jogo_final = date('H:i');
+        try {
+            foreach (request('lista_jogos') as $jogo_lista) {
+                
+                $jogo = Jogo::where('id', '=', $jogo_lista['id'])
+                        ->first();
+
+                $jogo->placar_time1 = $jogo_lista['placar_time1'];
+                $jogo->placar_time2 = $jogo_lista['placar_time2'];
+                
+                if (isset($jogo_lista['finalizar_jogo'])) {
+                    $jogo->hora_jogo_final = date('H:i');
+                }
+                
+                $jogo->update();
+
+            }
+            
+            session()->flash('message', 'JOGOS ATUALIZADOS');
+
+            \DB::commit();
+        } catch (\Exception $e) {
+            \DB::rollback();
+            session()->flash('message', 'Erro ao ATUALIZAR JOGOS.' . $e);
         }
-        
-        $jogo->placar_time1 = request('placar_time1');
-        $jogo->placar_time2 = request('placar_time2');
-
-        $jogo->update();
-
-        session()->flash('message', 'JOGO ATUALIZADO COM SUCESSO');
+//        
+//        if (request('finalizar_jogo')) {
+//            $jogo->hora_jogo_final = date('H:i');
+//        }
+//        
+//        $jogo->placar_time1 = request('placar_time1');
+//        $jogo->placar_time2 = request('placar_time2');
+//
+//        $jogo->update();
+//
+//        session()->flash('message', 'JOGO ATUALIZADO COM SUCESSO');
 
         return redirect('/rodada/' . $rodada->id . '/editar/t/' . $rodada->temporada->id);
     }
@@ -295,6 +321,19 @@ class RodadaController extends Controller {
 
             $rodada->update();
 
+            $rodada_finalizada = new RodadaFinalizada;
+            
+            $rodada_finalizada->rodada_id = $rodada->id;
+            
+            $lista_pontos_rodada = $rodada->pontos_rodada_destaque($temporada->id);
+            
+            // PEGA O PRIMEIRO DA LISTA
+            $rodada_finalizada->destaque_usuario_id = Usuario::find($lista_pontos_rodada[0]->id)->first();
+            
+            $rodada_finalizada->descricao = 'FOI O MAIOR PONTUADOR DA RODADA COM ' . $lista_pontos_rodada[0]->pontos;
+            
+            $rodada_finalizada->save();
+            
             \DB::commit();
             session()->flash('message', 'RODADA TERMINADA COM SUCESSO ');
         } catch (\Exception $e) {

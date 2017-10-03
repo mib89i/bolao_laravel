@@ -20,7 +20,9 @@
 
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
+                @if (Auth::user()->admin)
                 <li><a href="/rodada" class="open_loading"><i class="fa fa-plus-circle" aria-hidden="true" style="margin-right: 10px"></i>CRIAR RODADA</a></li>
+                @endif
                 <li><a href="/" class="open_loading"><i class="fa fa-list-ol" aria-hidden="true" style="margin-right: 10px"></i>TEMPORADAS</a></li>
             </ul>
 

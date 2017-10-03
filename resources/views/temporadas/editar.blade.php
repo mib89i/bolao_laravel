@@ -41,9 +41,29 @@
                     <hr />
 
                     <div class="form-group">
-                        <button class="btn btn-primary open_loading">Atualizar</button>
-                        <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal_delete">Excluir</a>
-                        <a href="{{ URL::previous() }}" style="margin-left: 20px">Voltar</a>
+                        <div class="row hidden-xs">
+                            <div class="col-lg-9">
+                                <button class="btn btn-success open_loading">ATUALIZAR</button>
+                                <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal_delete">EXCLUIR</a>
+                            </div>
+                            <div class="col-lg-3">
+                                <a href="#" class="btn btn-danger btn-block" data-toggle="modal" data-target="#modal_terminar_temporada">TERMINAR TEMPORADA</a>
+                            </div>
+                        </div>
+                        
+                        <div class="row hidden-sm hidden-md hidden-lg">
+                            <div class="col-xs-6">
+                                <button class="btn btn-success open_loading btn-block">ATUALIZAR</button>
+                            </div>
+                            <div class="col-xs-6">
+                                <a href="#" class="btn btn-danger btn-block" data-toggle="modal" data-target="#modal_delete">EXCLUIR</a>
+                            </div>
+                            <hr />
+                            <br />
+                            <div class="col-xs-12">
+                                <a href="#" class="btn btn-danger btn-block" data-toggle="modal" data-target="#modal_terminar_temporada">TERMINAR TEMPORADA</a>
+                            </div>
+                        </div>
                     </div>
                 </form>
 
@@ -75,6 +95,39 @@
 
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                                 <button type="submit" class="btn btn-danger" form="delete_form">Excluir</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+                
+                <div class="modal fade" tabindex="-1" role="dialog" id="modal_terminar_temporada">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">Terminar Temporada</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <p><b><h4>Deseja realmente terminar esta temporada?</h4></b></p>
+
+                                <p><h3>{{ $temporada->nome }}</h3></p>
+
+                                <p style="color: red">Atenção: Temporada não poderá ser reaberta após seu término!</p>
+                            </div>
+
+                            <div class="modal-footer">
+
+                                <form method="POST" action="/temporadas/{{ $temporada->id }}/terminar" class="hidden" id="terminar_form">
+
+                                    {{ csrf_field() }}
+
+                                    {{ method_field('PATCH') }}
+
+                                </form>
+
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-danger" form="delete_form">Terminar Temporada</button>
                             </div>
                         </div><!-- /.modal-content -->
                     </div><!-- /.modal-dialog -->

@@ -76,7 +76,7 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-xs-6 col-sm-2">
-                                        <img src='http://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default-team-logo-500.png&h=42&w=42' class="img-rounded"/>
+                                        <img src='{{ $jogo->time1->logo }}' class="img-responsive"/>
                                     </div>
 
                                     <div class="col-xs-6 col-sm-10">
@@ -108,7 +108,7 @@
                                     </div>
 
                                     <div class="col-xs-6 col-sm-2">
-                                        <img src='http://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default-team-logo-500.png&h=42&w=42' class="img-rounded"/>
+                                        <img src='{{ $jogo->time2->logo }}' class="img-responsive"/>
                                     </div>
                                 </div>
                             </div>
@@ -203,7 +203,7 @@
                     ?>
                     <h5>{{ $jogo->time1->nome }} {{ $plac_1 }} x {{ $plac_2 }} {{ $jogo->time2->nome }}</h5>
                 </div>
-                
+
                 <div class="col-xs-3 col-sm-1 bg-primary">
                     @if($jogo->palpite == NULL)
                     <h5>0 pts</h5>
@@ -230,7 +230,7 @@
                     ?>
                     <h6>{{ $jogo->time1->nome }} {{ $plac_1 }} x {{ $plac_2 }} {{ $jogo->time2->nome }}</h6>
                 </div>
-                
+
                 <div class="col-xs-3 col-sm-1" style="background: #d34615; color: white">
                     @if($jogo->palpite == NULL)
                     <h5>0 pts</h5>
@@ -248,18 +248,17 @@
     <div class="row">
         <div class="col-lg-12">
             @if(!$rodada->concluida)
-                <button type="submit" class="btn btn-success hidden-xs open_loading">GRAVAR PALPITES</button>    
-                <button type="submit" class="btn btn-success hidden-sm hidden-md hidden-lg btn-block open_loading">GRAVAR PALPITES</button>    
+            <button type="submit" class="btn btn-success hidden-xs open_loading">GRAVAR PALPITES</button>    
+            <button type="submit" class="btn btn-success hidden-sm hidden-md hidden-lg btn-block open_loading">GRAVAR PALPITES</button>    
             @endif
         </div>
     </div>
 
 </form>
-
 @endif
-
-<div class="row">
-    <div class="col-xs-12">
+<hr />
+<div class="panel panel-default">
+    <div class="panel-body">
         <div class="fb-comments hidden-xs" data-numposts="10" data-width="100%"></div>
         <div class="fb-comments hidden-sm hidden-md hidden-lg" data-numposts="10" data-mobile="true"></div>
     </div>
@@ -268,13 +267,17 @@
 @section('script-add')
 
 <div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v2.10&appId=1706061089697481";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+<script>
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id))
+            return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v2.10&appId=1706061089697481";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
 
 @endsection
 
