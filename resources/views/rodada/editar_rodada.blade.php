@@ -312,8 +312,8 @@
             <button type="submit"  class="btn btn-success hidden-xs">GRAVAR ALTERAÇÕES</button>    
             <button type="submit"  class="btn btn-success hidden-sm hidden-md hidden-lg btn-block">GRAVAR ALTERAÇÕES</button>
 
-            <a href="/rodada/{{ $rodada->id }}/terminar" class="btn btn-danger hidden-xs">TERMINAR RODADA</a>    
-            <a href="/rodada/{{ $rodada->id }}/terminar" class="btn btn-danger hidden-sm hidden-md hidden-lg btn-block">TERMINAR RODADA</a>
+            <a href="/rodada/{{ $rodada->id }}/terminar" class="btn btn-danger hidden-xs open_loading">TERMINAR RODADA</a>    
+            <a href="/rodada/{{ $rodada->id }}/terminar" class="btn btn-danger hidden-sm hidden-md hidden-lg btn-block open_loading">TERMINAR RODADA</a>
             @endif
         </div>
     </div>

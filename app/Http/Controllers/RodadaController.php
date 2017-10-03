@@ -8,6 +8,7 @@ use App\Jogo;
 use App\Palpite;
 use App\RankingTemporada;
 use App\RodadaFinalizada;
+use App\Usuario;
 
 class RodadaController extends Controller {
 
@@ -325,12 +326,12 @@ class RodadaController extends Controller {
             
             $rodada_finalizada->rodada_id = $rodada->id;
             
-            $lista_pontos_rodada = $rodada->pontos_rodada_destaque($temporada->id);
+            $lista_pontos_rodada = $rodada->pontos_rodada_destaque($temporada);
             
             // PEGA O PRIMEIRO DA LISTA
             $rodada_finalizada->destaque_usuario_id = Usuario::find($lista_pontos_rodada[0]->id)->first();
             
-            $rodada_finalizada->descricao = 'FOI O MAIOR PONTUADOR DA RODADA COM ' . $lista_pontos_rodada[0]->pontos;
+            $rodada_finalizada->descricao = 'FOI O MAIOR PONTUADOR DA RODADA COM ' . $lista_pontos_rodada[0]->pontos_rodada;
             
             $rodada_finalizada->save();
             
