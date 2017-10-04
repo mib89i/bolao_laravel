@@ -259,23 +259,23 @@
 @section('script-add')
 <script type="text/javascript">
     function pesquisa_usuario() {
-    $.ajax({
-    type: "GET",
-            url: '{{URL::to("temporadas/ajax/get_lista_usuario")}}',
-            data: {nome_usuario: $('#input_pesquisa_usuario').val(), temporada_id: {{ $temporada-> id }} }
-    }).done(function (data) {
-    }).fail(function (data) {
-    alert('FAIL');
-    }).always(function (data) {
-    $('#ajax_load_usuario').html(data);
-    });
+        $.ajax({
+        type: "GET",
+                url: '{{URL::to("temporadas/ajax/get_lista_usuario")}}',
+                data: {nome_usuario: $('#input_pesquisa_usuario').val(), temporada_id: {{ $temporada->id }} }
+        }).done(function (data) {
+        }).fail(function (data) {
+            alert('FAIL');
+        }).always(function (data) {
+            $('#ajax_load_usuario').html(data);
+        });
     }
 
     $(document).ready(function () {
-    $('#input_pesquisa_usuario').keyup(function (e) {
-    e.preventDefault();
-    pesquisa_usuario();
-    });
+        $('#input_pesquisa_usuario').keyup(function (e) {
+            e.preventDefault();
+            pesquisa_usuario();
+        });
     });
 
 </script>

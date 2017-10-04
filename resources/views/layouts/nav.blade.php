@@ -45,6 +45,6 @@
             </ul>
         </div>
     </div>
-    
 </nav>
+
 @endif

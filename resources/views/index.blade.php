@@ -179,6 +179,90 @@
 </div>
 @endif
 
+@if ($rodada_finalizada != null)
+<div class="modal fade" tabindex="-1" role="dialog" id="modal_rodada_finalizada" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h1 class="bg-success text-center" style="padding: 10px"><b>PARABÉNS !!!<b/></h1>
+                <div class="row text-center">
+                    <div class="col-lg-12">
+                        <h3><b>{{ $rodada_finalizada->rodada->nome }}</b></h3>
+                        <h4>{{ $rodada_finalizada->rodada->temporada->nome }}</h4>
+                    </div>
+                </div>
+                
+                <hr />
+                
+                <div class="row vertical-align">
+                    <div class="col-xs-4 col-lg-2">
+                        <img src='{{ $rodada_finalizada->usuario->avatar }}' class="img-responsive img-rounded" />
+                    </div>
+
+                    <div class="col-xs-8 col-lg-10">
+                        <h3><a href="/perfil/{{ $rodada_finalizada->usuario->id }}/{{ str_slug($rodada_finalizada->usuario->nome, '-') }}">{{ $rodada_finalizada->usuario->nome }}</a></h3>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="bg-success text-center" style="padding: 10px"><b>{{ $rodada_finalizada->descricao }} pts<b/></h3>
+                    </div>
+                </div>
+                    
+                
+                <div class="row">
+                @if ($lista_melhores != null)
+                    <div class="col-lg-12">
+                        <h5>5 MELHORES</h5>
+                    </div>
+                    
+                    @foreach($lista_melhores as $melhores)
+                    <div class="col-lg-12">
+
+                                <div class="row">
+
+                                    <div class="col-lg-2">
+                                        <img src='{{ $melhores->avatar }}' class="img-responsive img-circle">
+                                    </div>
+
+                                    <div class="col-lg-9">
+                                        <h4><b><a href="/perfil/{{ $melhores->id }}/{{ str_slug($melhores->nome, '-') }}">{{ $melhores->nome }}</a></b></h4>
+                                        <h3>{{ $melhores->pontos }} pts</h3>
+                                    </div>
+
+                                    <div class="col-lg-1 text-right">
+                                        <h3><b>{{ $melhores->rank }}°</b></h3>
+                                    </div>
+
+                                </div>
+                        <hr />
+                    </div>
+                    @endforeach
+                @endif
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <a href="/visualiza_rodada/{{ $rodada_finalizada->id }}" class="btn btn-danger btn-block btn-lg"><i class="fa fa-thumbs-up" aria-hidden="true"></i> OK</a>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+@section('script-add')
+<script type="text/javascript">
+    $(document).ready(function () {
+        
+        $('#modal_rodada_finalizada').modal('show');
+        
+    });
+</script>
+@endsection
+
+@endif
+
 @endif
 
 @endsection

@@ -17,6 +17,7 @@ Route::get('/', function () {
 */
 
 Route::get('/', 'HomeController@index')->name('login');
+Route::get('/visualiza_rodada/{rodada_finalizada}', 'HomeController@visualizaRodada');
 
 // LOGIN COM FACEBOOK
 Route::get('/login/facebook', 'LoginController@redirectToProvider');
