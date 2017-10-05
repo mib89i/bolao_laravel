@@ -25,25 +25,6 @@ class HomeController extends Controller {
                             })
                             ->where(['usuario_id' => auth()->user()->id])->get();
 
-//            $rodada_finalizada = \DB::select(\DB::raw(
-//                                    '  SELECT rf.*
-//                                 FROM rodada_finalizada rf 
-//                                 LEFT JOIN rodada_finalizada_visualizada rfv ON rf.id = rfv.rodada_finalizada_id AND rfv.usuario_id = ' . auth()->user()->id . '
-//                                INNER JOIN rodadas r ON r.id = rf.rodada_id
-//                                INNER JOIN temporadas t ON t.id = r.temporada_id
-//                                INNER JOIN temporada_usuario tu ON tu.temporada_id = t.id AND tu.usuario_id = ' . auth()->user()->id . '
-//                                WHERE rfv.id IS NULL
-//                                ORDER BY r.id
-//                            ')
-//            );
-//
-//            if ($rodada_finalizada != null) {
-//                $rodada_finalizada = $rodada_finalizada[0];
-//            } else {
-//                $rodada_finalizada = NULL;
-//            }
-            //return dd($rodada_finalizada);
-
             $rodada_finalizada = RodadaFinalizada::leftJoin('rodada_finalizada_visualizada', function ($join) {
                         $join->on('rodada_finalizada.id', '=', 'rodada_finalizada_visualizada.rodada_finalizada_id')
                         ->where('rodada_finalizada_visualizada.usuario_id', '=', auth()->user()->id);

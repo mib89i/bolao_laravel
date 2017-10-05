@@ -56,6 +56,9 @@
                     </div>
                 </div>
             </div>
+            <div class="panel-body">
+                <a href="/rodada/{{ $rodada->id}}/ranking"><i class="fa fa-list-ol" aria-hidden="true"></i> VER RANKING DA RODADA</a>
+            </div>
         </div>
     </div>
 </div>

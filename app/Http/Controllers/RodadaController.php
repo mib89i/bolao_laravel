@@ -347,6 +347,21 @@ class RodadaController extends Controller {
         return back();
     }
 
+    public function rankingRodada(Rodada $rodada) {
+        $lista_melhores = Temporada::ranking_rodada(Rodada::where('id', $rodada->id)->first(), 20);
+        
+        return view ('rodada.ranking', compact('rodada', 'lista_melhores'));
+    }
+    
+    public function palpiteUsuarioRodada(Rodada $rodada, Usuario $usuario) {
+        $lista_palpites = null;
+        
+        $pontos_rodada = $rodada->pontos_rodada($usuario);
+        
+        return view ('rodada.palpites', compact('rodada', 'usuario', 'lista_palpites', 'pontos_rodada'));
+        
+    }
+    
     public function gravarPalpite(Rodada $rodada) {
 
         \DB::beginTransaction();

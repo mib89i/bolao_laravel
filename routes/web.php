@@ -73,6 +73,8 @@ Route::delete('/rodada/{rodada}/excluir/jogo/{jogo}', 'RodadaController@excluirJ
 Route::delete('/rodada/{rodada}/excluir', 'RodadaController@excluir');
 Route::post('/rodada/{rodada}/palpite', 'RodadaController@gravarPalpite');
 Route::get('/rodada/{rodada}/terminar', 'RodadaController@terminarRodada');
+Route::get('/rodada/{rodada}/ranking', 'RodadaController@rankingRodada');
+Route::get('/rodada/{rodada}/palpites/{usuario}', 'RodadaController@palpiteUsuarioRodada');
 
 // TIMES
 Route::get('/times/ajax/get_lista_time', 'TimesController@getListaTime');
