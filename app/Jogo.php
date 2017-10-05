@@ -26,6 +26,14 @@ class Jogo extends Model {
         
     }
     
+    public function palpite_usuario(Usuario $usuario) {
+
+        return $this->hasOne(Palpite::class)
+                ->where('usuario_id', '=', $usuario->id)
+                ->where('jogo_id', '=', $this->id);
+        
+    }
+    
     public function palpites() {
 
         return $this->hasMany(Palpite::class);
