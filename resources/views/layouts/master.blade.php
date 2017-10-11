@@ -51,9 +51,14 @@
     </head>
 
     <body>
-        <div id="overlay" class="text-center">
-            <i class="fa fa-spinner fa-pulse fa-3x fa-fw" style="position: fixed; top:50%; left:50%; margin-top:-50px; margin-left:-50px"></i>
-        </div>
+
+            <div id="overlay">
+                <center>
+                    <img src="http://bestanimations.com/Sports/Soccer/animated-soccer-balls5.gif" class="img-responsive img-circle" style="position: fixed; top:50%; left:50%; margin-top:-50px; margin-left:-50px; width: 80px">  
+                </center>
+            </div>
+
+
         
         @include('layouts.nav')
         

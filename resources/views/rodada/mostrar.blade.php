@@ -29,7 +29,7 @@
                     </div>
 
                     <div class="col-xs-3 col-md-1">
-                        <a href="/rodada/{{ $rodada->id }}/editar/t/{{ $rodada->temporada_id }}" style="text-decoration: none">
+                        <a href="/rodada/{{ $rodada->id }}/editar/t/{{ $rodada->temporada_id }}" style="text-decoration: none" class="open_loading">
                             <div class="panel-body text-center vertical-align">
                                 <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
                             </div>

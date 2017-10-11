@@ -59,6 +59,20 @@
 
 </div>
 
+<div class="row">
+    <div class="col-lg-12">
+        <a href="/temporadas/{{ $temporada->id }}/lista_rodadas" class="open_loading" style="text-decoration: none">
+            <div class="panel panel-default no-padding">
+                <div class="panel-body">
+                    VER RODADAS
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<br />
+
 <div class="modal fade" tabindex="-1" role="dialog" id="modal_entrar_temporada">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -165,6 +179,7 @@
 @endif
 
 <br />
+
 @if (Auth::user()->id === $temporada->usuario_id)
 
 <div class="row">

@@ -37,27 +37,33 @@
                     <?php 
                         $palpite_usuario = $jogo->palpite_usuario($usuario)->first();
                     ?>           
+                    
+                    <div class="row">
+                        <div class="col-lg-5 col-sm-4 col-xs-3 text-right">
+                            <h3 class="hidden-xs" style="display: inline">{{ $jogo->time1->nome }}</h3>
+                            <h3 class="hidden-sm hidden-md hidden-lg" style="display: inline">{{ $jogo->time1->sigla }}</h3>
+                        </div>
                         
-                    <h3 class="hidden-xs" style="display: inline">{{ $jogo->time1->nome }}</h3>
-                    <h3 class="hidden-sm hidden-md hidden-lg" style="display: inline">{{ $jogo->time1->sigla }}</h3>
-
-                    <img src='{{ $jogo->time1->logo }}' style="width: 40px"/>
-
-                    @if($palpite_usuario != NULL)
-                    <h3 style="display: inline"><b>{{ $palpite_usuario->placar_time1 }}</b></h3>
-                    @endif
-
-                    X
-
-                    @if($palpite_usuario != NULL)
-                    <h3 style="display: inline"><b>{{ $palpite_usuario->placar_time2 }}</b></h3>
-                    @endif
-
-                    <img src='{{ $jogo->time2->logo }}' style="width: 40px"/>
-
-                    <h3 class="hidden-xs" style="display: inline">{{ $jogo->time2->nome }}</h3>
-                    <h3 class="hidden-sm hidden-md hidden-lg" style="display: inline">{{ $jogo->time2->sigla }}</h3>
-                      <hr />
+                        <div class="col-lg-2 col-sm-4 col-xs-6">
+                            <img src='{{ $jogo->time1->logo }}' style="width: 40px; margin-right: 10px"/>
+                            @if($palpite_usuario != NULL)
+                            <h3 style="display: inline"><b>{{ $palpite_usuario->placar_time1 }}</b></h3>
+                            @endif
+                            X
+                            @if($palpite_usuario != NULL)
+                            <h3 style="display: inline"><b>{{ $palpite_usuario->placar_time2 }}</b></h3>
+                            @endif
+                            <img src='{{ $jogo->time2->logo }}' style="width: 40px; margin-left: 10px"/>
+                        </div>
+                        
+                        <div class="col-lg-5 col-sm-4 col-xs-3 text-left">
+                            <h3 class="hidden-xs" style="display: inline">{{ $jogo->time2->nome }}</h3>
+                            <h3 class="hidden-sm hidden-md hidden-lg" style="display: inline">{{ $jogo->time2->sigla }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <hr />
                     <div class="panel-body text-center" style="padding-top: 0px; padding-bottom: 0px">
                         
                         <h4>PLACAR FINAL DO JOGO</h4>

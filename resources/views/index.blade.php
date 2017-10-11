@@ -40,7 +40,7 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default no-padding">
-            <a href="/temporadas" style="text-decoration: none; color: black">
+            <a href="/temporadas" style="text-decoration: none; color: black" class="open_loading">
                 <div class="panel-body vertical-align">
                     <i class="fa fa-search" aria-hidden="true" style="margin-right: 15px"></i>
                     <h5><b>ENCONTRAR UMA TEMPORADA</b></h5>
@@ -69,7 +69,7 @@
         <div class="panel panel-default no-padding">
             <div class="row">
                 <div class="col-xs-9 col-md-11">
-                    <a href="/temporadas/{{ $temporada_usuario->temporada->id }}" style="text-decoration: none">
+                    <a href="/temporadas/{{ $temporada_usuario->temporada->id }}" style="text-decoration: none" class="open_loading">
                         <div class="panel-body">
                             <div class="vertical-align">
                                 <h3><b>{{ $temporada_usuario->temporada->nome }}</b></h3>
@@ -94,16 +94,17 @@
                 </div>
 
             </div>
-
         </div>
     </div>
 
     <div class="col-lg-12">
-        <div class="panel panel-default no-padding">
-            <div class="panel-body">
-                <a href="/temporadas/{{ $temporada_usuario->temporada->id }}/lista_rodadas">VER RODADAS</a>
+        <a href="/temporadas/{{ $temporada_usuario->temporada->id }}/lista_rodadas" class="open_loading" style="text-decoration: none">
+            <div class="panel panel-default no-padding">
+                <div class="panel-body">
+                    VER RODADAS
+                </div>
             </div>
-        </div>
+        </a>
     </div>
 
     @foreach($temporada_usuario->temporada->rodada_aberta as $rodada)

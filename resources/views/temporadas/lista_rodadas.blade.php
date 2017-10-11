@@ -15,7 +15,7 @@
 
                     <div class="col-xs-3 col-md-1">
                         @if (Auth::user()->id === $temporada->usuario_id)
-                        <a href="/temporadas/{{ $temporada->id }}/editar" style="text-decoration: none">
+                        <a href="/temporadas/{{ $temporada->id }}/editar" style="text-decoration: none" class="open_loading">
                             <div class="panel-body text-center vertical-align">
                                 <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
                             </div>
@@ -33,7 +33,7 @@
 <div class="panel panel-default no-padding">
     <div class="row">
         <div class="col-xs-9 col-md-11">
-            <a href="/rodada/{{ $rodada->id }}" style="text-decoration: none">
+            <a href="/rodada/{{ $rodada->id }}" style="text-decoration: none" class="open_loading">
                 <div class="panel-body">
                     <div class="vertical-align" style="color: green">
                         <i class="fa fa-futbol-o" aria-hidden="true" style="margin-right: 15px"></i>
@@ -72,7 +72,7 @@
 <div class="panel panel-default no-padding">
     <div class="row">
         <div class="col-xs-9 col-md-11">
-            <a href="/rodada/{{ $rodada->id }}" style="text-decoration: none">
+            <a href="/rodada/{{ $rodada->id }}" style="text-decoration: none" class="open_loading">
                 <div class="panel-body">
                     <div class="vertical-align" style="color: red">
                         <i class="fa fa-futbol-o" aria-hidden="true" style="margin-right: 15px"></i>
@@ -85,7 +85,7 @@
 
         <div class="col-xs-3 col-md-1">
             @if (Auth::user()->id === $rodada->usuario->id)
-            <a href="/rodada/{{ $rodada->id }}/editar/t/{{ $rodada->temporada->id }}" style="text-decoration: none">
+            <a href="/rodada/{{ $rodada->id }}/editar/t/{{ $rodada->temporada->id }}" style="text-decoration: none" class="open_loading">
                 <div class="panel-body text-center  vertical-align">
                     <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
                 </div>
