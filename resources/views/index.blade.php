@@ -37,6 +37,7 @@
 
 @else
 
+<!-- 
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default no-padding">
@@ -49,34 +50,30 @@
         </div>
     </div>
 </div>
+-->
 
-@if (!$temporada_usuarios->isEmpty())
+@if (Session::get('temporada_ativa') != NULL)
 
 <div class="row">
-    <div class="col-xs-9 col-sm-10 col-md-11">
-        <h6>TEMPORADAS EM ANDAMENTO</h6>
-    </div>
-
-    <div class="col-xs-3 col-sm-2 col-md-1">
-        <h6>EDITAR</h6>
+    <div class="col-lg-12">
+        <h3><b>TEMPORADA ATUAL</b></h3>
     </div>
 </div>
 
-@foreach($temporada_usuarios as $temporada_usuario)
 <div class="row">
 
     <div class="col-lg-12">
         <div class="panel panel-default no-padding">
             <div class="row">
                 <div class="col-xs-9 col-md-11">
-                    <a href="/temporadas/{{ $temporada_usuario->temporada->id }}" style="text-decoration: none" class="open_loading">
+                    <a href="/temporadas/{{ Session::get('temporada_ativa')->id }}" style="text-decoration: none" class="open_loading">
                         <div class="panel-body">
                             <div class="vertical-align">
-                                <h3><b>{{ $temporada_usuario->temporada->nome }}</b></h3>
+                                <h3><b>{{ Session::get('temporada_ativa')->nome }}</b></h3>
                             </div>
 
                             <div class="vertical-align">
-                                <h6 style="color: black">Presidente: <b>{{ $temporada_usuario->temporada->usuario->nome }} </b></h6>
+                                <h6 style="color: black">Presidente: <b>{{ Session::get('temporada_ativa')->usuario->nome }} </b></h6>
                             </div>
                         </div>
                     </a>
@@ -84,8 +81,8 @@
 
 
                 <div class="col-xs-3 col-md-1">
-                    @if (Auth::user()->id === $temporada_usuario->temporada->usuario_id)
-                    <a href="/temporadas/{{ $temporada_usuario->temporada->id }}/editar" style="text-decoration: none">
+                    @if (Auth::user()->id === Session::get('temporada_ativa')->usuario_id)
+                    <a href="/temporadas/{{ Session::get('temporada_ativa')->id }}/editar" style="text-decoration: none">
                         <div class="panel-body text-center  vertical-align">
                             <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
                         </div>
@@ -98,22 +95,26 @@
     </div>
 
     <div class="col-lg-12">
-        <a href="/temporadas/{{ $temporada_usuario->temporada->id }}/lista_rodadas" class="open_loading" style="text-decoration: none">
+        <a href="/rodada" class="open_loading" style="text-decoration: none">
             <div class="panel panel-default no-padding">
                 <div class="panel-body">
-                    VER RODADAS
+                    VER TODAS RODADAS
                 </div>
             </div>
         </a>
     </div>
-
-    @foreach($temporada_usuario->temporada->rodada_aberta as $rodada)
+    
+    <div class="col-lg-12">
+        <h3><b>RODADA ATUAL</b></h3>
+    </div>
+    
+    @foreach(Session::get('temporada_ativa')->rodada_aberta as $rodada)
 
     <div class="col-lg-12">
         <div class="panel panel-default no-padding">
             <div class="row">
                 <div class="col-xs-9 col-md-11">
-                    <a href="/rodada/{{ $rodada->id }}" class="open_loading" style="text-decoration: none">
+                    <a href="/rodada/{{ $rodada->id }}/ver" class="open_loading" style="text-decoration: none">
                         <div class="panel-body">
                             <div class="vertical-align" style="color: green">
                                 <i class="fa fa-futbol-o" aria-hidden="true" style="margin-right: 15px"></i>
@@ -126,7 +127,7 @@
 
                 <div class="col-xs-3 col-md-1">
                     @if (Auth::user()->id === $rodada->usuario->id)
-                    <a href="/rodada/{{ $rodada->id }}/editar/t/{{ $rodada->temporada->id }}" style="text-decoration: none">
+                    <a href="/rodada/{{ $rodada->id }}/editar" style="text-decoration: none">
                         <div class="panel-body text-center  vertical-align">
                             <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
                         </div>
@@ -140,8 +141,8 @@
     </div>
     @endforeach
 </div>
+
 <hr />
-@endforeach
 
 @endif
 
@@ -151,7 +152,7 @@
     </div>
 </div>
 
-@if (Auth::user()->admin)
+@if (Auth::user()->admin && Session::get('temporada_ativa') == NULL)
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
@@ -164,7 +165,6 @@
         </div>
     </div>
 </div>
-
 
 <div class="row">
     <div class="col-lg-12">

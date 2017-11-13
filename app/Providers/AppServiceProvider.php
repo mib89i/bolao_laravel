@@ -20,8 +20,12 @@ class AppServiceProvider extends ServiceProvider {
             $mensagem = \App\Mensagem::mensagens();
             
             $quantidade_mensagem = \App\Mensagem::quantidade_mensagens();
-
-            $view->with(compact('mensagem', 'quantidade_mensagem'));
+            
+            $temporada_ativa = \App\Temporada::ativa()->limit(1)->first();
+            
+            session()->put('temporada_ativa', $temporada_ativa);
+            
+            $view->with(compact('mensagem', 'quantidade_mensagem', 'temporada_ativa'));
             
         });
         

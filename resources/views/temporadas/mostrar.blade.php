@@ -4,27 +4,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-xs-9 col-md-11 text-center">
-                        <h3>{{ $temporada->nome }}</h3>
-                        
-                        <h6 style="color: black">Presidente: <b>{{ $temporada->usuario->nome }}</b></h6>
-                    </div>
-                    
-                    <div class="col-xs-3 col-md-1">
-                        @if (Auth::user()->id === $temporada->usuario_id)
-                        <a href="/temporadas/{{ $temporada->id }}/editar" style="text-decoration: none">
-                            <div class="panel-body text-center vertical-align">
-                                <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
-                            </div>
-                        </a>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
+        <h3><b>OPÇÕES DA TEMPORADA</b></h3>
     </div>
 </div>
 
@@ -32,13 +12,13 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-body">
-            @if (Auth::user()->id === $temporada->usuario_id)
+            @if (Auth::user()->id === Session::get('temporada_ativa')->usuario_id)
                 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modal_pesquisa_usuario">ENVIAR CONVITE</a>
-                <a href="/rodada/criar/t/{{ $temporada->id }}" class="btn btn-default">CRIAR RODADA</a>
+                <a href="/rodada/criar" class="btn btn-default">CRIAR RODADA</a>
             @else
 
                 @if ($tem_temporada_usuario === NULL)
-                    @if ($temporada->publica)
+                    @if (Session::get('temporada_ativa')->publica)
                         <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modal_entrar_temporada">PARTICIPAR</a>
                     @else
                         @if ($tem_convite_pendente === NULL)
@@ -61,7 +41,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <a href="/temporadas/{{ $temporada->id }}/lista_rodadas" class="open_loading" style="text-decoration: none">
+        <a href="/rodada" class="open_loading" style="text-decoration: none">
             <div class="panel panel-default no-padding">
                 <div class="panel-body">
                     VER RODADAS
@@ -84,14 +64,14 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-xs-12">
-                        <h3>Quero participar da temporada <b>{{ $temporada->nome }}</b></h3>
+                        <h3>Quero participar da temporada <b>{{ Session::get('temporada_ativa')->nome }}</b></h3>
                     </div>
                 </div>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">FECHAR</button>
-                <a href="/convites/t/{{ $temporada->id }}/tipo/convidado" class="btn btn-primary open_loading">ENTRAR</a>
+                <a href="/convites/t/{{ Session::get('temporada_ativa')->id }}/tipo/convidado" class="btn btn-primary open_loading">ENTRAR</a>
             </div>
 
         </div><!-- /.modal-content -->
@@ -109,14 +89,14 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-xs-12">
-                        <h3>Quero sair da temporada <b>{{ $temporada->nome }}</b></h3>
+                        <h3>Quero sair da temporada <b>{{ Session::get('temporada_ativa')->nome }}</b></h3>
                     </div>
                 </div>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">FECHAR</button>
-                <a href="/temporadas/{{ $temporada->id }}/sair/temporada" class="btn btn-danger">SAIR</a>
+                <a href="/temporadas/{{ Session::get('temporada_ativa')->id }}/sair/temporada" class="btn btn-danger">SAIR</a>
             </div>
 
         </div><!-- /.modal-content -->
@@ -160,13 +140,13 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-@if (!$temporada->temporada_divisao()->get()->isEmpty())
+@if (!Session::get('temporada_ativa')->temporada_divisao()->get()->isEmpty())
 
-@foreach($temporada->temporada_divisao()->get() AS $temporada_divisao)
+@foreach(Session::get('temporada_ativa')->temporada_divisao()->get() AS $temporada_divisao)
 
 <div class="panel panel-default no-padding">
     <div class="panel-body">
-        <a href="/temporadas/{{ $temporada->id }}/{{ str_slug($temporada->nome, '-') }}/divisao/{{ $temporada_divisao->divisao->id }}" style="text-decoration: none" class="open_loading">
+        <a href="/temporadas/{{ Session::get('temporada_ativa')->id }}/{{ str_slug(Session::get('temporada_ativa')->nome, '-') }}/divisao/{{ $temporada_divisao->divisao->id }}" style="text-decoration: none" class="open_loading">
             <div class="panel-body text-center  vertical-align">
                 <i class="fa fa-list fa-2x" aria-hidden="true" style="margin-right: 15px"></i> <h4>{{ $temporada_divisao->divisao->nome }}</h4>
             </div>
@@ -180,7 +160,7 @@
 
 <br />
 
-@if (Auth::user()->id === $temporada->usuario_id)
+@if (Auth::user()->id === Session::get('temporada_ativa')->usuario_id)
 
 <div class="row">
     <div class="col-lg-12">
@@ -219,9 +199,9 @@
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li style="padding: 5px">Adicionar Para:</li>
                                 <li role="separator" class="divider"></li>
-                                @if (!$temporada->temporada_divisao()->get()->isEmpty())
+                                @if (!Session::get('temporada_ativa')->temporada_divisao()->get()->isEmpty())
 
-                                @foreach($temporada->temporada_divisao()->get() AS $temporada_divisao)
+                                @foreach(Session::get('temporada_ativa')->temporada_divisao()->get() AS $temporada_divisao)
 
                                 <li><a href="#" data-toggle="modal" data-target="#modal_adicionar_divisao{{ $temporada_divisao->divisao->id }}_u{{ $temporada_usuario->usuario->id }}">{{ $temporada_divisao->divisao->nome }}</a></li>
                                 <li role="separator" class="divider"></li>
@@ -232,9 +212,9 @@
                             </ul>
                         </div>
 
-                        @if (!$temporada->temporada_divisao()->get()->isEmpty())
+                        @if (!Session::get('temporada_ativa')->temporada_divisao()->get()->isEmpty())
 
-                        @foreach($temporada->temporada_divisao()->get() AS $temporada_divisao)
+                        @foreach(Session::get('temporada_ativa')->temporada_divisao()->get() AS $temporada_divisao)
 
                         <div class="modal fade" role="dialog" id="modal_adicionar_divisao{{ $temporada_divisao->divisao->id }}_u{{ $temporada_usuario->usuario->id }}">
                             <div class="modal-dialog" role="document">
@@ -245,7 +225,7 @@
                                     </div>
 
                                     <div class="modal-body">
-                                        <h3>{{ $temporada->nome }}</h3>
+                                        <h3>{{ Session::get('temporada_ativa')->nome }}</h3>
                                         <h4>Adicionar <b>{{ $temporada_usuario->usuario->nome }}</b> para <b>{{ $temporada_divisao->divisao->nome }}</b></h4>
                                     </div>
 
@@ -277,7 +257,7 @@
         $.ajax({
         type: "GET",
                 url: '{{URL::to("temporadas/ajax/get_lista_usuario")}}',
-                data: {nome_usuario: $('#input_pesquisa_usuario').val(), temporada_id: {{ $temporada->id }} }
+                data: {nome_usuario: $('#input_pesquisa_usuario').val(), temporada_id: {{ Session::get('temporada_ativa')->id }} }
         }).done(function (data) {
         }).fail(function (data) {
             alert('FAIL');

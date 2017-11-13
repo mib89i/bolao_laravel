@@ -8,43 +8,19 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-xs-9 col-md-11 text-center">
-                        <h3>{{ $temporada->nome }}</h3>
-
-                        <h6 style="color: black">Presidente: <b>{{ $temporada->usuario->nome }}</b></h6>
-                    </div>
-
-                    <div class="col-xs-3 col-md-1">
-                        @if (Auth::user()->id === $temporada->usuario_id)
-                        <a href="/temporadas/{{ $temporada->id }}/editar" style="text-decoration: none">
-                            <div class="panel-body text-center vertical-align">
-                                <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
-                            </div>
-                        </a>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 @if(!$rodada->publicada)
-<div class="panel panel-primary no-padding">
-    <div class="panel-body bg-primary">
-        <h5><b>RODADA NÃO ESTÁ VISÍVEL PARA OS JOGADORES</b></h5>
+<div class="panel panel-danger no-padding">
+    <div class="panel-body bg-danger">
+        <h5><b>ATENÇÃO !! RODADA NÃO ESTÁ VISÍVEL PARA OS JOGADORES</b></h5>
+        <h6>Clique em <b>PUBLICAR RODADA</b> para tornar visível</h6>
     </div>
 </div>
+<br />
 @endif
 
 <div class="panel panel-default">
     <div class="panel-body">
-        <form method="POST" action="/rodada/{{ $rodada->id }}/editar/t/{{ $temporada->id }}">
+        <form method="POST" action="/rodada/{{ $rodada->id }}/editar">
 
             {{ csrf_field() }}
 
@@ -59,7 +35,7 @@
             @if(!$rodada->concluida)
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" name="publicada" {{ $rodada->publicada ? 'checked' : ''}}> PUBLICAR ESTA RODADA
+                        <input type="checkbox" name="publicada" {{ $rodada->publicada ? 'checked' : ''}}> PUBLICAR RODADA
                     </label>
                 </div>
             
@@ -114,7 +90,7 @@
 @endif
 
 @if(!$rodada->concluida)
-<form action="/rodada/{{ $rodada->id }}/editar/t/{{ $temporada->id }}/adicionar_jogo" method="POST">
+<form action="/rodada/{{ $rodada->id }}/editar/adicionar_jogo" method="POST">
 
     {{ csrf_field() }}
 
@@ -180,7 +156,7 @@
 @endif
 
 @if(!$lista_jogos->isEmpty())
-<form method="POST" action="/rodada/{{ $rodada->id }}/editar/jogo/1">
+<form method="POST" action="/rodada/{{ $rodada->id }}/editar/jogos">
     
     {{ csrf_field() }}
     {{ method_field('PATCH') }}

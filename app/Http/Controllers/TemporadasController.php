@@ -402,11 +402,6 @@ class TemporadasController extends Controller {
 
         return back();
     }
-
-    public function listaRodadas(Temporada $temporada) {
-        
-        return view('temporadas.lista_rodadas', compact('temporada'));
-    }
     
     public function request(Temporada $temporada) {
 

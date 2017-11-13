@@ -23,43 +23,6 @@ class CreateTimesTable extends Migration {
 
             $table->timestamps();
         });
-        
-        DB::table('times')->insert(
-                array(
-                    'nome' => 'Corinthians',
-                    'sigla' => 'COR',
-                    'logo' => 'corinthians.png',
-                    'created_at' => new \DateTime(),
-                    'updated_at' => new \DateTime()
-                )
-        );
-        DB::table('times')->insert(
-                array(
-                    'nome' => 'São Paulo',
-                    'sigla' => 'SAO',
-                    'logo' => 'sao-paulo.png',
-                    'created_at' => new \DateTime(),
-                    'updated_at' => new \DateTime()
-                )
-        );
-        DB::table('times')->insert(
-                array(
-                    'nome' => 'Palmeiras',
-                    'sigla' => 'PAL',
-                    'logo' => 'palmeiras.png',
-                    'created_at' => new \DateTime(),
-                    'updated_at' => new \DateTime()
-                )
-        );
-        DB::table('times')->insert(
-                array(
-                    'nome' => 'Santos',
-                    'sigla' => 'SAN',
-                    'logo' => 'santos.png',
-                    'created_at' => new \DateTime(),
-                    'updated_at' => new \DateTime()
-                )
-        );
     }
 
     /**

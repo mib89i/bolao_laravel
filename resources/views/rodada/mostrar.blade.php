@@ -7,29 +7,13 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-lg-12 text-center">
-                        <h3>{{ $rodada->temporada->nome }}</h3>
-
-                        <h6 style="color: black">Presidente: <b>{{ $rodada->usuario->nome }}</b></h6>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-lg-12">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="row">
                     @if (Auth::user()->id === $rodada->usuario_id)
                     <div class="col-xs-9 col-md-11 text-center">
                         <h3><b>{{ $rodada->nome }}</b></h3>
                     </div>
 
                     <div class="col-xs-3 col-md-1">
-                        <a href="/rodada/{{ $rodada->id }}/editar/t/{{ $rodada->temporada_id }}" style="text-decoration: none" class="open_loading">
+                        <a href="/rodada/{{ $rodada->id }}/editar" style="text-decoration: none" class="open_loading">
                             <div class="panel-body text-center vertical-align">
                                 <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
                             </div>
@@ -127,7 +111,7 @@
                     $hora_hoje = date('H:i'); // HORA DE HOJE
                     $editavel = TRUE;
 
-                    if (strtotime($data_hoje) > strtotime($jogo->data_jogo) || $rodada->concluida) {
+                    if (strtotime($data_hoje) > strtotime($jogo->data_jogo) || $rodada->concluida || $jogo->hora_jogo_final != NULL) {
                         // JOGO JÁ PASSOU
                         $editavel = FALSE;
                     } else if (strtotime($data_hoje) == strtotime($jogo->data_jogo)) {

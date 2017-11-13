@@ -11,7 +11,12 @@
                 <span class="icon-bar"></span>
             </button>
             
+            @if ($temporada_ativa == NULL)
             <a class="navbar-brand open_loading" href="/"><i class="fa fa-futbol-o" aria-hidden="true"></i> BOLÃO</a>
+            @else
+            <a class="navbar-brand open_loading" href="/"><i class="fa fa-futbol-o" aria-hidden="true"></i><b> {{ strtoupper ($temporada_ativa->nome) }} </b></a>
+            @endif
+            
             @if(Request::path() == '/')
             @else
             @endif
@@ -20,8 +25,8 @@
 
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                @if (Auth::user()->admin)
-                <li><a href="/rodada" class="open_loading"><i class="fa fa-plus-circle" aria-hidden="true" style="margin-right: 10px"></i>CRIAR RODADA</a></li>
+                @if (Auth::user()->admin && $temporada_ativa != NULL)
+                <li><a href="/rodada/criar" class="open_loading"><i class="fa fa-plus-circle" aria-hidden="true" style="margin-right: 10px"></i>CRIAR RODADA</a></li>
                 @endif
                 <li><a href="/" class="open_loading"><i class="fa fa-list-ol" aria-hidden="true" style="margin-right: 10px"></i>TEMPORADAS</a></li>
             </ul>

@@ -15,11 +15,10 @@ class RodadaController extends Controller {
     public function __construct() {
 
         $this->middleware('auth')->except([]);
-        
     }
 
     public function index() {
-        
+
         $lista_rodada = Rodada::where('usuario_id', '=', auth()->user()->id)->orderBy('id')->get();
 
         return view('rodada.index', compact('lista_rodada'));
@@ -43,19 +42,26 @@ class RodadaController extends Controller {
         return view('rodada.criar', compact('lista_temporada'));
     }
 
-    public function criarRodada(Temporada $temporada) {
+    public function criarRodada() {
+        if (!session()->has('temporada_ativa')) {
+            return NULL;
+        }
 
-        $ultima_rodada = Rodada::where('temporada_id', '=', $temporada->id)->orderBy('created_at', 'desc')->first();
+        $ultima_rodada = Rodada::where('temporada_id', '=', session()->get('temporada_ativa')->id)->orderBy('created_at', 'desc')->first();
 
         //$ultima_rodada = Rodada::latest('temporada_id', '=', $temporada->id)->first();
 
-        return view('rodada.criar_rodada', compact('temporada', 'ultima_rodada'));
+        return view('rodada.criar_rodada', compact('ultima_rodada'));
     }
 
-    public function gravarRodada(Temporada $temporada) {
+    public function gravarRodada() {
         $this->validate(request(), [
             'nome' => 'required'
         ]);
+
+        if (!session()->has('temporada_ativa')) {
+            return NULL;
+        }
 
         \DB::beginTransaction();
 
@@ -66,7 +72,7 @@ class RodadaController extends Controller {
             $rodada->concluida = FALSE;
             $rodada->publicada = FALSE;
             $rodada->usuario_id = auth()->user()->id;
-            $rodada->temporada_id = $temporada->id;
+            $rodada->temporada_id = session()->get('temporada_ativa')->id;
 
             $rodada->save();
 
@@ -74,16 +80,16 @@ class RodadaController extends Controller {
 
             \DB::commit();
 
-            return redirect('/rodada/' . $rodada->id . '/editar/t/' . $temporada->id);
+            return redirect('/rodada/' . $rodada->id . '/editar/t/' . session()->get('temporada_ativa')->id);
         } catch (\Exception $e) {
             \DB::rollback();
             session()->flash('message', 'Erro ao salvar temporada.' . $e);
         }
 
-        return redirect('/rodada/criar/t/'.$temporada->id);
+        return redirect('/rodada/criar');
     }
 
-    public function editarRodada(Rodada $rodada, Temporada $temporada) {
+    public function editarRodada(Rodada $rodada) {
 
         $this->limpar();
 
@@ -93,10 +99,10 @@ class RodadaController extends Controller {
                 ->orderBy('id', 'asc')
                 ->get();
 
-        return view('rodada.editar_rodada', compact('temporada', 'rodada', 'lista_jogos'));
+        return view('rodada.editar_rodada', compact('rodada', 'lista_jogos'));
     }
 
-    public function atualizarRodada(Rodada $rodada, Temporada $temporada) {
+    public function atualizarRodada(Rodada $rodada) {
         $this->validate(request(), [
             'nome' => 'required'
         ]);
@@ -105,7 +111,7 @@ class RodadaController extends Controller {
 
         try {
             $rodada->nome = request('nome');
-            
+
             $rodada->publicada = (request('publicada') === null) ? FALSE : TRUE;
 
             $rodada->update();
@@ -124,7 +130,7 @@ class RodadaController extends Controller {
                 ->orderBy('id', 'asc')
                 ->get();
 
-        return view('rodada.editar_rodada', compact('temporada', 'rodada', 'lista_jogos'));
+        return view('rodada.editar_rodada', compact('rodada', 'lista_jogos'));
     }
 
     public function excluir(Rodada $rodada) {
@@ -147,7 +153,7 @@ class RodadaController extends Controller {
         return redirect('/');
     }
 
-    public function adicionarJogoRodada(Rodada $rodada, Temporada $temporada) {
+    public function adicionarJogoRodada(Rodada $rodada) {
         $this->validate(request(), [
             'data_jogo' => 'required',
             'hora_jogo' => 'required'
@@ -161,7 +167,7 @@ class RodadaController extends Controller {
 
         if (!session()->has('time1_selecionado') || !session()->has('time2_selecionado')) {
             session()->flash('message', 'SELECIONE OS TIMES DESSE JOGO');
-            return redirect('/rodada/' . $rodada->id . '/editar/t/' . $temporada->id);
+            return redirect('/rodada/' . $rodada->id . '/editar');
         }
 
         \DB::beginTransaction();
@@ -188,7 +194,7 @@ class RodadaController extends Controller {
 
         $this->limpar();
 
-        return redirect('/rodada/' . $rodada->id . '/editar/t/' . $temporada->id);
+        return redirect('/rodada/' . $rodada->id . '/editar');
     }
 
     public function limparSessao(Rodada $rodada) {
@@ -201,26 +207,27 @@ class RodadaController extends Controller {
         session()->forget('time2_selecionado');
     }
 
-    public function atualizarJogoRodada(Rodada $rodada, Jogo $jogo) {
+    public function atualizarJogoRodada(Rodada $rodada) {
+        
         \DB::beginTransaction();
 
         try {
             foreach (request('lista_jogos') as $jogo_lista) {
-                
+
                 $jogo = Jogo::where('id', '=', $jogo_lista['id'])
                         ->first();
 
+                
                 $jogo->placar_time1 = $jogo_lista['placar_time1'];
                 $jogo->placar_time2 = $jogo_lista['placar_time2'];
-                
+
                 if (isset($jogo_lista['finalizar_jogo'])) {
                     $jogo->hora_jogo_final = date('H:i');
                 }
-                
-                $jogo->update();
 
+                $jogo->update();
             }
-            
+
             session()->flash('message', 'JOGOS ATUALIZADOS');
 
             \DB::commit();
@@ -240,7 +247,7 @@ class RodadaController extends Controller {
 //
 //        session()->flash('message', 'JOGO ATUALIZADO COM SUCESSO');
 
-        return redirect('/rodada/' . $rodada->id . '/editar/t/' . $rodada->temporada->id);
+        return redirect('/rodada/' . $rodada->id . '/editar');
     }
 
     public function excluirJogoRodada(Rodada $rodada, Jogo $jogo) {
@@ -274,7 +281,7 @@ class RodadaController extends Controller {
         }
 
         \DB::beginTransaction();
-        
+
         try {
 
             foreach ($rodada->jogo as $jogo) {
@@ -290,7 +297,6 @@ class RodadaController extends Controller {
 
                     $jogo->update();
                 }
-                
             }
 
             $temporada = Temporada::where('id', '=', $rodada->temporada_id)->first();
@@ -323,18 +329,18 @@ class RodadaController extends Controller {
             $rodada->update();
 
             $rodada_finalizada = new RodadaFinalizada;
-            
+
             $rodada_finalizada->rodada_id = $rodada->id;
-            
+
             $lista_pontos_rodada = $rodada->pontos_rodada_destaque($temporada);
-            
+
             // PEGA O PRIMEIRO DA LISTA
             $rodada_finalizada->destaque_usuario_id = $lista_pontos_rodada[0]->id;
-            
+
             $rodada_finalizada->descricao = 'FOI O MAIOR PONTUADOR DA RODADA COM ' . $lista_pontos_rodada[0]->pontos_rodada;
-            
+
             $rodada_finalizada->save();
-            
+
             \DB::commit();
             session()->flash('message', 'RODADA TERMINADA COM SUCESSO ');
         } catch (\Exception $e) {
@@ -349,19 +355,18 @@ class RodadaController extends Controller {
 
     public function rankingRodada(Rodada $rodada) {
         $lista_melhores = Temporada::ranking_rodada(Rodada::where('id', $rodada->id)->first(), 20);
-        
-        return view ('rodada.ranking', compact('rodada', 'lista_melhores'));
+
+        return view('rodada.ranking', compact('rodada', 'lista_melhores'));
     }
-    
+
     public function palpiteUsuarioRodada(Rodada $rodada, Usuario $usuario) {
         $lista_palpites = null;
-        
+
         $pontos_rodada = $rodada->pontos_rodada($usuario);
-        
-        return view ('rodada.palpites', compact('rodada', 'usuario', 'lista_palpites', 'pontos_rodada'));
-        
+
+        return view('rodada.palpites', compact('rodada', 'usuario', 'lista_palpites', 'pontos_rodada'));
     }
-    
+
     public function gravarPalpite(Rodada $rodada) {
 
         \DB::beginTransaction();

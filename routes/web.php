@@ -45,7 +45,6 @@ Route::post('/temporadas/{temporada}/adicionar_divisao', 'TemporadasController@a
 Route::get('/temporadas/{temporada}/status_convite/{mensagem}/{status}', 'TemporadasController@statusConvite');
 Route::get('/temporadas/{temporada}/sair/temporada', 'TemporadasController@sairTemporada');
 Route::get('/temporadas/add_para_divisao/{temporada_divisao}/usuario/{usuario}', 'TemporadasController@adicionarUsuarioParaDivisao');
-Route::get('/temporadas/{temporada}/lista_rodadas', 'TemporadasController@listaRodadas');
 
 // CONVITES
 Route::get('/convites/t/{temporada}/tipo/{tipo_convite}/{usuario}', 'TemporadasController@enviarConviteTemporada');
@@ -55,20 +54,18 @@ Route::get('/convites/t/{temporada}/tipo/{tipo_convite}', 'TemporadasController@
 Route::get('/mensagens', 'MensagensController@index');
 
 // RODADAS
-//Route::get('/rodada', 'RodadaController@index');
-Route::get('/rodada/{rodada}', 'RodadaController@mostrar');
+Route::get('/rodada', 'RodadaController@index');
+Route::get('/rodada/{rodada}/ver', 'RodadaController@mostrar');
 
-Route::get('/rodada', 'RodadaController@criar');
-Route::get('/rodada/criar/t/{temporada}', 'RodadaController@criarRodada');
-Route::post('/rodada/criar/t/{temporada}', 'RodadaController@gravarRodada');
+Route::get('/rodada/criar', 'RodadaController@criarRodada');
+Route::post('/rodada/criar', 'RodadaController@gravarRodada');
 
-Route::get('/rodada/{rodada}/editar/t/{temporada}', 'RodadaController@editarRodada');
-Route::patch('/rodada/{rodada}/editar/t/{temporada}', 'RodadaController@atualizarRodada');
-
-Route::post('/rodada/{rodada}/editar/t/{temporada}/adicionar_jogo', 'RodadaController@adicionarJogoRodada');
+Route::get('/rodada/{rodada}/editar', 'RodadaController@editarRodada');
+Route::patch('/rodada/{rodada}/editar', 'RodadaController@atualizarRodada');
+Route::post('/rodada/{rodada}/editar/adicionar_jogo', 'RodadaController@adicionarJogoRodada');
 Route::get('/rodada/{rodada}/limpar_sessao', 'RodadaController@limparSessao');
 
-Route::patch('/rodada/{rodada}/editar/jogo/{jogo}', 'RodadaController@atualizarJogoRodada');
+Route::patch('/rodada/{rodada}/editar/jogos', 'RodadaController@atualizarJogoRodada');
 Route::delete('/rodada/{rodada}/excluir/jogo/{jogo}', 'RodadaController@excluirJogoRodada');
 Route::delete('/rodada/{rodada}/excluir', 'RodadaController@excluir');
 Route::post('/rodada/{rodada}/palpite', 'RodadaController@gravarPalpite');
