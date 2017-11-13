@@ -4,16 +4,18 @@
 
 <div class="row">
     <div class="col-lg-12">
+        <h3><b>RANKING</b></h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-12 text-center">
                         
-                        <h3>{{ $temporada->nome }}</h3>
-
-                        <h4>{{ $temporada_divisao->divisao->nome }}</h4>
-                        
-                        <h6 style="color: black">Presidente: <b>{{ $temporada->usuario->nome }}</b></h6>
+                        <h3>{{ $temporada_divisao->divisao->nome }}</h3>
                         
                     </div>
                 </div>
@@ -22,8 +24,6 @@
     </div>
 
 </div>
-
-<h3><b>RANKING</b></h3>
 
 <div class="row">
 
@@ -58,7 +58,7 @@
 
                 </div>
             </div>
-            <hr />
+            <hr style="border-color: black; border-width: 2px 0;" />
         </div>
         @endif
 

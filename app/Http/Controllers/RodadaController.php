@@ -80,7 +80,7 @@ class RodadaController extends Controller {
 
             \DB::commit();
 
-            return redirect('/rodada/' . $rodada->id . '/editar/t/' . session()->get('temporada_ativa')->id);
+            return redirect('/rodada/' . $rodada->id . '/editar/');
         } catch (\Exception $e) {
             \DB::rollback();
             session()->flash('message', 'Erro ao salvar temporada.' . $e);
@@ -150,7 +150,7 @@ class RodadaController extends Controller {
             session()->flash('message', 'Erro ao EXCLUIR RODADA.' . $e);
         }
 
-        return redirect('/');
+        return redirect('/rodada');
     }
 
     public function adicionarJogoRodada(Rodada $rodada) {
@@ -199,7 +199,7 @@ class RodadaController extends Controller {
 
     public function limparSessao(Rodada $rodada) {
         $this->limpar();
-        return redirect('/rodada/' . $rodada->id . '/editar/t/' . $rodada->temporada->id);
+        return redirect('/rodada/' . $rodada->id . '/editar/');
     }
 
     public function limpar() {

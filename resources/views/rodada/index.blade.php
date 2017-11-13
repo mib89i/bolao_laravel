@@ -65,7 +65,7 @@
 
         <div class="col-xs-3 col-md-1">
             @if (Auth::user()->id === $rodada->usuario->id)
-            <a href="/rodada/{{ $rodada->id }}/editar/t/{{ $rodada->temporada->id }}" style="text-decoration: none" class="open_loading">
+            <a href="/rodada/{{ $rodada->id }}/editar/" style="text-decoration: none" class="open_loading">
                 <div class="panel-body text-center  vertical-align">
                     <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
                 </div>

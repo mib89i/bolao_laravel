@@ -79,7 +79,6 @@
                     </a>
                 </div>
 
-
                 <div class="col-xs-3 col-md-1">
                     @if (Auth::user()->id === Session::get('temporada_ativa')->usuario_id)
                     <a href="/temporadas/{{ Session::get('temporada_ativa')->id }}/editar" style="text-decoration: none">
@@ -104,9 +103,11 @@
         </a>
     </div>
     
+    @if(!Session::get('temporada_ativa')->rodada_aberta->isEmpty())
     <div class="col-lg-12">
         <h3><b>RODADA ATUAL</b></h3>
     </div>
+    @endif
     
     @foreach(Session::get('temporada_ativa')->rodada_aberta as $rodada)
 
@@ -123,7 +124,6 @@
                         </div>
                     </a>
                 </div>
-
 
                 <div class="col-xs-3 col-md-1">
                     @if (Auth::user()->id === $rodada->usuario->id)
