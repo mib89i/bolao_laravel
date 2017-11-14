@@ -23,7 +23,7 @@
 
         <link href="/css/styles.css" rel="stylesheet">
 
-        <link href="/css/sticky_footer.css" rel="stylesheet">
+        <!-- <link href="/css/sticky_footer.css" rel="stylesheet"> -->
         
         <link href='https://fonts.googleapis.com/css?family=Annie Use Your Telescope' rel='stylesheet'>
         
@@ -52,16 +52,13 @@
 
     <body>
 
-            <div id="overlay">
-                <center>
-                    <img src="http://bestanimations.com/Sports/Soccer/animated-soccer-balls5.gif" class="img-responsive img-circle" style="position: fixed; top:50%; left:50%; margin-top:-50px; margin-left:-50px; width: 80px">  
-                </center>
-            </div>
-
-
-        
+        <div id="overlay">
+            <center>
+                <img src="http://bestanimations.com/Sports/Soccer/animated-soccer-balls5.gif" class="img-responsive img-circle" style="position: fixed; top:50%; left:50%; margin-top:-50px; margin-left:-50px; width: 80px">  
+            </center>
+        </div>
+            
         @include('layouts.nav')
-        
         
         <div class="container">
             <div class="row">

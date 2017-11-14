@@ -1,12 +1,18 @@
 @extends ('layouts.master')
 
 @section('content')
+
+<div class="row">
+    <div class="col-lg-12">
+        <h3><b>RANKING DA RODADA</b></h3>
+    </div>
+</div>
+
 <div class="panel panel-default">
     <div class="panel-body">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h3><b>{{ $rodada->nome }}</b></h3>
-                <h4>{{ $rodada->temporada->nome }}</h4>
             </div>
         </div>
     </div>
