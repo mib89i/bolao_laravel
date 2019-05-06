@@ -1,0 +1,22 @@
+INSTALAÇÃO DO LARAVEL NO XAMPP PESQUISAR NO YOUTUBE
+
+###################################################
+
+C:\Windows\System32\drivers\etc\hosts // CONFIGURAR HOST PARA TEST ( http://bolao.test/ )
+127.0.0.1 bolao.test
+
+###################################################
+DENTRO DO XAMPP 
+C:\xampp\apache\conf\extra
+ARQUIVO httpd-vhosts.conf // REDIRECIONAR A PASTA PUBLIC
+
+<VirtualHost *:80>
+    DocumentRoot "C:/xampp/htdocs/bolao/public"
+    DirectoryIndex index.php      
+    <Directory "C:/xampp/htdocs/bolao/public">
+        Options All
+        AllowOverride All
+        Order Allow,Deny
+        Allow from all
+    </Directory>
+</VirtualHost>

@@ -20,10 +20,10 @@ class CreatePalpitesTable extends Migration
             
             $table->integer('placar_time2')->nullable();
             
-            $table->integer('usuario_id');
+            $table->integer('usuario_id')->unsigned();
             $table->foreign('usuario_id')->references('id')->on('usuarios');
             
-            $table->integer('jogo_id');
+            $table->integer('jogo_id')->unsigned();
             $table->foreign('jogo_id')->references('id')->on('jogos');
             
             $table->timestamps();

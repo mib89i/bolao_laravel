@@ -16,16 +16,16 @@ class CreateConvitesTable extends Migration
         Schema::create('convites', function (Blueprint $table) {
             $table->increments('id');
             
-            $table->integer('temporada_id')->nullable();
+            $table->integer('temporada_id')->nullable()->unsigned();
             $table->foreign('temporada_id')->references('id')->on('temporadas');
             
-            $table->integer('liga_id')->nullable();
+            $table->integer('liga_id')->nullable()->unsigned();;
             $table->foreign('liga_id')->references('id')->on('ligas');
                         
-            $table->integer('do_usuario_id');
+            $table->integer('do_usuario_id')->unsigned();
             $table->foreign('do_usuario_id')->references('id')->on('usuarios');
             
-            $table->integer('para_usuario_id');
+            $table->integer('para_usuario_id')->unsigned();
             $table->foreign('para_usuario_id')->references('id')->on('usuarios');
             
             $table->boolean('aceito')->nullable();

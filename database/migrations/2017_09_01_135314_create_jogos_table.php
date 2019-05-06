@@ -28,15 +28,15 @@ class CreateJogosTable extends Migration
             
             $table->integer('placar_time2')->nullable();
             
-            $table->integer('time1_id');
+            $table->integer('time1_id')->unsigned();
             $table->foreign('time1_id')->references('id')->on('times');
             
-            $table->integer('time2_id');
+            $table->integer('time2_id')->unsigned();
             $table->foreign('time2_id')->references('id')->on('times');
             
             $table->integer('importancia')->default(1);
             
-            $table->integer('rodada_id');
+            $table->integer('rodada_id')->unsigned();
             $table->foreign('rodada_id')->references('id')->on('rodadas');
             
             $table->timestamps();

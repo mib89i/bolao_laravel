@@ -38,7 +38,7 @@ return [
     'facebook' => [
         'client_id' => '1706061089697481',
         'client_secret' => '500c18ffa8568eb1a2565dcba5dae00e',
-        'redirect' => 'http://bolao.dev/login/facebook/callback',
+        'redirect' => 'http://bolao.com/login/facebook/callback',
     ],
 
 ];

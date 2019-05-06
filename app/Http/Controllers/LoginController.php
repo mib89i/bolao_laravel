@@ -24,16 +24,14 @@ class LoginController extends Controller {
         try {
             //$social_user = Socialite::driver('facebook')->user();
             $social_user = Socialite::driver('facebook')->fields([
-                'name', 'email', 'gender', 'birthday', 'link', 'id', 'verified'
+                'name', 'email', 'gender', 'birthday', 'link', 'id'
             ])->user();
             
         } catch (\Exception $ex) {
-            return redirect()->home();
+            return redirect()->route('login');
         }
 
-        
-        
-        
+
         $user = Usuario::where('facebook_id', $social_user->id)->first();
         
         
@@ -44,8 +42,8 @@ class LoginController extends Controller {
                         'apelido' => $social_user->nickname,
                         'avatar' => $social_user->avatar,
                         'avatar_original' => $social_user->avatar_original,
-                        'genero' => $social_user->user['gender'],
-                        'link' => $social_user->user['link'],
+                        'genero' => '',//$social_user->user['gender'], -- EXIGE HTTPS
+                        'link' => '',//$social_user->user['link'], -- EXIGE HTTPS
                         'nome' => $social_user->name,
                         'email' => $social_user->email,
             ]);

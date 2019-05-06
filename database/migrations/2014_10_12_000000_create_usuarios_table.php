@@ -28,7 +28,7 @@ class CreateUsuariosTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
-        
+
         DB::unprepared("CREATE OR REPLACE FUNCTION translate(character varying)
                         RETURNS character varying AS
                       ".'$BODY$'."
@@ -42,6 +42,7 @@ class CreateUsuariosTable extends Migration
                       ALTER FUNCTION translate(character varying)
                         OWNER TO postgres;"
         );
+
     }
 
     /**

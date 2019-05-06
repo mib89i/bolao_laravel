@@ -18,13 +18,13 @@ class CreateRodadasTable extends Migration
             
             $table->string('nome');
             
-            $table->integer('usuario_id');
+            $table->integer('usuario_id')->unsigned();
             $table->foreign('usuario_id')->references('id')->on('usuarios');
             
-            $table->integer('temporada_id')->nullable();
+            $table->integer('temporada_id')->nullable()->unsigned();
             $table->foreign('temporada_id')->references('id')->on('temporadas');
             
-            $table->integer('liga_id')->nullable();
+            $table->integer('liga_id')->nullable()->unsigned();
             $table->foreign('liga_id')->references('id')->on('ligas');
 
             $table->boolean('publicada');

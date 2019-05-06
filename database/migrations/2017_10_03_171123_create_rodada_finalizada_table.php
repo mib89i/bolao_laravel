@@ -16,10 +16,10 @@ class CreateRodadaFinalizadaTable extends Migration
         Schema::create('rodada_finalizada', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->integer('rodada_id');
+            $table->integer('rodada_id')->unsigned();
             $table->foreign('rodada_id')->references('id')->on('rodadas');
             
-            $table->integer('destaque_usuario_id');
+            $table->integer('destaque_usuario_id')->unsigned();
             $table->foreign('destaque_usuario_id')->references('id')->on('usuarios');
 
             $table->string('descricao');

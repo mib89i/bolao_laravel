@@ -16,7 +16,10 @@ class HomeController extends Controller {
     }
 
     public function index() {
-
+        $temporada_usuarios = NULL;
+        $rodada_finalizada = NULL;
+        $lista_melhores = NULL;
+        
         if (auth()->check()) {
             //$temporada_usuarios = TemporadaUsuario::where(['usuario_id' => auth()->user()->id])->get();
             $temporada_usuarios = TemporadaUsuario::whereHas('temporada', function($q) {

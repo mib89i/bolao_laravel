@@ -12,17 +12,18 @@ class CreateTemporadaUsuarioTable extends Migration {
      * @return void
      */
     public function up() {
-        Schema::create('temporada_usuario', function (Blueprint $table) {
+       Schema::create('temporada_usuario', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->integer('usuario_id');
+            $table->integer('usuario_id')->unsigned();
             $table->foreign('usuario_id')->references('id')->on('usuarios');
 
-            $table->integer('temporada_id');
+            $table->integer('temporada_id')->unsigned();
             $table->foreign('temporada_id')->references('id')->on('temporadas');
 
             $table->timestamps();
         });
+
     }
 
     /**
@@ -31,7 +32,7 @@ class CreateTemporadaUsuarioTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::dropIfExists('temporada_usuario');
+        //Schema::dropIfExists('temporada_usuario');
     }
 
 }

@@ -16,15 +16,15 @@ class CreateLigasTable extends Migration
         Schema::create('ligas', function (Blueprint $table) {
             $table->increments('id');
             
-            $table->integer('usuario_id');
+            $table->integer('usuario_id')->unsigned();
             $table->foreign('usuario_id')->references('id')->on('usuarios');
             
             $table->string('nome');
             
-            $table->integer('tipo_liga_id');
+            $table->integer('tipo_liga_id')->unsigned();
             $table->foreign('tipo_liga_id')->references('id')->on('tipo_liga');
             
-            $table->integer('tipo_partida_id');
+            $table->integer('tipo_partida_id')->unsigned();
             $table->foreign('tipo_partida_id')->references('id')->on('tipo_partida');
             
             $table->boolean('publica');
